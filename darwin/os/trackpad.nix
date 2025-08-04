@@ -8,6 +8,11 @@
       # Tracking Speed (2.5 - fairly fast)
       "com.apple.trackpad.scaling" = 2.0;
     };
+    trackpad = {
+      Clicking = true; # Enable tap to click
+      TrackpadThreeFingerDrag = true; # Enable three finger drag
+      TrackpadRightClick = true; # Enable right click
+    };
   };
   # Trackpad settings through activation script
   system.activationScripts.trackpadSettings.text = ''
