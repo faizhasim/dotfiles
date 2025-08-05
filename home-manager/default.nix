@@ -7,6 +7,7 @@
 
  imports = [
   ./shell.nix
+  ./wezterm.nix
   ./zsh.nix
  ];
 
