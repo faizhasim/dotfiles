@@ -6,7 +6,9 @@
  };
 
  imports = [
+  ./aerospace.nix
   ./shell.nix
+  ./sketchybar.nix
   ./wezterm.nix
   ./zsh.nix
  ];
