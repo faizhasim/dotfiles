@@ -3,8 +3,14 @@
 {
   fonts = {
       packages = with pkgs; [
-        nerd-fonts.jetbrains-mono
+        dejavu_fonts
+        font-awesome
+        hack-font
+        meslo-lgs-nf
+        noto-fonts
+        noto-fonts-emoji
         sketchybar-app-font
+        nerd-fonts.jetbrains-mono
       ];
     };
 }

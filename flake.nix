@@ -3,6 +3,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     darwin = {
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,9 +26,10 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, ... }:
+  outputs = inputs@{ self, darwin, nixpkgs, home-manager, mac-app-util, ... }:
     let
       user = "faizhasim";
       hostname = "M1196";
@@ -43,9 +48,9 @@
         specialArgs = { inherit inputs; inherit unstable; };
         modules = [
           inputs.nix-index-database.darwinModules.nix-index
+          mac-app-util.darwinModules.default
           ./darwin
           ({ pkgs, ... }: {
-
             # Fix the GID issue
             ids.gids.nixbld = 350;
             system = {
@@ -65,11 +70,28 @@
               localHostName = hostname;
             };
 
+            nixpkgs.config = {
+              allowUnfree = true;
+              # allowBroken = true;
+              allowInsecure = false;
+              # allowUnsupportedSystem = true;
+            };
+
             nix = {
               settings = {
                 allowed-users = [ user ];
                 experimental-features = [ "nix-command" "flakes" ];
               };
+
+              gc = {
+                automatic = true;
+                interval = { Weekday = 0; Hour = 2; Minute = 0; };
+                options = "--delete-older-than 30d";
+              };
+
+              extraOptions = ''
+                experimental-features = nix-command flakes
+              '';
             };
 
             environment.systemPackages = with pkgs; [
@@ -77,6 +99,43 @@
               lolcat
             ];
           })
+
+          home-manager.darwinModules.home-manager {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {
+                inherit inputs;
+                inherit unstable;
+                pkgs-zsh-fzf-tab =
+                  import inputs.nixpkgs-zsh-fzf-tab { inherit system; };
+              };
+              sharedModules = [
+                mac-app-util.homeManagerModules.default
+              ];
+              users.${user} = { pkgs, config, lib, ... }: {
+                home = {
+                  enableNixpkgsReleaseCheck = false;
+                  packages = pkgs.callPackage ./home-manager/packages.nix {};
+
+                  stateVersion = "23.11";
+                };
+
+#                home.packages = with pkgs; [
+#                  neovim
+#                  git
+#                  zsh
+#                  wget
+#                  curl
+#                  htop
+#                ];
+                home.file.".zshrc".text = ''
+                  export EDITOR=nvim
+                  export VISUAL=nvim
+                '';
+              };
+            };
+          }
         ];
       };
     };
