@@ -113,27 +113,9 @@
               sharedModules = [
                 mac-app-util.homeManagerModules.default
               ];
-              users.${user} = { pkgs, config, lib, ... }: {
-                home = {
-                  enableNixpkgsReleaseCheck = false;
-                  packages = pkgs.callPackage ./home-manager/packages.nix {};
+              users.${user} = { pkgs, config, lib, ... }:
+                import ./home-manager { inherit config pkgs lib inputs; };
 
-                  stateVersion = "23.11";
-                };
-
-#                home.packages = with pkgs; [
-#                  neovim
-#                  git
-#                  zsh
-#                  wget
-#                  curl
-#                  htop
-#                ];
-                home.file.".zshrc".text = ''
-                  export EDITOR=nvim
-                  export VISUAL=nvim
-                '';
-              };
             };
           }
         ];
