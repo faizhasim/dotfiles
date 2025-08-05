@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, inputs, user, ... }: {
  home = {
    enableNixpkgsReleaseCheck = false;
    packages = pkgs.callPackage ./packages.nix {};
@@ -6,7 +6,7 @@
  };
 
  imports = [
-  ./aerospace.nix
+  (import ./aerospace.nix { inherit config pkgs lib inputs user; })
   ./shell.nix
   ./sketchybar.nix
   ./wezterm.nix

@@ -114,7 +114,7 @@
                 mac-app-util.homeManagerModules.default
               ];
               users.${user} = { pkgs, config, lib, ... }:
-                import ./home-manager { inherit config pkgs lib inputs; };
+                import ./home-manager { inherit config pkgs lib inputs user; };
 
             };
           }
