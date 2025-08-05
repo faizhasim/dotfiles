@@ -11,6 +11,7 @@
         noto-fonts-emoji
         sketchybar-app-font
         nerd-fonts.jetbrains-mono
+        nerd-fonts.fira-code
         nerd-fonts.hack
       ];
     };

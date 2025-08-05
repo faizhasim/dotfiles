@@ -11,6 +11,11 @@
 	    "exec-and-forget /etc/profiles/per-user/${user}/bin/sketchybar --reload" # add reload flag
       "exec-and-forget /etc/profiles/per-user/${user}/bin/borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
     ];
+    exec-on-workspace-change = [
+      "/bin/bash"
+      "-c"
+      "exec-and-forget /etc/profiles/per-user/${user}/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
+    ];
     start-at-login = true;
     enable-normalization-flatten-containers = true;
     enable-normalization-opposite-orientation-for-nested-containers = true;
@@ -23,14 +28,14 @@
 
     gaps = {
       inner = {
-        horizontal = 15;
-        vertical = 15;
+        horizontal = 12;
+        vertical = 12;
       };
       outer = {
-        left = 15;
-        bottom = 15;
-        top = 45;
-        right = 15;
+        left = 12;
+        bottom = 12;
+        top = 32;
+        right = 12;
       };
     };
 
