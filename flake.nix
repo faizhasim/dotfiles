@@ -27,6 +27,7 @@
       flake = false;
     };
     mac-app-util.url = "github:hraban/mac-app-util";
+    _1password-shell-plugins.url = "github:1Password/shell-plugins";
   };
 
   outputs = inputs@{ self, darwin, nixpkgs, home-manager, mac-app-util, ... }:
@@ -104,6 +105,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
+              backupFileExtension = "hm-backup";
               extraSpecialArgs = {
                 inherit inputs;
                 inherit unstable;

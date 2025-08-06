@@ -44,7 +44,7 @@ config.color_scheme = 'Catppuccin Mocha'
 
 -- Appearance
 config.cursor_blink_rate = 0
--- config.window_decorations = 'RESIZE'
+config.window_decorations = 'RESIZE'
 config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
     left = '1cell',
@@ -58,6 +58,19 @@ config.macos_window_background_blur = 20
 -- Miscellaneous settings
 config.max_fps = 120
 config.prefer_egl = true
+
+config.window_frame = {
+  inactive_titlebar_bg = '#1e1e2e',            -- base
+  active_titlebar_bg = '#181825',              -- mantle
+  inactive_titlebar_fg = '#a6adc8',            -- subtext0
+  active_titlebar_fg = '#cdd6f4',              -- text
+  inactive_titlebar_border_bottom = '#313244', -- surface0
+  active_titlebar_border_bottom = '#b4befe',   -- lavender
+  button_fg = '#a6adc8',                        -- subtext0
+  button_bg = '#313244',                        -- surface0
+  button_hover_fg = '#cdd6f4',                  -- text
+  button_hover_bg = '#45475a',                  -- surface1
+}
 
 -- Custom commands
 --wezterm.on('augment-command-palette', function()
