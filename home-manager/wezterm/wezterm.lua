@@ -72,6 +72,30 @@ config.window_frame = {
   button_hover_bg = '#45475a',                  -- surface1
 }
 
+-- Key bindings replicating iTerms because I'm used to it instead of tmux
+config.keys = {
+  {
+    key = 'd',
+    mods = 'CMD',
+    action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+  },
+  {
+    key = 'd',
+    mods = 'CMD|SHIFT',
+    action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
+  },
+  {
+    key = '[',
+    mods = 'CMD',
+    action = wezterm.action.ActivatePaneDirection 'Prev',
+  },
+  {
+    key = ']',
+    mods = 'CMD',
+    action = wezterm.action.ActivatePaneDirection 'Next',
+  },
+}
+
 -- Custom commands
 --wezterm.on('augment-command-palette', function()
 --    return commands
