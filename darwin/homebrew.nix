@@ -17,6 +17,11 @@
     };
     brews = [
       "pkgxdev/made/pkgx" # run anything
+      "seek-jobs/tools/awsauth"
+      "seek-jobs/tools/gantry"
+      # Automat formula might be downloaded from s3 bucket, which is annoying. It needs awsauth.
+      "seek-jobs/tools/automat"
+      "seek-jobs/tools/automat@1.0.0-alpha.3"
 
       # ios development
 #      "cocoapods"
@@ -80,7 +85,6 @@
 #      "battle-net" # some fun
       # "neohtop" # nice htop gui alternative
 #      "freelens" # kubernetes IDE
-
     ];
     taps = [
       "acrogenesis/macchanger"
@@ -92,6 +96,11 @@
       "pkgxdev/made" # pkgx
 #      "nikitabobko/tap" # aerospace
 #      "freelensapp/tap" # freelens
+      {
+        name = "SEEK-Jobs/tools"; # remove and re-apply after configuring git ssh if this won't work
+        clone_target = "git@github.com:SEEK-Jobs/homebrew-tools.git";
+        force_auto_update = true;
+      }
     ];
   };
 }
