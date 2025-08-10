@@ -10,6 +10,7 @@
     (import ./aerospace.nix { inherit config pkgs lib inputs user; })
     ./git.nix
     ./gh.nix
+    ./nvchad.nix
     ./shell.nix
     ./sketchybar.nix
     ./wezterm.nix

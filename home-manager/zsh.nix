@@ -34,6 +34,10 @@
        s = "sudo";
        b = "bat";
 
+       gst = "g st";
+       gco = "g co";
+       ggpush = "g pu";
+
        cat = "bat";
        top = "btop";
        htop = "btop";
@@ -41,6 +45,8 @@
        ssh = "TERM=screen ssh";
        python = "python3";
        pip = "python3 -m pip";
+       vi = "nvim";
+       vim = "nvim";
      };
 
      initContent = ''

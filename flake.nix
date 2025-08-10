@@ -28,6 +28,10 @@
     };
     mac-app-util.url = "github:hraban/mac-app-util";
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
+    nix4nvchad = {
+      url = "github:nix-community/nix4nvchad";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, darwin, nixpkgs, home-manager, mac-app-util, ... }:
