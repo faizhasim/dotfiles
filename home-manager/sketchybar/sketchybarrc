@@ -3,7 +3,9 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 HEIGHT=30
 BOX_HEIGHT=20
 
-sketchybar --add event aerospace_workspace_change
+aerospace() {
+  /etc/profiles/per-user/$USER/bin/aerospace "$@"
+}
 
 ##### Bar Appearance #####
 # Configuring the general appearance of the bar.
@@ -13,7 +15,7 @@ sketchybar --add event aerospace_workspace_change
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
 ############## BAR ##############
-sketchybar -m --bar height=$HEIGHT \
+sketchybar --bar height=$HEIGHT \
                     blur_radius=0 \
                     position=top \
                     padding_left=5 \
@@ -25,7 +27,7 @@ sketchybar -m --bar height=$HEIGHT \
                     border_color=0x4d2E3440
 
 ############## GLOBAL DEFAULTS ##############
-sketchybar -m --default updates=when_shown \
+sketchybar --default updates=when_shown \
                         drawing=on \
                         cache_scripts=on \
                         icon.font="FiraCode Nerd Font:Regular:16.0" \
@@ -35,19 +37,36 @@ sketchybar -m --default updates=when_shown \
                         label.color=0xffECEFF4
 
 ############## SPACE DEFAULTS ##############
-sketchybar -m --default label.padding_left=0 \
-                        label.padding_right=0 \
-                        icon.padding_left=6 \
-                        icon.padding_right=6
+sketchybar --default label.padding_left=0 \
+                     label.padding_right=0 \
+                     icon.padding_left=6 \
+                     icon.padding_right=6
 
-sketchybar -m --add item logo left \
-              --set logo icon= \
-                    background.color=0xffBF616A \
-                    background.height=$HEIGHT \
-                    background.padding_right=0 \
-                    click_script="sketchybar -m --update"
+sketchybar --add item logo left \
+           --set logo icon= \
+                 background.color=0xffBF616A \
+                 background.height=$HEIGHT \
+                 background.padding_right=0 \
+                 click_script="sketchybar --reload"
 
 ############## PRIMARY DISPLAY SPACES ##############
+
+sketchybar --add item workspaceindicator_logo left \
+              --set workspaceindicator_logo icon=󰨇 \
+                               background.color=0xff5E81AC \
+                               background.height=$BOX_HEIGHT \
+                               background.padding_left=10
+sketchybar --add event aerospace_workspace_change
+
+sketchybar --add item workspaceindicator left \
+           --subscribe workspaceindicator aerospace_workspace_change \
+           --set workspaceindicator \
+                 background.color=0xff3B4252 \
+                 background.height=$BOX_HEIGHT \
+                 label.padding_left=0 \
+                 label.padding_right=6 \
+                 script="$PLUGIN_DIR/aerospace.sh aerospace_workspace_change"
+
 sketchybar --add item chevron left \
            --set chevron icon= \
                          label.drawing=off \
@@ -65,29 +84,6 @@ sketchybar --add item chevron left \
                            label.padding_right=6 \
            --subscribe front_app front_app_switched
 
-sketchybar --add item space.$sid left \
-    --subscribe space.99 aerospace_workspace_change \
-    --set space.99 \
-    background.color=0xffD8DEE9 \
-    background.corner_radius=5 \
-    background.height=$HEIGHT \
-    background.drawing=off \
-    label="99" \
-    click_script="aerospace workspace 99" \
-    script="$CONFIG_DIR/plugins/aerospace.sh 99"
-for sid in $(aerospace list-workspaces --all); do
-    sketchybar --add item space.$sid left \
-        --subscribe space.$sid aerospace_workspace_change \
-        --set space.$sid \
-        background.color=0xffD8DEE9 \
-        background.corner_radius=5 \
-        background.height=$HEIGHT \
-        background.drawing=off \
-        label="$sid" \
-        click_script="aerospace workspace $sid" \
-        script="$CONFIG_DIR/plugins/aerospace.sh $sid"
-done
-
 ##### Adding Left Items #####
 # We add some regular items to the left side of the bar, where
 # only the properties deviating from the current defaults need to be set
@@ -99,7 +95,7 @@ sketchybar --add item chevron left \
            --subscribe front_app front_app_switched
 
 ############## ITEM DEFAULTS ###############
-sketchybar -m --default label.padding_left=0 \
+sketchybar --default label.padding_left=0 \
                         label.padding_right=6 \
                         icon.padding_right=0 \
                         icon.padding_left=6
@@ -116,7 +112,7 @@ sketchybar -m --default label.padding_left=0 \
 # volume is registered. More info about the event system can be found here:
 # https://felixkratz.github.io/SketchyBar/config/events
 
-sketchybar -m --add item battery_value right \
+sketchybar --add item battery_value right \
               --set battery_value update_freq=120 \
                             script="$PLUGIN_DIR/battery-percentage.sh" \
                             icon= \
@@ -124,7 +120,7 @@ sketchybar -m --add item battery_value right \
                             background.height=$BOX_HEIGHT \
               --subscribe battery system_woke power_source_change
 
-sketchybar -m --add item battery_icon right \
+sketchybar --add item battery_icon right \
               --set battery_icon update_freq=120 icon= \
                     script="$PLUGIN_DIR/battery-icon.sh" \
                     background.color=0xffB48EAD \
@@ -132,26 +128,26 @@ sketchybar -m --add item battery_icon right \
                     background.padding_left=10 \
               --subscribe battery system_woke power_source_change
 
-sketchybar -m --add item clock right \
+sketchybar --add item clock right \
               --set clock update_freq=10 \
                           script="$PLUGIN_DIR/clock.sh" \
                           background.color=0xff3B4252 \
                           background.height=$BOX_HEIGHT
 
-sketchybar -m --add item clock_logo right\
+sketchybar --add item clock_logo right\
               --set clock_logo icon= \
                                background.color=0xff5E81AC \
                                background.height=$BOX_HEIGHT \
                                background.padding_left=10
 
-sketchybar -m --add item volume right \
+sketchybar --add item volume right \
               --set volume update_freq=10 \
                           script="$PLUGIN_DIR/volume-percentage.sh" \
                           background.color=0xff3B4252 \
                           background.height=$BOX_HEIGHT \
               --subscribe volume volume_change
 
-sketchybar -m --add item volume_icon right \
+sketchybar --add item volume_icon right \
               --set volume_icon icon=  \
                                script="$PLUGIN_DIR/volume-icon.sh" \
                                background.color=0xffD08770 \
@@ -161,11 +157,13 @@ sketchybar -m --add item volume_icon right \
 
 
 
-sketchybar -m --add event song_update com.apple.iTunes.playerInfo
-sketchybar -m --add item music right \
+sketchybar --add event song_update front_app_switched
+sketchybar --add event song_update com.apple.iTunes.playerInfo
+sketchybar --add event song_update com.apple.Music.playerInfo
+sketchybar --add event song_update com.apple.Music.playbackStateChanged
+sketchybar --add item music right \
               --set music update_freq=10 \
                           script="$PLUGIN_DIR/music.sh" \
-                          click_script="$PLUGIN_DIR/music_click.sh" \
                           drawing=off \
                           background.color=0xff3B4252 \
                           background.height=$BOX_HEIGHT \

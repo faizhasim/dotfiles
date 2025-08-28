@@ -8,13 +8,13 @@
   };
   userSettings = {
     after-startup-command = [
-	    "exec-and-forget /etc/profiles/per-user/${user}/bin/sketchybar --reload" # add reload flag
+      "exec-and-forget /etc/profiles/per-user/${user}/bin/sketchybar --reload" # add reload flag
       "exec-and-forget /etc/profiles/per-user/${user}/bin/borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
     ];
     exec-on-workspace-change = [
-      "/bin/bash"
-      "-c"
-      "exec-and-forget /etc/profiles/per-user/${user}/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
+      "/etc/profiles/per-user/${user}/bin/sketchybar"
+      "--trigger"
+      "aerospace_workspace_change"
     ];
     start-at-login = true;
     enable-normalization-flatten-containers = true;
@@ -61,20 +61,12 @@
       alt-3 = "workspace 3";
       alt-4 = "workspace 4";
       alt-5 = "workspace 5";
-      alt-6 = "workspace 6";
-      alt-7 = "workspace 7";
-      alt-8 = "workspace 8";
-      alt-9 = "workspace 9";
 
       alt-shift-1 = "move-node-to-workspace 1";
       alt-shift-2 = "move-node-to-workspace 2";
       alt-shift-3 = "move-node-to-workspace 3";
       alt-shift-4 = "move-node-to-workspace 4";
       alt-shift-5 = "move-node-to-workspace 5";
-      alt-shift-6 = "move-node-to-workspace 6";
-      alt-shift-7 = "move-node-to-workspace 7";
-      alt-shift-8 = "move-node-to-workspace 8";
-      alt-shift-9 = "move-node-to-workspace 9";
 
       alt-tab = "workspace-back-and-forth";
 

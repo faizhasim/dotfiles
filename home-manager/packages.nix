@@ -30,6 +30,7 @@ with pkgs;
   duf # disk usage
 
   # F
+  fastfetch
   fd # Fast find alternative
   fblog # json log viewer
   ffmpeg # video editing and cutting

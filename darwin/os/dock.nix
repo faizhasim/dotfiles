@@ -27,7 +27,7 @@
       # autohide = true;
       # showhidden = true;
 
-      autohide = true;
+      autohide = false;
       autohide-delay = 0.0;
       autohide-time-modifier = 0.0;
       dashboard-in-overlay = true;
