@@ -12,6 +12,7 @@
     ./gh.nix
     ./git.nix
     ./mise.nix
+    ./npmrc.nix
     ./nvchad.nix
     ./shell.nix
     ./sketchybar.nix

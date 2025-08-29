@@ -47,6 +47,10 @@
        pip = "python3 -m pip";
        vi = "nvim";
        vim = "nvim";
+
+       npm = "op run --env-file=$HOME/.config/op-env/npm-env -- npm";
+       pnpm = "op run --env-file=$HOME/.config/op-env/npm-env -- pnpm";
+       yarn = "op run --env-file=$HOME/.config/op-env/npm-env -- yarn";
      };
 
      initContent = ''

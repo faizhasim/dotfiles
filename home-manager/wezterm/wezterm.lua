@@ -94,6 +94,11 @@ config.keys = {
     mods = 'CMD',
     action = wezterm.action.ActivatePaneDirection 'Next',
   },
+  {
+    key = 'w',
+    mods = 'CMD',
+    action = wezterm.action.DisableDefaultAssignment,
+  },
 }
 
 -- Custom commands
