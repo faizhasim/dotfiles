@@ -8,8 +8,10 @@
   imports = [
     inputs._1password-shell-plugins.hmModules.default
     (import ./aerospace.nix { inherit config pkgs lib inputs user; })
-    ./git.nix
+    ./direnv.nix
     ./gh.nix
+    ./git.nix
+    ./mise.nix
     ./nvchad.nix
     ./shell.nix
     ./sketchybar.nix

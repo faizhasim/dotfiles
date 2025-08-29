@@ -39,6 +39,7 @@ with pkgs;
   fzf # Fuzzy finder
 
   # G
+  gnupg
   gnugrep
   gnumake
   gnused
