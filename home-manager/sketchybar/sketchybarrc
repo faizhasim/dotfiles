@@ -60,12 +60,25 @@ sketchybar --add event aerospace_workspace_change
 
 sketchybar --add item workspaceindicator left \
            --subscribe workspaceindicator aerospace_workspace_change \
+           --subscribe workspaceindicator mouse.entered \
+           --subscribe workspaceindicator mouse.exited \
            --set workspaceindicator \
                  background.color=0xff3B4252 \
                  background.height=$BOX_HEIGHT \
                  label.padding_left=0 \
                  label.padding_right=6 \
-                 script="$PLUGIN_DIR/aerospace.sh aerospace_workspace_change"
+                 script="$PLUGIN_DIR/aerospace.sh aerospace_workspace_change" \
+                 popup.drawing=on \
+                 popup.blur_radius=5 \
+                 popup.y_offset=3 \
+                 popup.background.drawing=on \
+                 popup.background.color=0xff3B4252 \
+                 popup.background.border_color=0xff5E81AC \
+                 popup.background.border_width=1 \
+                 popup.background.padding_left=5 \
+                 popup.background.padding_right=5 \
+           --add item workspaceindicator.apps popup.workspaceindicator \
+           --set workspaceindicator.apps icon= label="n/a"
 
 sketchybar --add item chevron left \
            --set chevron icon= \
