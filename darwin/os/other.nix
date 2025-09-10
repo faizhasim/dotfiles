@@ -5,7 +5,6 @@
 
   # Settings directly supported by nix-darwin
   system.defaults = {
-    spaces.spans-displays = false;
     universalaccess = {
       # FIXME: cannot write universal access
       # reduceMotion = true;

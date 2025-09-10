@@ -28,14 +28,14 @@
 
     gaps = {
       inner = {
-        horizontal = 12;
-        vertical = 12;
+        horizontal = 9;
+        vertical = 9;
       };
       outer = {
-        left = 12;
-        bottom = 12;
-        top = 32;
-        right = 12;
+        left = 7;
+        bottom = 7;
+        top = [{ monitor."^built-in retina display$" = 7; } 32];
+        right = 7;
       };
     };
 
@@ -75,6 +75,17 @@
       alt-shift-semicolon = "mode service";
 
       alt-shift-c = "reload-config";
+    };
+
+    mode.service.binding = {
+      esc = ["reload-config" "mode main"];
+      r = ["flatten-workspace-tree" "mode main"];
+      f = ["layout floating tiling" "mode main"];
+
+      alt-shift-h = ["join-with left" "mode main"];
+      alt-shift-j = ["join-with down" "mode main"];
+      alt-shift-k = ["join-with up" "mode main"];
+      alt-shift-l = ["join-with right" "mode main"];
     };
 
   };
