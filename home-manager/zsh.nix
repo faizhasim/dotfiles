@@ -36,7 +36,7 @@
 
        gst = "g st";
        gco = "g co";
-       ggpush = "g pu";
+       ggpush = "g ps";
 
        cat = "bat";
        top = "btop";
