@@ -1,27 +1,6 @@
 { ... }: {
-  homebrew = {
-    enable = true;
-    global = { autoUpdate = false; };
-    # will not be uninstalled when removed
-    # masApps = {
-    #   Xcode = 497799835;
-    #   Transporter = 1450874784;
-    #   VN = 1494451650;
-    # };
-    onActivation = {
-      # "zap" removes manually installed brews and casks
-      cleanup = "zap";
-#      cleanup = "none";
-      autoUpdate = false;
-      upgrade = false;
-    };
-    brews = [
+  brews = [
       "pkgxdev/made/pkgx" # run anything
-      "seek-jobs/tools/awsauth"
-      "seek-jobs/tools/gantry"
-      # Automat formula might be downloaded from s3 bucket, which is annoying. It needs awsauth.
-      "seek-jobs/tools/automat"
-      "seek-jobs/tools/automat@1.0.0-alpha.3"
 
       # ios development
 #      "cocoapods"
@@ -96,11 +75,5 @@
       "pkgxdev/made" # pkgx
 #      "nikitabobko/tap" # aerospace
 #      "freelensapp/tap" # freelens
-      {
-        name = "SEEK-Jobs/tools"; # remove and re-apply after configuring git ssh if this won't work
-        clone_target = "git@github.com:SEEK-Jobs/homebrew-tools.git";
-        force_auto_update = true;
-      }
     ];
-  };
 }

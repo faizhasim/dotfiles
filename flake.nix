@@ -16,7 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
+      url = "github:zhaofengli/nix-homebrew";
     };
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -56,7 +56,7 @@
           darwin.lib.darwinSystem {
             inherit system;
             # makes all inputs availble in imported files
-            specialArgs = { inherit inputs; inherit unstable; };
+            specialArgs = { inherit inputs; inherit unstable; inherit hostname; };
             modules = [
               inputs.nix-index-database.darwinModules.nix-index
               mac-app-util.darwinModules.default
@@ -122,7 +122,7 @@
                     mac-app-util.homeManagerModules.default
                   ];
                   users.${username} = { pkgs, config, lib, ... }:
-                    import ./home-manager { inherit config pkgs lib inputs username; };
+                    import ./home-manager { inherit config pkgs lib inputs hostname username; };
 
                 };
               }

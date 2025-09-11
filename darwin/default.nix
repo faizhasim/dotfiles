@@ -1,7 +1,7 @@
-{ pkgs, ... }: {
+{ pkgs, hostname, ... }: {
   imports = [
     ./os
-    ./homebrew.nix
+    ./homebrew
   ];
 
   environment = {
@@ -12,14 +12,5 @@
   };
 
   programs = { zsh.enable = true; };
-
-#  services = {
-#    # FIXME: driver issues
-#    karabiner-elements.enable = false;
-#    sketchybar = {
-#      enable = false;
-#      extraPackages = with pkgs; [ jq gh ];
-#    };
-#  };
 
 }
