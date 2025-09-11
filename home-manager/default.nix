@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, user, ... }: {
+{ config, pkgs, lib, inputs, username, ... }: {
   home = {
     enableNixpkgsReleaseCheck = false;
     packages = pkgs.callPackage ./packages.nix {};
@@ -7,7 +7,7 @@
 
   imports = [
     inputs._1password-shell-plugins.hmModules.default
-    (import ./aerospace.nix { inherit config pkgs lib inputs user; })
+    (import ./aerospace.nix { inherit config pkgs lib inputs username; })
     ./direnv.nix
     ./gh.nix
     ./git.nix
