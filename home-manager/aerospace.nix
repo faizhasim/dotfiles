@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, user, ... }: {
+{ config, pkgs, lib, inputs, username, ... }: {
  programs.aerospace = {
   enable = true;
   package = pkgs.aerospace;
@@ -8,11 +8,11 @@
   };
   userSettings = {
     after-startup-command = [
-      "exec-and-forget /etc/profiles/per-user/${user}/bin/sketchybar --reload" # add reload flag
-      "exec-and-forget /etc/profiles/per-user/${user}/bin/borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
+      "exec-and-forget /etc/profiles/per-user/${username}/bin/sketchybar --reload" # add reload flag
+      "exec-and-forget /etc/profiles/per-user/${username}/bin/borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
     ];
     exec-on-workspace-change = [
-      "/etc/profiles/per-user/${user}/bin/sketchybar"
+      "/etc/profiles/per-user/${username}/bin/sketchybar"
       "--trigger"
       "aerospace_workspace_change"
     ];

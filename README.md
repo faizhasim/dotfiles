@@ -25,7 +25,7 @@ sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin/maste
 ### Apply Nix-Darwin Configuration
 
 ```shell
-sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .
+sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#M1196
 ```
 
 

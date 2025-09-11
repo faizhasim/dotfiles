@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, user, ... }: {
+{ config, pkgs, lib, inputs, username, ... }: {
   programs.mise = {
     enable = true;
     enableZshIntegration = true;

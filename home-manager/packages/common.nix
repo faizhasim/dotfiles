@@ -141,8 +141,6 @@ with pkgs;
   unzip # ZIP archive extractor
   # uv # Python package installer
 
-  # V
-  vscode # Visual Studio Code, unfree
 
   # W
   wezterm # Terminal emulator
