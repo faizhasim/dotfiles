@@ -71,14 +71,14 @@ sketchybar --add item workspaceindicator left \
                  popup.drawing=on \
                  popup.blur_radius=5 \
                  popup.y_offset=3 \
-                 popup.background.drawing=on \
+                 popup.background.drawing=off \
                  popup.background.color=0xff3B4252 \
                  popup.background.border_color=0xff5E81AC \
                  popup.background.border_width=1 \
                  popup.background.padding_left=5 \
                  popup.background.padding_right=5 \
            --add item workspaceindicator.apps popup.workspaceindicator \
-           --set workspaceindicator.apps icon= label="n/a"
+           --set workspaceindicator.apps icon= label=""
 
 sketchybar --add item chevron left \
            --set chevron icon= \
