@@ -45,7 +45,7 @@
       # Prefer tabs when opening documents: 'always', 'fullscreen', 'manual'
       AppleWindowTabbingMode = "manual";
 
-      _HIHideMenuBar = true;
+      _HIHideMenuBar = false;
     };
   };
 

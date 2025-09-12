@@ -65,6 +65,7 @@ with pkgs;
   # hunspell # Spell checker
 
   # I
+  ice-bar # Status bar replacement for sketchybar
   iftop # Network bandwidth monitor
   iina
   inetutils # net tools like ping, traceroute, etc.

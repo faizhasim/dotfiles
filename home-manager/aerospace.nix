@@ -1,4 +1,5 @@
 { config, pkgs, lib, inputs, username, ... }: {
+ # Disabled sketchybar integration and use ice-bar instead
  programs.aerospace = {
   enable = true;
   package = pkgs.aerospace;
@@ -8,14 +9,14 @@
   };
   userSettings = {
     after-startup-command = [
-      "exec-and-forget /etc/profiles/per-user/${username}/bin/sketchybar --reload" # add reload flag
-      "exec-and-forget /etc/profiles/per-user/${username}/bin/borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0"
+      # "exec-and-forget /etc/profiles/per-user/${username}/bin/sketchybar --reload" # add reload flag
+      "exec-and-forget /etc/profiles/per-user/${username}/bin/borders active_color=0xFF88C0D0 inactive_color=0xff5E81AC width=5.0"
     ];
-    exec-on-workspace-change = [
-      "/etc/profiles/per-user/${username}/bin/sketchybar"
-      "--trigger"
-      "aerospace_workspace_change"
-    ];
+    # exec-on-workspace-change = [
+    #   "/etc/profiles/per-user/${username}/bin/sketchybar"
+    #   "--trigger"
+    #   "aerospace_workspace_change"
+    # ];
     start-at-login = true;
     enable-normalization-flatten-containers = true;
     enable-normalization-opposite-orientation-for-nested-containers = true;
@@ -34,7 +35,8 @@
       outer = {
         left = 7;
         bottom = 7;
-        top = [{ monitor."^built-in retina display$" = 7; } 32];
+        top = 3;
+        # top = [{ monitor."^built-in retina display$" = 32; } 2]; # with sketchybar, should be defaulted to 32
         right = 7;
       };
     };
