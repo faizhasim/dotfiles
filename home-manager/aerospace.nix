@@ -75,6 +75,10 @@
       alt-shift-semicolon = "mode service";
 
       alt-shift-c = "reload-config";
+
+      cmd-h = []; # disable macOS hide
+      cmd-alt-h = []; # disable macOS hide others
+      cmd-m = []; # disable macOS minimize
     };
 
     mode.service.binding = {

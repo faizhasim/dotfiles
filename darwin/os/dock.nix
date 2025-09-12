@@ -5,9 +5,9 @@
   system.defaults = {
     dock = {
       # Icon size of Dock items
-      tilesize = 46;
+      tilesize = 36;
       # Dock magnification
-      magnification = false;
+      magnification = true;
       # Icon size of magnified Dock items
       largesize = 64;
       # Minimization effect: 'genie', 'scale', 'suck'
@@ -65,12 +65,6 @@
 
     # Flag for Launchpad in the Dock
     defaults write com.apple.dock checked-for-launchpad -bool true
-
-    # Auto-hide delay
-    # defaults write com.apple.dock autohide-delay -float 0
-
-    # Auto-hide animation duration
-    # defaults write com.apple.dock autohide-time-modifier -float 0
 
     # Lock the Dock position
     # defaults write com.apple.dock position-immutable -bool true

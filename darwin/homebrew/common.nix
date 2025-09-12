@@ -64,6 +64,7 @@
 #      "battle-net" # some fun
       # "neohtop" # nice htop gui alternative
 #      "freelens" # kubernetes IDE
+      "evernote" # notes
     ];
     taps = [
       "acrogenesis/macchanger"
