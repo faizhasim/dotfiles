@@ -2,6 +2,7 @@
   imports = [
     ./os
     ./homebrew
+    ./stylix.nix
   ];
 
   environment = {
@@ -14,3 +15,4 @@
   programs = { zsh.enable = true; };
 
 }
+

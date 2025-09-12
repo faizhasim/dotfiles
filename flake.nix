@@ -32,11 +32,15 @@
       url = "github:nix-community/nix4nvchad";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, home-manager, mac-app-util, ... }:
+  outputs = inputs@{ self, darwin, nixpkgs, home-manager, mac-app-util, stylix, ... }:
     let
-      
+
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"
         "aarch64-linux"
@@ -60,6 +64,7 @@
             modules = [
               inputs.nix-index-database.darwinModules.nix-index
               mac-app-util.darwinModules.default
+              stylix.darwinModules.stylix
               ./darwin
               ({ pkgs, ... }: {
                 # Fix the GID issue

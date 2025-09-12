@@ -147,6 +147,9 @@ with pkgs;
   wezterm # Terminal emulator
   wget
 
+    # V
+  vscode # Visual Studio Code, unfree
+
   # Y
   yq-go
   yt-dlp
