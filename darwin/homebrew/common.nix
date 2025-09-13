@@ -11,6 +11,7 @@
 #      "totp-cli" # for backstage e2e tests
     ];
     casks = [
+      "alfred"
       # utilities
 #      "aldente" # battery management
 #      "macfuse" # file system utilities
