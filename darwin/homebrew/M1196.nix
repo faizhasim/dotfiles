@@ -6,7 +6,10 @@
       # "seek-jobs/tools/automat"
       # "seek-jobs/tools/automat@1.0.0-alpha.6"
     ];
-    casks = [];
+    casks = [
+      "microsoft-outlook"
+      # "zoom" # managed by MDM
+    ];
     taps = [
       {
         name = "SEEK-Jobs/tools"; # remove and re-apply after configuring git ssh if this won't work
