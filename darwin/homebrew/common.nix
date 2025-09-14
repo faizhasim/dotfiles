@@ -56,6 +56,8 @@
 #      "todoist" # better reminders
 #      "freelens" # kubernetes IDE
       "evernote" # notes
+      "syntax-highlight" # quicklook syntax highlighter
+      "qlmarkdown" # quicklook markdown
     ];
     taps = [
       "acrogenesis/macchanger"
