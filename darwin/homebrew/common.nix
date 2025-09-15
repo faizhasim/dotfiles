@@ -58,6 +58,7 @@
       "evernote" # notes
       "syntax-highlight" # quicklook syntax highlighter
       "qlmarkdown" # quicklook markdown
+      "mediosz/tap/swipeaerospace" # swipe using three fingers
     ];
     taps = [
       "acrogenesis/macchanger"
