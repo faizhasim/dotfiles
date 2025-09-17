@@ -70,5 +70,6 @@
       "pkgxdev/made" # pkgx
 #      "nikitabobko/tap" # aerospace
 #      "freelensapp/tap" # freelens
+      "mediosz/tap"
     ];
 }
