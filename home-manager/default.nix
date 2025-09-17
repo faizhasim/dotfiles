@@ -13,6 +13,7 @@
     inputs._1password-shell-plugins.hmModules.default
     (import ./aerospace.nix { inherit config pkgs lib inputs username; })
     ./direnv.nix
+    ./gh-dash.nix
     ./gh.nix
     ./git.nix
     ./mise.nix
