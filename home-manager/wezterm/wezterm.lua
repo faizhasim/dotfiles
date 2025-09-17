@@ -99,6 +99,18 @@ config.keys = {
     mods = 'CMD',
     action = wezterm.action.DisableDefaultAssignment,
   },
+  -- support Mac jump words
+  {
+    key = 'LeftArrow',
+    mods = 'OPT',
+    action = wezterm.action{ SendString="\x1bb" },
+  },
+  {
+    key = 'RightArrow',
+    mods = 'OPT',
+    action = wezterm.action{ SendString="\x1bf" },
+  },
+
 }
 
 -- Custom commands
