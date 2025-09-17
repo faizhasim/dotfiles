@@ -14,5 +14,15 @@
 
   programs = { zsh.enable = true; };
 
+  launchd.user.agents.aerospace = {
+    command = "${pkgs.aerospace}/Applications/AeroSpace.app/Contents/MacOS/AeroSpace";
+    serviceConfig = {
+      KeepAlive = true;
+      RunAtLoad = true;
+      StandardOutPath = "/tmp/aerospace.log";
+      StandardErrorPath = "/tmp/aerospace.err.log";
+    };
+  };
+
 }
 
