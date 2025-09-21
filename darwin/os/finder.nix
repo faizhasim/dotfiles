@@ -12,7 +12,7 @@
     finder = {
       AppleShowAllExtensions = true;
       AppleShowAllFiles = true;
-      CreateDesktop = false;
+      CreateDesktop = true;
       FXDefaultSearchScope = "SCcf"; # current folder
       QuitMenuItem = true;
     };

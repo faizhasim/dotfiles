@@ -9,6 +9,11 @@
 
   system.defaults.spaces.spans-displays = true;
 
+  system.defaults.screencapture = {
+    include-date = true;
+    location = "~/Pictures/screencapture/";
+  };
+
   # For settings that need system-level permissions or are not directly supported
   system.activationScripts.displaySettings.text = ''
     # Automatically adjust brightness
