@@ -52,6 +52,8 @@
       "__sapper__" # svelte
       ".DS_Store" # mac
       "kls_database.db" # kotlin lsp
+
+      "._*" # my own
     ];
     extraConfig = {
       init.defaultBranch = "main";
