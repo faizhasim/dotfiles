@@ -36,9 +36,13 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nord-dircolors = {
+      url = "github:nordtheme/dircolors";
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, home-manager, mac-app-util, stylix, ... }:
+  outputs = inputs@{ self, darwin, nixpkgs, home-manager, mac-app-util, stylix, nord-dircolors, ... }:
     let
 
       forAllSystems = nixpkgs.lib.genAttrs [
@@ -127,7 +131,7 @@
                     mac-app-util.homeManagerModules.default
                   ];
                   users.${username} = { pkgs, config, lib, ... }:
-                    import ./home-manager { inherit config pkgs lib inputs hostname username; };
+                    import ./home-manager { inherit config pkgs lib inputs hostname username nord-dircolors; };
 
                 };
               }
