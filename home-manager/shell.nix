@@ -60,10 +60,20 @@
       enable = true;
       enableZshIntegration = true;
       defaultCommand =
-        "fd --type f --hidden --follow --exclude .git --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
+        "fd --type f --hidden --follow --exclude .git --exclude .idea --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
       defaultOptions = [
         "--border sharp"
         "--inline-info"
+        "--height 50%"
+        "--layout default"
+      ];
+      changeDirWidgetCommand =
+        "fd --type d --hidden --follow --exclude .git --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
+      changeDirWidgetOptions = [
+        "--preview 'lsd --tree {} | head -200'"
+      ];
+      fileWidgetOptions = [
+        "--preview 'bat --color always -n --line-range :500 {}'"
       ];
     };
 

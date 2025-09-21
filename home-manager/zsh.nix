@@ -73,7 +73,7 @@
        # bindkey '^ ' autosuggest-accept
        # bindkey '^p' history-search-backward
        # bindkey '^n' history-search-forward
-       # bindkey '^f' fzf-file-widget
+       bindkey '^f' fzf-file-widget
 
        function cd() {
          builtin cd $*

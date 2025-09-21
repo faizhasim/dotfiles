@@ -1,6 +1,6 @@
 accordion-padding = 30
 after-login-command = []
-after-startup-command = ["exec-and-forget /etc/profiles/per-user/faizhasim/bin/borders active_color=0xFF88C0D0 inactive_color=0xff5E81AC width=5.0"]
+after-startup-command = ["exec-and-forget /etc/profiles/per-user/faizhasim/bin/borders active_color=0xFF81A1C1 inactive_color=0xFF3B4252 width=5.0"]
 automatically-unhide-macos-hidden-apps = false
 default-root-container-layout = "tiles"
 default-root-container-orientation = "auto"

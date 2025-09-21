@@ -40,7 +40,7 @@ config.font_rules = {
 }
 
 -- Colors
-config.color_scheme = 'Catppuccin Mocha'
+config.color_scheme = 'Nord (base16)'
 
 -- Appearance
 config.cursor_blink_rate = 0
@@ -52,7 +52,7 @@ config.window_padding = {
     top = '0.5cell',
     bottom = '0.5cell',
 }
-config.window_background_opacity = 0.8
+config.window_background_opacity = 0.9
 config.macos_window_background_blur = 20
 
 -- Miscellaneous settings
@@ -60,17 +60,18 @@ config.max_fps = 120
 config.prefer_egl = true
 
 config.window_frame = {
-  inactive_titlebar_bg = '#1e1e2e',            -- base
-  active_titlebar_bg = '#181825',              -- mantle
-  inactive_titlebar_fg = '#a6adc8',            -- subtext0
-  active_titlebar_fg = '#cdd6f4',              -- text
-  inactive_titlebar_border_bottom = '#313244', -- surface0
-  active_titlebar_border_bottom = '#b4befe',   -- lavender
-  button_fg = '#a6adc8',                        -- subtext0
-  button_bg = '#313244',                        -- surface0
-  button_hover_fg = '#cdd6f4',                  -- text
-  button_hover_bg = '#45475a',                  -- surface1
+  inactive_titlebar_bg = '#2E3440',            -- polar night (base)
+  active_titlebar_bg = '#3B4252',              -- polar night (slightly lighter)
+  inactive_titlebar_fg = '#D8DEE9',            -- snow storm (dim text)
+  active_titlebar_fg = '#ECEFF4',              -- snow storm (bright text)
+  inactive_titlebar_border_bottom = '#4C566A', -- polar night (border)
+  active_titlebar_border_bottom = '#81A1C1',   -- frost (blue accent)
+  button_fg = '#D8DEE9',                       -- snow storm
+  button_bg = '#434C5E',                       -- polar night (mid tone)
+  button_hover_fg = '#ECEFF4',                 -- snow storm bright
+  button_hover_bg = '#4C566A',                 -- polar night (lighter hover)
 }
+
 
 -- Key bindings replicating iTerms because I'm used to it instead of tmux
 config.keys = {
