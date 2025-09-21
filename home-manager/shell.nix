@@ -14,10 +14,15 @@
     # sqlite browser history
     atuin = {
       enable = true;
+      enableZshIntegration = true;
       flags = [ "--disable-up-arrow" ];
       settings = {
         inline_height = 20;
-        style = "compact";
+        style = "auto";
+        dialect = "uk";
+        theme = {
+          name = "marine";
+        };
       };
     };
 
