@@ -7,7 +7,7 @@ in
 {
   homebrew = {
     enable = true;
-    global = { autoUpdate = false; };
+    global = { autoUpdate = true; };
     # will not be uninstalled when removed
     # masApps = {
     #   Xcode = 497799835;
@@ -18,8 +18,8 @@ in
       # "zap" removes manually installed brews and casks
       cleanup = "zap";
 #      cleanup = "none";
-      autoUpdate = false;
-      upgrade = false;
+      autoUpdate = true;
+      upgrade = true;
     };
 
     brews = common.brews ++ machineSpecific.brews;

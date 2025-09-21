@@ -1,3 +1,17 @@
+## Pre-requiste
+
+Install [homebrew](https://brew.sh) separately:
+
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+<section>
+> ![NOTE]
+> As [nix-homebrew](https://github.com/zhaofengli/nix-homebrew) manage taps as flake inputs, this make
+> hard to manage private taps from private Github. Hence, homebrew installation is manual and we'll let
+> nix-darwin manage the rest.
+</section>
 
 ## Installation
 
