@@ -93,6 +93,7 @@ with pkgs;
   # libfido2 # FIDO2 library
 
   # M
+  mas
   mise
 
   # N
@@ -147,7 +148,7 @@ with pkgs;
   wezterm # Terminal emulator
   wget
 
-    # V
+  # V
   vscode # Visual Studio Code, unfree
 
   # Y
