@@ -142,6 +142,7 @@
       formatter = forAllSystems (system: nixpkgs.legacyPackages."${system}".nixfmt);
       darwinConfigurations = {
         M1196 = createDarwin "M1196" "faizhasim";
+        M3419 = createDarwin "M3419" "faizhasim";
         macmini01 = createDarwin "macmini01" "faizhasim";
       };
     };
