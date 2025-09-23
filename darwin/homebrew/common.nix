@@ -11,6 +11,7 @@
 #      "totp-cli" # for backstage e2e tests
     ];
     casks = [
+      "1password"
       "alfred"
       # utilities
 #      "aldente" # battery management
