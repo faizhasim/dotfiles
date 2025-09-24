@@ -5,11 +5,16 @@
     jq.enable = true; # json parser
     bat.enable = true; # pretty cat
     lazygit.enable = true; # git tui
-    yazi.enable = true; # file browser
+    yazi = {
+      enable = true; # file browser
+      enableZshIntegration = true;
+    };
     btop.enable = true; # htop alternative
     broot.enable = true; # browser big folders
-    carapace.enable = true; # autocompletion
-    carapace.enableNushellIntegration = true;
+    carapace = {
+      enable = true; # autocompletion
+      enableZshIntegration = true;
+    };
 
     # sqlite browser history
     atuin = {

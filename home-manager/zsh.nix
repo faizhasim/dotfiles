@@ -9,7 +9,7 @@
     history = {
       expireDuplicatesFirst = true;
       ignoreDups = true;
-      ignoreSpace = true; # ignore commands starting with a space
+      ignoreSpace = true;
       save = 20000;
       size = 20000;
       share = true;
@@ -55,19 +55,18 @@
        gh = "op plugin run -- gh";
      };
 
+     profileExtra = ''
+      eval $(/opt/homebrew/bin/brew shellenv)
+     '';
+
      initContent = ''
        [ -f ~/.env/env.sh ] && source ~/.env/env.sh
-
-       # export GIT_CONFIG_GLOBAL="$HOME/.config/git/mutable-config"
 
        # used for homebrew
        export XDG_DATA_DIRS=$XDG_DATA_DIRS:/opt/homebrew/share
 
        # better kubectl diff
        export KUBECTL_EXTERNAL_DIFF="${pkgs.dyff}/bin/dyff between --omit-header --set-exit-code"
-
-       # asdf slows down my terminal start a lot
-       #source ${pkgs.asdf-vm}/share/asdf-vm/asdf.sh
 
        # bindkey '^w' edit-command-line
        # bindkey '^ ' autosuggest-accept

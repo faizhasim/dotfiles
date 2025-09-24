@@ -14,6 +14,7 @@
     (import ./aerospace.nix { inherit config pkgs lib inputs username; })
     ./direnv.nix
     (import ./dircolors.nix { inherit config pkgs lib inputs nord-dircolors; })
+    ./espanso.nix
     ./gh-dash.nix
     ./gh.nix
     ./git.nix
