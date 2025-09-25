@@ -10,6 +10,7 @@ with pkgs;
 
   # B
   bat # Cat clone with syntax highlighting
+  betterdisplay
   bind # nettools
   btop # System monitor and process viewer
 
