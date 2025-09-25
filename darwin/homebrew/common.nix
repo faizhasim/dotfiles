@@ -1,6 +1,6 @@
 { ... }: {
   brews = [
-      "pkgxdev/made/pkgx" # run anything
+      # "pkgxdev/made/pkgx" # run anything
 
       # ios development
 #      "cocoapods"
@@ -12,7 +12,7 @@
     ];
     casks = [
       "1password"
-      "alfred"
+      # "alfred" - experimenting spotlight tahoe
       # utilities
 #      "aldente" # battery management
 #      "macfuse" # file system utilities
@@ -43,7 +43,7 @@
 #      "arc" # mac browser
 #      "visual-studio-code" # code editor
       "zed" # vim like editor
-      "vlc" # media player
+      # "vlc" # media player
 #      "iina" # media player
 #      "linear-linear" # task management
 #      "balenaetcher" # usb flashing
@@ -59,18 +59,18 @@
       "evernote" # notes
       "syntax-highlight" # quicklook syntax highlighter
       "qlmarkdown" # quicklook markdown
-      "mediosz/tap/swipeaerospace" # swipe using three fingers
+      # "mediosz/tap/swipeaerospace" # swipe using three fingers
     ];
     taps = [
-      "acrogenesis/macchanger"
+      # "acrogenesis/macchanger"
       "snyk/tap"
       "ankitpokhrel/jira-cli"
       # custom
 #      "FelixKratz/formulae" # borders
 #      "databricks/tap" # databricks
-      "pkgxdev/made" # pkgx
+      # "pkgxdev/made" # pkgx
 #      "nikitabobko/tap" # aerospace
 #      "freelensapp/tap" # freelens
-      "mediosz/tap"
+      # "mediosz/tap"
     ];
 }

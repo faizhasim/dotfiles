@@ -23,7 +23,6 @@ with pkgs;
   diffutils
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
-  # discord
   dive # analyse docker images
   dockutil # Manage icons in the dock
   du-dust # Disk usage analyzer
@@ -158,5 +157,4 @@ with pkgs;
   # Z
   zip # ZIP archive creator
   zsh
-  # zsh-powerlevel10k # Zsh theme
 ]
