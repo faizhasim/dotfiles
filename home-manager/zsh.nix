@@ -84,6 +84,9 @@
          builtin cd $1
        }
 
+       export PNPM_HOME="$HOME/.local/share/pnpm"
+       export PATH="$PNPM_HOME:$PATH"
+
        function awsauth { /opt/homebrew/opt/awsauth/bin/auth.sh "$@"; [[ -r "$HOME/.aws/sessiontoken" ]] && . "$HOME/.aws/sessiontoken"; }
      '';
   };
