@@ -51,9 +51,11 @@
 
     go = {
       enable = true;
-      goPath = "go";
-      goBin = "go/bin";
-      goPrivate = [ ];
+      env = {
+        GOPATH = "go";
+        GOBIN = "go/bin";
+        GOPRIVATE = [];
+      };
     };
 
     htop = {

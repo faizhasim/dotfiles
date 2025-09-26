@@ -1,8 +1,8 @@
 {
   description = "A simple Nix flake for a basic project";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,7 +55,6 @@
         hostname: username:
         let
           system = "aarch64-darwin";
-          unstable = import inputs.nixpkgs-unstable { inherit system; };
           pkgs = import nixpkgs {
             inherit system;
             config = { allowUnfree = true; };
@@ -64,7 +63,7 @@
           darwin.lib.darwinSystem {
             inherit system;
             # makes all inputs availble in imported files
-            specialArgs = { inherit inputs; inherit unstable; inherit hostname; };
+            specialArgs = { inherit inputs; inherit hostname; };
             modules = [
               inputs.nix-index-database.darwinModules.nix-index
               mac-app-util.darwinModules.default
@@ -123,7 +122,6 @@
                   backupFileExtension = "hm-backup";
                   extraSpecialArgs = {
                     inherit inputs;
-                    inherit unstable;
                     pkgs-zsh-fzf-tab =
                       import inputs.nixpkgs-zsh-fzf-tab { inherit system; };
                   };
