@@ -90,6 +90,11 @@
             })
           end,
       },
+      {
+        "github/copilot.vim",
+        enabled = true,
+        lazy = false,
+      },
     }
     '';
   };
