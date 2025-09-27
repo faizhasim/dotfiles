@@ -33,7 +33,7 @@ curl -sSf -L https://install.lix.systems/lix | sh -s -- install
 ### Apply Nix-Darwin Configuration
 
 ```shell
-sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#M1196
+sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#M3419
 sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#macmini01
 ```
 
