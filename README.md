@@ -37,7 +37,4 @@ sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- sw
 sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#macmini01
 ```
 
-
 [Lix]: https://lix.systems/install/
-
-
