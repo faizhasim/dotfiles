@@ -72,7 +72,6 @@ with pkgs;
   # imagemagick # Image manipulation toolkit
 
   # J
-  jankyborders
   jetbrains-toolbox # JetBrains IDEs manager is unfree
   jpegoptim # JPEG optimizer
   jq # JSON processor

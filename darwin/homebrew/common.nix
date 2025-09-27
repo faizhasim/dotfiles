@@ -9,6 +9,7 @@
       # work
 #      "ruff" # python linter
 #      "totp-cli" # for backstage e2e tests
+      "felixkratz/formulae/borders" # borders
     ];
     casks = [
       "1password"
@@ -65,6 +66,7 @@
       # "acrogenesis/macchanger"
       "snyk/tap"
       "ankitpokhrel/jira-cli"
+      "FelixKratz/formulae"
       # custom
 #      "FelixKratz/formulae" # borders
 #      "databricks/tap" # databricks
