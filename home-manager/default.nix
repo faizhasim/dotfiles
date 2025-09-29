@@ -18,6 +18,7 @@
     ./gh-dash.nix
     ./gh.nix
     ./git.nix
+    ./hammerspoon.nix
     ./jankyborders.nix
     ./mise.nix
     ./npmrc.nix

@@ -61,6 +61,7 @@
       "syntax-highlight" # quicklook syntax highlighter
       "qlmarkdown" # quicklook markdown
       # "mediosz/tap/swipeaerospace" # swipe using three fingers
+      "hammerspoon"
     ];
     taps = [
       # "acrogenesis/macchanger"

@@ -28,6 +28,8 @@
       # NSScrollViewRubberbanding = false;  # Disable rubber-band scrolling
       # NSAppSleepDisabled = true;  # Disable App Nap (not recommended)
     };
+    CustomUserPreferences."org.hammerspoon.Hammerspoon".MJConfigFile = "${config.users.users.faizhasim.home}/.config/hammerspoon/init.lua";
+
   };
 
   # For settings that need system-level permissions or aren't directly supported
