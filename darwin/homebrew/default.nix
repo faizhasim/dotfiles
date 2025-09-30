@@ -27,6 +27,7 @@ in
     taps = common.taps ++ machineSpecific.taps;
     masApps = {
       "Brother iPrint&Scan" = 1193539993;
+      "Marked 2" = 890031187;
       Notability = 360593530;
       Whatsapp = 310633997;
     };

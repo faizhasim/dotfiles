@@ -8,6 +8,7 @@
     ];
     casks = [
       "microsoft-outlook"
+      "miro"
       # "zoom" # managed by MDM
     ];
     taps = [
