@@ -55,6 +55,7 @@
         hostname: username:
         let
           system = "aarch64-darwin";
+          overlays = import ./overlays;
           pkgs = import nixpkgs {
             inherit system;
             config = { allowUnfree = true; };
@@ -70,6 +71,7 @@
               stylix.darwinModules.stylix
               ./darwin
               ({ pkgs, ... }: {
+                nixpkgs.overlays = overlays;
                 # Fix the GID issue
                 ids.gids.nixbld = 350;
                 system = {

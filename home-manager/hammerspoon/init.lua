@@ -8,7 +8,6 @@ spoon.ClipboardTool.paste_on_select = true
 spoon.ClipboardTool.show_in_menubar = false
 spoon.ClipboardTool.show_copied_alert = false
 
--- Start it
 spoon.ClipboardTool:start()
 
 spoon.ClipboardTool:bindHotkeys({
