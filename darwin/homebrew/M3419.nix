@@ -7,6 +7,7 @@
       # "seek-jobs/tools/automat@1.0.0-alpha.6"
     ];
     casks = [
+      "docker-desktop"
       "microsoft-outlook"
       "miro"
       # "zoom" # managed by MDM

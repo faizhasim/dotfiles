@@ -17,7 +17,7 @@ vertical = 9
 [gaps.outer]
 bottom = 7
 left = 7
-right = 7
+right = 10
 top = 3
 
 [key-mapping]

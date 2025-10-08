@@ -25,6 +25,7 @@
     ./nvchad.nix
     ./shell.nix
     ./sketchybar.nix
+    ./vscode.nix
     ./wezterm.nix
     ./zsh.nix
   ];

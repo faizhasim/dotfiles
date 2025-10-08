@@ -51,17 +51,15 @@
 #      "spacedrive" # file explorer
 #      "chatgpt" # open ai desktop client
 #      "loop" # window manager
-#      "homerow" # vimium for mac
-#      "ghostty" # terminal
+      "homerow" # vimium for mac
 #      "jan" # local ChatGPT
       "firefox" # because chromium can't be shared in teams...
-#      "todoist" # better reminders
 #      "freelens" # kubernetes IDE
       "evernote" # notes
       "syntax-highlight" # quicklook syntax highlighter
       "qlmarkdown" # quicklook markdown
-      # "mediosz/tap/swipeaerospace" # swipe using three fingers
       "hammerspoon"
+      "jetbrains-toolbox" # manage jetbrains licenses
     ];
     taps = [
       # "acrogenesis/macchanger"

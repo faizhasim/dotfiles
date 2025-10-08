@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 {
+
   # Keyboard settings directly supported by nix-darwin
   system.defaults.NSGlobalDomain = {
     # Disable press-and-hold for keys in favor of key repeat
@@ -12,17 +13,17 @@
     # Set delay until repeat (in milliseconds)
     InitialKeyRepeat = 20;
 
-    # Text substitution settings
-    NSAutomaticQuoteSubstitutionEnabled = false;
-    NSAutomaticDashSubstitutionEnabled = false;
+
     NSAutomaticSpellingCorrectionEnabled = false;
+    NSAutomaticCapitalizationEnabled = false;
+    NSAutomaticPeriodSubstitutionEnabled = false;
+    NSAutomaticDashSubstitutionEnabled = false;
+    NSAutomaticQuoteSubstitutionEnabled = false;
+
 
     # Optional settings (uncomment if needed)
      AppleKeyboardUIMode = 3;  # Full Keyboard Access - all controls
     # "com.apple.keyboard.fnState" = false;  # Use F1, F2, etc. as standard function keys
-    # NSAutomaticPeriodSubstitutionEnabled = false;  # Disable automatic period substitution
-    # NSAutomaticCapitalizationEnabled = false;  # Disable automatic capitalization
-    # NSAllowContinuousSpellChecking = false;  # Disable continuous spell checking
   };
 
   # For settings that need system-level permissions or aren't directly supported
@@ -49,5 +50,18 @@
       defaults write com.apple.speech.recognition.AppleSpeechRecognition.prefs DictationIMSIFolderWasUpdated -bool true
       defaults write com.apple.speech.recognition.AppleSpeechRecognition.prefs DictationIMUseOnlyOfflineDictation -bool true
     fi
+
+    echo "Disabling autocorrect in Safari, Mail, Notes…"
+
+    # Safari
+    defaults write com.apple.Safari NSAutomaticSpellingCorrectionEnabled -bool false
+
+    # Mail
+    defaults write com.apple.mail NSAutomaticSpellingCorrectionEnabled -bool false
+    defaults write com.apple.mail NSAllowContinuousSpellChecking -bool false
+
+    # Notes
+    defaults write com.apple.Notes NSAutomaticSpellingCorrectionEnabled -bool false
+
   '';
 }
