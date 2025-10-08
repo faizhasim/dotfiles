@@ -40,6 +40,10 @@
       url = "github:nordtheme/dircolors";
       flake = false;
     };
+    krewfile = {
+      url = "github:brumhard/krewfile";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, darwin, nixpkgs, home-manager, mac-app-util, stylix, nord-dircolors, ... }:

@@ -33,6 +33,7 @@
        c = "clear";
        s = "sudo";
        b = "bat";
+       k = "kubectl";
 
        gst = "g st";
        gco = "g co";
