@@ -76,9 +76,10 @@ with pkgs;
   jq # JSON processor
 
   # K
+  k3d
   k6 # load testing tool
   keycastr
-  kind # k8s in docker
+  # kind # k8s in docker
   killall # Kill processes by name
   krew # kubectl plugins
   kubectl
