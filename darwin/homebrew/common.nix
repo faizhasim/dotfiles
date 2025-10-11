@@ -60,6 +60,7 @@
       "qlmarkdown" # quicklook markdown
       "hammerspoon"
       "jetbrains-toolbox" # manage jetbrains licenses
+      "fantastical"
     ];
     taps = [
       # "acrogenesis/macchanger"

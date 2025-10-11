@@ -133,6 +133,7 @@ with pkgs;
   # terraform-ls # Terraform language server
   tflint # Terraform linter
   the-unarchiver
+  tilt # k8s dev tool
   tmux # Terminal multiplexer
   tree # Directory tree viewer
 
