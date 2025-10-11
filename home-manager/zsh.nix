@@ -33,6 +33,7 @@
        c = "clear";
        s = "sudo";
        b = "bat";
+       k = "kubectl";
 
        gst = "g st";
        gco = "g co";
@@ -60,6 +61,9 @@
      '';
 
      initContent = ''
+       autoload -U compinit
+       compinit
+
        [ -f ~/.env/env.sh ] && source ~/.env/env.sh
 
        # used for homebrew
@@ -86,6 +90,8 @@
 
        export PNPM_HOME="$HOME/.local/share/pnpm"
        export PATH="$PNPM_HOME:$PATH"
+
+       eval "$(${pkgs.k3d}/bin/k3d completion zsh)"
 
        function awsauth { /opt/homebrew/opt/awsauth/bin/auth.sh "$@"; [[ -r "$HOME/.aws/sessiontoken" ]] && . "$HOME/.aws/sessiontoken"; }
      '';

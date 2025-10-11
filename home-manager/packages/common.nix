@@ -76,9 +76,10 @@ with pkgs;
   jq # JSON processor
 
   # K
+  k3d
   k6 # load testing tool
   keycastr
-  kind # k8s in docker
+  # kind # k8s in docker
   killall # Kill processes by name
   krew # kubectl plugins
   kubectl
@@ -132,6 +133,7 @@ with pkgs;
   # terraform-ls # Terraform language server
   tflint # Terraform linter
   the-unarchiver
+  tilt # k8s dev tool
   tmux # Terminal multiplexer
   tree # Directory tree viewer
 

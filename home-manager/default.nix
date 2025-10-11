@@ -11,6 +11,7 @@
 
   imports = [
     inputs._1password-shell-plugins.hmModules.default
+    inputs.krewfile.homeManagerModules.krewfile
     (import ./aerospace.nix { inherit config pkgs lib inputs username; })
     ./direnv.nix
     (import ./dircolors.nix { inherit config pkgs lib inputs nord-dircolors; })
@@ -20,6 +21,7 @@
     ./git.nix
     ./hammerspoon.nix
     ./jankyborders.nix
+    ./krewfile.nix
     ./mise.nix
     ./npmrc.nix
     ./nvchad.nix

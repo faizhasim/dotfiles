@@ -2,5 +2,6 @@
 
 with pkgs;
 [
-
+  # B
+  buildkite-cli
 ]
