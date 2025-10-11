@@ -58,9 +58,9 @@
       "evernote" # notes
       "syntax-highlight" # quicklook syntax highlighter
       "qlmarkdown" # quicklook markdown
-      "hammerspoon"
       "jetbrains-toolbox" # manage jetbrains licenses
       "fantastical"
+      "chrysalis"
     ];
     taps = [
       # "acrogenesis/macchanger"
