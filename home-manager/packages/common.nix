@@ -114,6 +114,7 @@ with pkgs;
   python3
 
   # R
+  raycast
   rclone # sync files
   ripgrep # fast search
   rustup # rust
