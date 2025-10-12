@@ -5,31 +5,33 @@
   programs.vscode = {
     enable = true;
 
-    userSettings = {
-      "editor.tabSize" = 2;
-      "editor.formatOnSave" = true;
-      "files.trimTrailingWhitespace" = true;
-      "files.insertFinalNewline" = true;
-      "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font";
+    profiles.default = {
+      userSettings = {
+        "editor.tabSize" = 2;
+        "editor.formatOnSave" = true;
+        "files.trimTrailingWhitespace" = true;
+        "files.insertFinalNewline" = true;
+        "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font";
 
-      # Language specific
-      "[typescript]" = {
-        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+        # Language specific
+        "[typescript]" = {
+          "editor.defaultFormatter" = "esbenp.prettier-vscode";
+        };
+        "[javascript]" = {
+          "editor.defaultFormatter" = "esbenp.prettier-vscode";
+        };
+        "[go]" = {
+          "editor.defaultFormatter" = "golang.go";
+        };
       };
-      "[javascript]" = {
-        "editor.defaultFormatter" = "esbenp.prettier-vscode";
-      };
-      "[go]" = {
-        "editor.defaultFormatter" = "golang.go";
-      };
+
+      keybindings = [
+        {
+          key = "ctrl+shift+t";
+          command = "workbench.action.terminal.new";
+        }
+      ];
     };
-
-    keybindings = [
-      {
-        key = "ctrl+shift+t";
-        command = "workbench.action.terminal.new";
-      }
-    ];
   };
 
   home.activation.ensureCodeCli =
