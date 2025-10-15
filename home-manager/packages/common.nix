@@ -150,6 +150,7 @@ with pkgs;
   wget
 
   # V
+  vale
   vscode # Visual Studio Code, unfree
 
   # Y
