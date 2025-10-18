@@ -38,3 +38,10 @@ sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- sw
 ```
 
 [Lix]: https://lix.systems/install/
+
+
+## Manual Steps
+
+### Karabiner-Elements
+
+- Complex Modifications: Add predefined rule to change CMD+TAB to use Raycast

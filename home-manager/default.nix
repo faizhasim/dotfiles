@@ -19,6 +19,7 @@
     ./gh.nix
     ./git.nix
     ./jankyborders.nix
+    ./karabiner-elements.nix
     ./krewfile.nix
     ./mise.nix
     ./npmrc.nix

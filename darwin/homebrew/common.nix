@@ -61,6 +61,8 @@
       "jetbrains-toolbox" # manage jetbrains licenses
       "fantastical"
       "chrysalis"
+      "microsoft-edge"
+      "karabiner-elements"
     ];
     taps = [
       # "acrogenesis/macchanger"
