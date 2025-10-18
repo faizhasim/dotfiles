@@ -19,7 +19,7 @@
 #      "macfuse" # file system utilities
       # "hiddenbar" # hides menu bar icons
 #      "meetingbar" # shows upcoming meetings
-#      "karabiner-elements" # keyboard remap
+      "karabiner-elements" # keyboard remap
 #      "eurkey" # keyboard layout
 #      "displaylink" # connect to external dell displays
 #      "raspberry-pi-imager" # flash images to sd card
@@ -62,7 +62,6 @@
       "fantastical"
       "chrysalis"
       "microsoft-edge"
-      "karabiner-elements"
     ];
     taps = [
       # "acrogenesis/macchanger"
