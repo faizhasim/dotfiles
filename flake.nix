@@ -53,12 +53,12 @@
         "x86_64-linux"
         "aarch64-linux"
         "aarch64-darwin"
+        "x86_64-darwin"
       ];
 
       createDarwin =
-        hostname: username:
+        hostname: username: system:
         let
-          system = "aarch64-darwin";
           overlays = import ./overlays;
           pkgs = import nixpkgs {
             inherit system;
@@ -145,9 +145,9 @@
     in {
       formatter = forAllSystems (system: nixpkgs.legacyPackages."${system}".nixfmt);
       darwinConfigurations = {
-        M3419 = createDarwin "M3419" "faizhasim";
-        macmini01 = createDarwin "macmini01" "faizhasim";
-        mbp01 = createDarwin "mbp01" "faizhasim";
+        M3419 = createDarwin "M3419" "faizhasim" "aarch64-darwin";
+        macmini01 = createDarwin "macmini01" "faizhasim" "aarch64-darwin";
+        mbp01 = createDarwin "mbp01" "faizhasim" "x86_64-darwin";
       };
     };
 
