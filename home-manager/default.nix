@@ -5,6 +5,9 @@
       common = import ./packages/common.nix { inherit pkgs; };
       machineSpecific = import ./packages/${hostname}.nix { inherit pkgs; };
     in common ++ machineSpecific;
+    sessionPath = [
+      "$HOME/.local/bin" # to store things like `idea` cli
+    ];
 
     stateVersion = "23.11";
   };

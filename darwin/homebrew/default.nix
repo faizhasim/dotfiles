@@ -29,7 +29,7 @@ in
       "Brother iPrint&Scan" = 1193539993;
       "Marked 2" = 890031187;
       Notability = 360593530;
-      Whatsapp = 310633997;
+      # Whatsapp = 310633997; # unsure why homebrew kept installing this
     };
 
   };
