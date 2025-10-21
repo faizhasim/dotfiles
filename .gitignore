@@ -3,3 +3,7 @@
 result
 result-*
 
+# Ignore idea files
+.idea/
+*.iml
+*.iws
