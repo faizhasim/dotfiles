@@ -17,7 +17,8 @@
     Plug 'machakann/vim-highlightedyank'
     Plug 'preservim/nerdtree'
 
-    nnoremap <A-i> :action ActivateTerminalToolWindow<CR>
+    " weird meta mapping in macOS and sometimes will put caret character
+    nnoremap <D-i> :action ActivateTerminalToolWindow<CR>
 
     nnoremap <s-TAB> :action PreviousTab<CR>
     nnoremap <TAB> :action NextTab<CR>

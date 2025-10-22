@@ -92,8 +92,8 @@
        export PATH="$PNPM_HOME:$PATH"
 
        eval "$(${pkgs.k3d}/bin/k3d completion zsh)"
+       eval "$(${pkgs.saml2aws}/bin/saml2aws --completion-script-zsh)"
 
-       function awsauth { /opt/homebrew/opt/awsauth/bin/auth.sh "$@"; [[ -r "$HOME/.aws/sessiontoken" ]] && . "$HOME/.aws/sessiontoken"; }
      '';
   };
 }

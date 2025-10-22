@@ -120,6 +120,7 @@ with pkgs;
   rustup # rust
 
   # S
+  saml2aws # SAML to AWS CLI authentication tool
   slack # unfree, use brew cask instead
   slides
   sniffnet # monitor network traffic
