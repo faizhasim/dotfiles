@@ -45,3 +45,8 @@ sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- sw
 ### Karabiner-Elements
 
 - Complex Modifications: Add predefined rule to change CMD+TAB to use Raycast
+
+### saml2aws
+
+- Run [saml2aws-configure.sh](./scripts/saml2aws-configure.sh) to setup saml2aws.
+
