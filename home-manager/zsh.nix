@@ -88,6 +88,10 @@
          builtin cd $1
        }
 
+       function awsp() {
+         export AWS_PROFILE=$(aws configure list-profiles | fzf)
+       }
+
        export PNPM_HOME="$HOME/.local/share/pnpm"
        export PATH="$PNPM_HOME:$PATH"
 
