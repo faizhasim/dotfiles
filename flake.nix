@@ -26,7 +26,7 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    mac-app-util.url = "github:hraban/mac-app-util";
+    # mac-app-util.url = "github:hraban/mac-app-util";
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
     nix4nvchad = {
       url = "github:nix-community/nix4nvchad";
@@ -46,7 +46,7 @@
     };
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, home-manager, mac-app-util, stylix, nord-dircolors, ... }:
+  outputs = inputs@{ self, darwin, nixpkgs, home-manager, stylix, nord-dircolors, ... }:
     let
 
       forAllSystems = nixpkgs.lib.genAttrs [
@@ -71,7 +71,6 @@
             specialArgs = { inherit inputs; inherit hostname; };
             modules = [
               inputs.nix-index-database.darwinModules.nix-index
-              mac-app-util.darwinModules.default
               stylix.darwinModules.stylix
               ./darwin
               ({ pkgs, ... }: {
@@ -131,9 +130,6 @@
                     pkgs-zsh-fzf-tab =
                       import inputs.nixpkgs-zsh-fzf-tab { inherit system; };
                   };
-                  sharedModules = [
-                    mac-app-util.homeManagerModules.default
-                  ];
                   users.${username} = { pkgs, config, lib, ... }:
                     import ./home-manager { inherit config pkgs lib inputs hostname username nord-dircolors; };
 

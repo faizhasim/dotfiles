@@ -7,9 +7,10 @@
       tools = {
         node = "lts";
         python = ["3.11"];
+        bun = "latest";
       };
       settings = {
-        idiomatic_version_file_enable_tools = ["node" "java" "go" "terraform"];
+        idiomatic_version_file_enable_tools = ["node" "java" "go" "python" "ruby" "terraform" "terragrunt" "yarn"];
         plugin_autoupdate_last_check_duration = "1 week";
 
         trusted_config_paths = [
