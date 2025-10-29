@@ -95,10 +95,6 @@ if.app-id = "com.github.wez.wezterm"
 run = "move-node-to-workspace 3_focus"
 
 [[on-window-detected]]
-if.app-id = "com.jetbrains.intellij"
-run = "move-node-to-workspace 4_focus"
-
-[[on-window-detected]]
 if.app-id = "com.apple.Safari"
 run = "move-node-to-workspace 5_explore"
 
