@@ -15,18 +15,6 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew = {
-      url = "github:zhaofengli/nix-homebrew";
-    };
-    homebrew-core = {
-      url = "github:homebrew/homebrew-core";
-      flake = false;
-    };
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
-      flake = false;
-    };
-    # mac-app-util.url = "github:hraban/mac-app-util";
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
     nix4nvchad = {
       url = "github:nix-community/nix4nvchad";

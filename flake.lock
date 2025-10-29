@@ -86,23 +86,6 @@
         "type": "github"
       }
     },
-    "brew-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1758543057,
-        "narHash": "sha256-lw3V2jOGYphUFHYQ5oARcb6urlbNpUCLJy1qhsGdUmc=",
-        "owner": "Homebrew",
-        "repo": "brew",
-        "rev": "5b236456eb93133c2bd0d60ef35ed63f1c0712f6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Homebrew",
-        "ref": "4.6.12",
-        "repo": "brew",
-        "type": "github"
-      }
-    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -250,38 +233,6 @@
         "type": "github"
       }
     },
-    "homebrew-cask": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1758981302,
-        "narHash": "sha256-IZ2jGvQdLxdsOm9ftI4up2SX+0ywix6CKYhV5xES1hI=",
-        "owner": "homebrew",
-        "repo": "homebrew-cask",
-        "rev": "48f882a21ff90f9e856aab708cfdba0b6385daa3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "homebrew",
-        "repo": "homebrew-cask",
-        "type": "github"
-      }
-    },
-    "homebrew-core": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1758985534,
-        "narHash": "sha256-XT5KlQSTUSb/VfB+0IK0l5FK2gQjHJ5QPLWgXMCc80c=",
-        "owner": "homebrew",
-        "repo": "homebrew-core",
-        "rev": "83d8705355a4f4c73aa7eee9993cadc1395d17e3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "homebrew",
-        "repo": "homebrew-core",
-        "type": "github"
-      }
-    },
     "krewfile": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -300,24 +251,6 @@
       "original": {
         "owner": "brumhard",
         "repo": "krewfile",
-        "type": "github"
-      }
-    },
-    "nix-homebrew": {
-      "inputs": {
-        "brew-src": "brew-src"
-      },
-      "locked": {
-        "lastModified": 1758598228,
-        "narHash": "sha256-qr60maXGbZ4FX5tejPRI3nr0bnRTnZ3AbbbfO6/6jq4=",
-        "owner": "zhaofengli",
-        "repo": "nix-homebrew",
-        "rev": "f36e5db56e117f7df701ab152d0d2036ea85218c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "zhaofengli",
-        "repo": "nix-homebrew",
         "type": "github"
       }
     },
@@ -458,10 +391,7 @@
         "_1password-shell-plugins": "_1password-shell-plugins",
         "darwin": "darwin",
         "home-manager": "home-manager",
-        "homebrew-cask": "homebrew-cask",
-        "homebrew-core": "homebrew-core",
         "krewfile": "krewfile",
-        "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",
         "nix4nvchad": "nix4nvchad",
         "nixpkgs": "nixpkgs_2",
