@@ -49,15 +49,6 @@
       enableZshIntegration = true;
     };
 
-    go = {
-      enable = true;
-      env = {
-        GOPATH = "go";
-        GOBIN = "go/bin";
-        GOPRIVATE = [];
-      };
-    };
-
     htop = {
       enable = true;
       settings = {

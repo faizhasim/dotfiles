@@ -125,6 +125,7 @@ with pkgs;
   slides
   sniffnet # monitor network traffic
   sshfs # mount folders via ssh
+  statix
   stow
 
   # T
@@ -138,6 +139,7 @@ with pkgs;
   tilt # k8s dev tool
   tmux # Terminal multiplexer
   tree # Directory tree viewer
+  tree-sitter # incremental parsing system (used by neovim)
 
   # U
   utm # Virtual machines
