@@ -10,6 +10,7 @@
 #      "ruff" # python linter
 #      "totp-cli" # for backstage e2e tests
       "felixkratz/formulae/borders" # borders
+      "markdownlint-cli2"
     ];
     casks = [
       "1password"

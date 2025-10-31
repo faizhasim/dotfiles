@@ -6,6 +6,7 @@ with pkgs;
   aerospace
   aspell # Spell checker
   aspellDicts.en # English dictionary for aspell
+  ast-grep # code searching and refactoring tool
   awscli2
 
   # B
@@ -54,6 +55,7 @@ with pkgs;
   git-lfs
   gitAndTools.delta # pretty diff tool
   gh-copilot # required by nvim sidekick
+  ghostscriptX
   glow # Markdown renderer for terminal
   gnupg # GNU Privacy Guard
   gopls # Go language server
@@ -71,7 +73,7 @@ with pkgs;
   iftop # Network bandwidth monitor
   iina
   inetutils # net tools like ping, traceroute, etc.
-  # imagemagick # Image manipulation toolkit
+  imagemagick # Image manipulation toolkit
 
   # J
   jpegoptim # JPEG optimizer
@@ -95,6 +97,7 @@ with pkgs;
 
   # M
   mas
+  mermaid-cli # generate diagrams and flowcharts from text
   mise
 
   # N
@@ -104,6 +107,8 @@ with pkgs;
   neohtop # nice htop GUI alternative
   nmap # net tools
   ngrok # Secure tunneling service, unfree
+  nodePackages.prettier
+  nixfmt-rfc-style
 
   # O
   # obs-studio # Stream / recording software
@@ -126,12 +131,14 @@ with pkgs;
   slack # unfree, use brew cask instead
   slides
   sniffnet # monitor network traffic
+  sqlfluff # sql linter and auto-formatter
   sshfs # mount folders via ssh
   statix
   stow
 
   # T
   tealdeer # community driven man pages
+  tectonic # pdf latex
   termdown # terminal countdown
   terraform # Infrastructure as code tool
   terraform-docs
@@ -148,7 +155,6 @@ with pkgs;
   unrar # RAR archive extractor
   unzip # ZIP archive extractor
   # uv # Python package installer
-
 
   # W
   wezterm # Terminal emulator
