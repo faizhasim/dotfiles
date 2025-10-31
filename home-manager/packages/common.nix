@@ -15,6 +15,7 @@ with pkgs;
   btop # System monitor and process viewer
 
   # C
+  copilot-language-server # use by sidekick.nvim
   corepack # node wrappers
   coreutils-full # multiple tools
   comma # run nix binaries on demand
@@ -52,6 +53,7 @@ with pkgs;
   git
   git-lfs
   gitAndTools.delta # pretty diff tool
+  gh-copilot # required by nvim sidekick
   glow # Markdown renderer for terminal
   gnupg # GNU Privacy Guard
   gopls # Go language server

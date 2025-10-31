@@ -27,8 +27,6 @@
     ./krewfile.nix
     ./mise.nix
     ./npmrc.nix
-    ./nvim.nix
-    # ./nvchad.nix
     ./shell.nix
     ./sketchybar.nix
     ./vscode.nix

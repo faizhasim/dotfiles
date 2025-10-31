@@ -16,10 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
-    nix4nvchad = {
-      url = "github:nix-community/nix4nvchad";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
