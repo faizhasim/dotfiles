@@ -29,8 +29,8 @@ with pkgs;
   difftastic # Structural diff tool
   dive # analyse docker images
   dockutil # Manage icons in the dock
-  du-dust # Disk usage analyzer
   duf # disk usage
+  dust # disk usage analyzer
 
   # F
   fastfetch
