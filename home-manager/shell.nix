@@ -1,5 +1,12 @@
-{ config, pkgs, lib, inputs, ... }: {
- programs = {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+{
+  programs = {
     nushell.enable = true; # zsh alternative
     zoxide.enable = true; # autojump
     jq.enable = true; # json parser
@@ -62,16 +69,14 @@
     fzf = {
       enable = true;
       enableZshIntegration = true;
-      defaultCommand =
-        "fd --type f --hidden --follow --exclude .git --exclude .idea --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
+      defaultCommand = "fd --type f --hidden --follow --exclude .git --exclude .idea --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
       defaultOptions = [
         "--border sharp"
         "--inline-info"
         "--height 50%"
         "--layout default"
       ];
-      changeDirWidgetCommand =
-        "fd --type d --hidden --follow --exclude .git --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
+      changeDirWidgetCommand = "fd --type d --hidden --follow --exclude .git --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
       changeDirWidgetOptions = [
         "--preview 'lsd --tree {} | head -200'"
       ];
@@ -97,13 +102,11 @@
         }
         {
           description = "garden kubeconfig from ske-ci ondemand cluster";
-          command =
-            "kubectl get secret garden-kubeconfig-for-admin -n garden -o jsonpath='{.data.kubeconfig}' | base64 -d > garden-kubeconfig-for-admin.yaml";
+          command = "kubectl get secret garden-kubeconfig-for-admin -n garden -o jsonpath='{.data.kubeconfig}' | base64 -d > garden-kubeconfig-for-admin.yaml";
         }
         {
           description = "get all images used in a kubernetes cluster";
-          command =
-            "kubectl get pods --all-namespaces -o jsonpath=\"{.items[*].spec['initContainers', 'containers'][*].image}\" | tr -s '[[:space:]]' '\n' | sort | uniq -c";
+          command = "kubectl get pods --all-namespaces -o jsonpath=\"{.items[*].spec['initContainers', 'containers'][*].image}\" | tr -s '[[:space:]]' '\n' | sort | uniq -c";
         }
       ];
     };

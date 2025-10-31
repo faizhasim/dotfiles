@@ -23,6 +23,7 @@ with pkgs;
   curl
 
   # D
+  delta # git diff viewer
   diffutils
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
@@ -53,7 +54,6 @@ with pkgs;
   gh # GitHub CLI
   git
   git-lfs
-  gitAndTools.delta # pretty diff tool
   gh-copilot # required by nvim sidekick
   ghostscriptX
   glow # Markdown renderer for terminal
