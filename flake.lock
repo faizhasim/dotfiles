@@ -386,19 +386,6 @@
         "type": "github"
       }
     },
-    "nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-ThRDqh1vu7trui0LmIYf3CrMsnoKKUeMozugPl3TqB8=",
-        "path": "./nvim/",
-        "type": "path"
-      },
-      "original": {
-        "path": "./nvim/",
-        "type": "path"
-      }
-    },
     "root": {
       "inputs": {
         "_1password-shell-plugins": "_1password-shell-plugins",
@@ -409,7 +396,6 @@
         "nix4nvchad": "nix4nvchad",
         "nixpkgs": "nixpkgs_2",
         "nord-dircolors": "nord-dircolors",
-        "nvim": "nvim",
         "stylix": "stylix"
       }
     },

@@ -32,10 +32,6 @@
       url = "github:brumhard/krewfile";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvim = {
-      url = "path:./nvim/";
-      flake = false;
-    };
   };
 
   outputs = inputs@{ self, darwin, nixpkgs, home-manager, stylix, nord-dircolors, ... }:

@@ -3,4 +3,4 @@
 -- Add any additional options here
 
 -- vim.opt.winbar = "%=%m %f"
-vim.opt.winbar = "%#Comment#%{repeat('─', winwidth(0) * line('.') / line('$'))}●"
+-- vim.opt.winbar = "%#Comment#%{repeat('─', winwidth(0) * line('.') / line('$'))}●"
