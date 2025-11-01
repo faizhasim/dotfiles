@@ -123,7 +123,8 @@ with pkgs;
   # R
   raycast
   rclone # sync files
-  ripgrep # fast search
+  ripgrep # fast searching
+  rubyPackages.htmlbeautifier
   rustup # rust
 
   # S
