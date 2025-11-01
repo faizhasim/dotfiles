@@ -1,10 +1,22 @@
-{ config, pkgs, lib, inputs, hostname, username, nord-dircolors, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  hostname,
+  username,
+  nord-dircolors,
+  ...
+}:
+{
   home = {
     enableNixpkgsReleaseCheck = false;
-    packages = let
-      common = import ./packages/common.nix { inherit pkgs; };
-      machineSpecific = import ./packages/${hostname}.nix { inherit pkgs; };
-    in common ++ machineSpecific;
+    packages =
+      let
+        common = import ./packages/common.nix { inherit pkgs; };
+        machineSpecific = import ./packages/${hostname}.nix { inherit pkgs; };
+      in
+      common ++ machineSpecific;
     sessionPath = [
       "$HOME/.local/bin" # to store things like `idea` cli
     ];
@@ -15,9 +27,25 @@
   imports = [
     inputs._1password-shell-plugins.hmModules.default
     inputs.krewfile.homeManagerModules.krewfile
-    (import ./aerospace.nix { inherit config pkgs lib inputs username; })
+    (import ./aerospace.nix {
+      inherit
+        config
+        pkgs
+        lib
+        inputs
+        username
+        ;
+    })
     ./direnv.nix
-    (import ./dircolors.nix { inherit config pkgs lib inputs nord-dircolors; })
+    (import ./dircolors.nix {
+      inherit
+        config
+        pkgs
+        lib
+        inputs
+        nord-dircolors
+        ;
+    })
     ./gh-dash.nix
     ./gh.nix
     ./git.nix
@@ -31,6 +59,7 @@
     ./sketchybar.nix
     ./vscode.nix
     ./wezterm.nix
+    ./xdg-configs.nix
     ./zsh.nix
   ];
 

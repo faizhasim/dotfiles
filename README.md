@@ -1,4 +1,21 @@
-# Prerequisite
+# Dotfiles
+
+Declarative macOS system configuration using Nix/Lix, nix-darwin, and home-manager.
+
+## 📚 Documentation
+
+**New to this setup?** Start with the [complete documentation](./docs/index.md).
+
+### Quick Links
+
+- **[Getting Started](./docs/getting-started.md)** - Installation and setup
+- **[Architecture](./docs/architecture.md)** - How the system works
+- **[Configuration Guide](./docs/configuration-guide.md)** - Customize your setup
+- **[Reference](./docs/reference.md)** - Gotchas and important notes
+
+## Quick Start
+
+### Prerequisite
 
 Install [homebrew](https://brew.sh) separately:
 

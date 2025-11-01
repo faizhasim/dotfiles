@@ -7,4 +7,5 @@ stow -v -t "$HOME/.config/nvim" nvim
 mise install
 corepack enable
 pnpm add -g @github/copilot
+pnpm add -g opencode-ai
 pnpm add -g markdown-toc
