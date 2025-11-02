@@ -2,7 +2,24 @@
   "$schema": "https://opencode.ai/config.json",
   // Theme configuration
   "theme": "nord",
-  "model": "opencode/claude-sonnet-4-5",
+  "agent": {
+    "build": {
+      "description": "Primary dev agent with full tool access",
+      "mode": "primary",
+      "model": "github-copilot/gpt-4o",
+      "prompt": "{file:./prompts/build.md}",
+      "temperature": 0.3,
+      "tools": { "write": true, "edit": true, "bash": true },
+    },
+    "plan": {
+      "description": "Analysis & planning without direct changes",
+      "mode": "primary",
+      "model": "github-copilot/gpt-4o",
+      "prompt": "{file:./prompts/plan.md}",
+      "temperature": 0.15,
+      "tools": { "write": false, "edit": false, "bash": false },
+    },
+  },
   "autoupdate": true,
   "share": "manual",
 }
