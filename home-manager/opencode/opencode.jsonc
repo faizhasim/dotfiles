@@ -6,7 +6,7 @@
     "build": {
       "description": "Primary dev agent with full tool access",
       "mode": "primary",
-      "model": "github-copilot/gpt-4o",
+      "model": "github-copilot/gpt-4.1",
       "prompt": "{file:./prompts/build.md}",
       "temperature": 0.3,
       "tools": { "write": true, "edit": true, "bash": true },
@@ -14,7 +14,7 @@
     "plan": {
       "description": "Analysis & planning without direct changes",
       "mode": "primary",
-      "model": "github-copilot/gpt-4o",
+      "model": "github-copilot/gpt-4.1",
       "prompt": "{file:./prompts/plan.md}",
       "temperature": 0.15,
       "tools": { "write": false, "edit": false, "bash": false },

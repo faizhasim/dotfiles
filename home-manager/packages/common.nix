@@ -117,6 +117,7 @@ with pkgs;
 
   # P
   pandoc # Document converter
+  postgresql # Database server
   presenterm # presentation tool
   python3
 
