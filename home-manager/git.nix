@@ -29,27 +29,29 @@
         name = "Mohd Faiz Hasim";
         email = "faizhasim@gmail.com";
       };
-      aliases = {
-        cm = "commit";
-        ca = "commit --amend --no-edit";
-        co = "checkout";
-        si = "switch";
-        cp = "cherry-pick";
+    };
+    lfs.enable = true;
 
-        di = "diff";
-        dh = "diff HEAD";
+    aliases = {
+      cm = "commit";
+      ca = "commit --amend --no-edit";
+      co = "checkout";
+      si = "switch";
+      cp = "cherry-pick";
 
-        pu = "pull";
-        ps = "push";
-        pf = "push --force-with-lease";
+      di = "diff";
+      dh = "diff HEAD";
 
-        st = "status -sb";
-        fe = "fetch";
-        gr = "grep -in";
+      pu = "pull";
+      ps = "push";
+      pf = "push --force-with-lease";
 
-        ri = "rebase -i";
-        rc = "rebase --continue";
-      };
+      st = "status -sb";
+      fe = "fetch";
+      gr = "grep -in";
+
+      ri = "rebase -i";
+      rc = "rebase --continue";
     };
 
     ignores = [
@@ -64,13 +66,31 @@
       # python
       "__pycache__"
       "*.pyc"
-
-      ".ipynb_checkpoints" # jupyter
-      "__sapper__" # svelte
-      ".DS_Store" # mac
-      "kls_database.db" # kotlin lsp
-
-      "._*" # my own
+      # jupyter
+      ".ipynb_checkpoints"
+      # svelte
+      "__sapper__"
+      # mac
+      ".DS_Store"
+      ".AppleDouble"
+      ".LSOverride"
+      ".Spotlight-V100"
+      ".Trashes"
+      ".fseventsd"
+      ".TemporaryItems"
+      ".DocumentRevisions-V100"
+      ".apdisk"
+      # kotlin lsp
+      "kls_database.db"
+      # vim/neovim
+      "*.swp"
+      "*.swo"
+      # shell history
+      ".history"
+      # dotenv
+      ".env"
+      # my own
+      "._*"
     ];
   };
 

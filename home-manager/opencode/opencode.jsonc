@@ -22,4 +22,11 @@
   },
   "autoupdate": true,
   "share": "manual",
+  "mcp": {
+    "docker-mcp-gateway": {
+      "type": "local",
+      "command": ["docker", "mcp", "gateway", "run"],
+      "enabled": true,
+    },
+  },
 }
