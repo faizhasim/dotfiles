@@ -15,6 +15,18 @@
       signer = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
     };
 
+    includes = [
+      {
+        contents = {
+          "url \"git@github.com:faizhasim/\"" = {
+            insteadof = "https://github.com/faizhasim/";
+          };
+          "url \"git@github.com:SEEK-Jobs/\"" = {
+            insteadof = "https://github.com/SEEK-Jobs/";
+          };
+        };
+      }
+    ];
     settings = {
       init.defaultBranch = "main";
       pull = {
@@ -29,30 +41,29 @@
         name = "Mohd Faiz Hasim";
         email = "faizhasim@gmail.com";
       };
+      aliases = {
+        cm = "commit";
+        ca = "commit --amend --no-edit";
+        co = "checkout";
+        si = "switch";
+        cp = "cherry-pick";
+
+        di = "diff";
+        dh = "diff HEAD";
+
+        pu = "pull";
+        ps = "push";
+        pf = "push --force-with-lease";
+
+        st = "status -sb";
+        fe = "fetch";
+        gr = "grep -in";
+
+        ri = "rebase -i";
+        rc = "rebase --continue";
+      };
     };
     lfs.enable = true;
-
-    aliases = {
-      cm = "commit";
-      ca = "commit --amend --no-edit";
-      co = "checkout";
-      si = "switch";
-      cp = "cherry-pick";
-
-      di = "diff";
-      dh = "diff HEAD";
-
-      pu = "pull";
-      ps = "push";
-      pf = "push --force-with-lease";
-
-      st = "status -sb";
-      fe = "fetch";
-      gr = "grep -in";
-
-      ri = "rebase -i";
-      rc = "rebase --continue";
-    };
 
     ignores = [
       # ide

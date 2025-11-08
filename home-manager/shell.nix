@@ -50,7 +50,6 @@
       };
     };
 
-    # pretty ls
     lsd = {
       enable = true;
       enableZshIntegration = true;

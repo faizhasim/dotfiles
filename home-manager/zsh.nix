@@ -22,13 +22,6 @@
       share = true;
     };
 
-    plugins = [
-      {
-        name = "fast-syntax-highlighting";
-        src = "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
-      }
-    ];
-
     # Use the 1Password Shell Plugins
     #    shellPlugins = inputs._1password-shell-plugins.packages.${pkgs.system}.zshPlugins;
 
@@ -42,9 +35,9 @@
       b = "bat";
       k = "kubectl";
 
-      gst = "g st";
-      gco = "g co";
-      ggpush = "g ps";
+      gst = "git status -sb";
+      gco = "git checkout";
+      ggpush = "git push";
 
       cat = "bat";
       top = "btop";
@@ -76,9 +69,6 @@
       # used for homebrew
       export XDG_DATA_DIRS=$XDG_DATA_DIRS:/opt/homebrew/share
 
-      # better kubectl diff
-      export KUBECTL_EXTERNAL_DIFF="${pkgs.dyff}/bin/dyff between --omit-header --set-exit-code"
-
       # bindkey '^w' edit-command-line
       # bindkey '^ ' autosuggest-accept
       # bindkey '^p' history-search-backward
@@ -102,10 +92,7 @@
       export PNPM_HOME="$HOME/.local/share/pnpm"
       export PATH="$PNPM_HOME:$PATH"
 
-      eval "$(${pkgs.k3d}/bin/k3d completion zsh)"
-      eval "$(${pkgs.saml2aws}/bin/saml2aws --completion-script-zsh)"
-
-      [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins..sh"
+      [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
 
     '';
   };
