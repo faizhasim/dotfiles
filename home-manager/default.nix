@@ -57,6 +57,7 @@
     ./npmrc.nix
     ./shell.nix
     ./sketchybar.nix
+    ./starship.nix
     ./vscode.nix
     ./wezterm.nix
     ./xdg-configs.nix
