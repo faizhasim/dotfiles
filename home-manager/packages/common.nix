@@ -11,6 +11,7 @@ with pkgs;
 
   # B
   bat # Cat clone with syntax highlighting
+  bats # Bash automated testing system
   betterdisplay
   bind # nettools
   btop # System monitor and process viewer
@@ -117,6 +118,7 @@ with pkgs;
 
   # P
   pandoc # Document converter
+  pngpaste # paste PNG image from clipboard
   postgresql # Database server
   presenterm # presentation tool
   python3
