@@ -49,11 +49,6 @@
       vi = "nvim";
       vim = "nvim";
 
-      npm = "op run --env-file=$HOME/.config/op-env/npm-env -- npm";
-      pnpm = "op run --env-file=$HOME/.config/op-env/npm-env -- pnpm";
-      yarn = "op run --env-file=$HOME/.config/op-env/npm-env -- yarn";
-
-      gh = "op plugin run -- gh";
     };
 
     profileExtra = ''
@@ -75,18 +70,31 @@
       # bindkey '^n' history-search-forward
       bindkey '^f' fzf-file-widget
 
-      function cd() {
-        builtin cd $*
+      cd() {
+        builtin cd "$@"
         lsd
       }
 
-      function mkd() {
-        mkdir $1
-        builtin cd $1
+      mkd() {
+        mkdir "$1"
+        builtin cd "$1"
       }
 
-      function awsp() {
-        export AWS_PROFILE=$(aws configure list-profiles | fzf)
+      awsp() {
+        export AWS_PROFILE="$(aws configure list-profiles | fzf)"
+      }
+
+      npm() {
+        op run --env-file="$HOME/.config/op-env/npm-env" -- npm "$@"
+      }
+      pnpm() {
+        op run --env-file="$HOME/.config/op-env/npm-env" -- pnpm "$@"
+      }
+      yarn() {
+        op run --env-file="$HOME/.config/op-env/npm-env" -- yarn "$@"
+      }
+      gh() {
+        op plugin run -- gh "$@"
       }
 
       export PNPM_HOME="$HOME/.local/share/pnpm"
