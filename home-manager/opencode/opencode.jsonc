@@ -1,32 +1,40 @@
 {
   "$schema": "https://opencode.ai/config.json",
   // Theme configuration
+  // Models from https://models.dev
   "theme": "nord",
   "agent": {
     "build": {
       "description": "Primary dev agent with full tool access",
       "mode": "primary",
-      "model": "github-copilot/gpt-4.1",
-      "prompt": "{file:./prompts/build.md}",
-      "temperature": 0.3,
+      "model": "github-copilot/gpt-4o", // gpt-5-mini is unbearably slower but more capable
+      "temperature": 0.1,
+      "prompt": "{file:./prompts/beast-mode-3.1-context7-with-memory.md}",
       "tools": { "write": true, "edit": true, "bash": true },
     },
     "plan": {
       "description": "Analysis & planning without direct changes",
       "mode": "primary",
-      "model": "github-copilot/gpt-4.1",
-      "prompt": "{file:./prompts/plan.md}",
-      "temperature": 0.15,
+      "model": "github-copilot/claude-sonnet-4.5",
+      "temperature": 0.3,
+      "prompt": "{file:./prompts/beast-mode-3.1-context7-with-memory.md}",
       "tools": { "write": false, "edit": false, "bash": false },
     },
   },
   "autoupdate": true,
   "share": "manual",
   "mcp": {
-    "docker-mcp-gateway": {
+    "docker-mcp": {
       "type": "local",
       "command": ["docker", "mcp", "gateway", "run"],
       "enabled": true,
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:OPENCODE_CONTEXT7_API}",
+      },
     },
   },
 }

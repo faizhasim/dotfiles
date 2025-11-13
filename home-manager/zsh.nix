@@ -87,12 +87,15 @@
       npm() {
         op run --env-file="$HOME/.config/op-env/npm-env" -- npm "$@"
       }
+
       pnpm() {
         op run --env-file="$HOME/.config/op-env/npm-env" -- pnpm "$@"
       }
+
       yarn() {
         op run --env-file="$HOME/.config/op-env/npm-env" -- yarn "$@"
       }
+
       gh() {
         op plugin run -- gh "$@"
       }
@@ -101,6 +104,7 @@
       export PATH="$PNPM_HOME:$PATH"
 
       [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
+      [ -f ~/.config/zsh/extras.sh ] && source ~/.config/zsh/extras.sh
 
     '';
   };

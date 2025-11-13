@@ -10,8 +10,9 @@ Declarative macOS system configuration using Nix/Lix, nix-darwin, and home-manag
 
 - **[Getting Started](./docs/getting-started.md)** - Installation and setup
 - **[Architecture](./docs/architecture.md)** - How the system works
-- **[Configuration Guide](./docs/configuration-guide.md)** - Customize your setup
+- **[Configuration Guide](./docs/configuration-guide.md)** - Customise your setup
 - **[Reference](./docs/reference.md)** - Gotchas and important notes
+- **[AI Agents](./docs/index.md#ai-assisted-development)** - Learn about Context7-enabled prompts
 
 ## Quick Start
 

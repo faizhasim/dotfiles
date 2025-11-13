@@ -71,6 +71,10 @@ sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- sw
 
 Some configurations can't be automated and require manual intervention.
 
+#### 6.4 AI Assistant Setup
+
+The system includes Context7-enabled prompts for smarter workflows. These prompts prioritise up-to-date documentation and efficient task execution. No additional setup is required, but you can learn more in the [AI Agents](./index.md#ai-assisted-development) section.
+
 #### 6.1 Karabiner-Elements
 
 1. Open Karabiner-Elements

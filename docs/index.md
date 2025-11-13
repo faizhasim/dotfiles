@@ -19,8 +19,8 @@ This is a **declarative macOS system configuration** that uses Nix/Lix and nix-d
 - 🔄 **Reproducible** - Same configuration across multiple machines
 - 🎨 **Nord Theme** - Consistent aesthetic system-wide via Stylix
 - 🔒 **Security-First** - 1Password integration for secrets management
-- 🪟 **Tiling Window Manager** - AeroSpace for keyboard-driven workflows
 - 🛠️ **Developer-Focused** - Modern CLI tools, LSPs, and AI assistance
+- 🤖 **AI-Assisted Development** - Context7-enabled prompts for smarter workflows
 - 📦 **Multi-Layer Package Management** - Nix, Homebrew, and mise working together
 
 ## Philosophy

@@ -55,12 +55,12 @@
     ./krewfile.nix
     ./mise.nix
     ./npmrc.nix
+    ./opencode.nix
     ./shell.nix
     ./sketchybar.nix
     ./starship.nix
     ./vscode.nix
     ./wezterm.nix
-    ./xdg-configs.nix
     ./zsh.nix
   ];
 
