@@ -106,6 +106,8 @@ with pkgs;
   neovim
   neofetch # System information tool
   neohtop # nice htop GUI alternative
+  nil # nix language server
+  nixd # nix language server
   nmap # net tools
   ngrok # Secure tunneling service, unfree
   nodePackages.prettier
