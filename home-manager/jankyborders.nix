@@ -1,4 +1,7 @@
-{ config, pkgs, lib, inputs, ... }: {
+{
+  ...
+}:
+{
   # use homebrew until nix compile using SDK 26 https://github.com/NixOS/nixpkgs/issues/343210#issuecomment-3313995590
   # services.jankyborders = {
   #   enable = true;
@@ -16,10 +19,10 @@
   xdg.configFile."borders/bordersrc" = {
     text = ''
       options=(
-        active_color=0xFFB48EAD
-        hidpi=on
         style=round
-        width=6.000000
+        width=7.500000
+        hidpi=on
+        active_color=0xFFB48EAD
       )
 
       borders "''${options[@]}"
@@ -28,4 +31,3 @@
   };
 
 }
-

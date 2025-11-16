@@ -1,8 +1,4 @@
 {
-  config,
-  pkgs,
-  lib,
-  inputs,
   ...
 }:
 {
@@ -98,6 +94,12 @@
 
       gh() {
         op plugin run -- gh "$@"
+      }
+
+      shellai() {
+        local output=$(echo $(opencode run "This get invoked from CLI and strictly need to output valid ZSH compatible command that can be run on actual shell. It will predict the best command to be output to stdout based on the user prompt. For example: Prompt of 'list down all files in home directory' will ONLY output 'ls ~'. It will not call any opencode tools on 'write' mode. It will not execute, and hence, will not end with newline character. Please execute based on the following prompt: $1") | xargs)
+        echo $output | pbcopy
+        echo "Output command copied to clipboard: $output"
       }
 
       export PNPM_HOME="$HOME/.local/share/pnpm"

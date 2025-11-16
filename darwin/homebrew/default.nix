@@ -7,7 +7,7 @@ in
 {
   homebrew = {
     enable = true;
-    global = { autoUpdate = true; };
+    global.autoUpdate = true;
     # will not be uninstalled when removed
     # masApps = {
     #   Xcode = 497799835;
@@ -17,7 +17,7 @@ in
     onActivation = {
       # "zap" removes manually installed brews and casks
       cleanup = "zap";
-#      cleanup = "none";
+      # cleanup = "none";
       autoUpdate = true;
       upgrade = true;
     };
@@ -28,8 +28,9 @@ in
     masApps = {
       "Brother iPrint&Scan" = 1193539993;
       "Marked 2" = 890031187;
-#      Notability = 360593530; # unsure why homebrew kept installing this
-#      Whatsapp = 310633997; # unsure why homebrew kept installing this
+      Magnet = 441258766;
+      #      Notability = 360593530; # unsure why homebrew kept installing this
+      #      Whatsapp = 310633997; # unsure why homebrew kept installing this
     };
 
   };

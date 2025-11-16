@@ -1,13 +1,13 @@
 accordion-padding = 30
 after-login-command = []
 automatically-unhide-macos-hidden-apps = false
-default-root-container-layout = "tiles"
+default-root-container-layout = "accordion"
 default-root-container-orientation = "auto"
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 exec-on-workspace-change = []
 on-focus-changed = []
-on-focused-monitor-changed = ["move-mouse monitor-lazy-center"]
+on-focused-monitor-changed = ["move-mouse window-lazy-center"]
 start-at-login = false
 
 [gaps.inner]
@@ -31,16 +31,18 @@ alt-4 = "workspace 4_focus"
 alt-5 = "workspace 5_explore"
 alt-comma = "layout accordion horizontal vertical"
 alt-equal = "resize smart +50"
-alt-h = "focus left"
-alt-j = "focus down"
-alt-k = "focus up"
-alt-l = "focus right"
+alt-f = "fullscreen --no-outer-gaps"
+alt-h = "focus --boundaries-action wrap-around-the-workspace left"
+alt-j = "focus --boundaries-action wrap-around-the-workspace down"
+alt-k = "focus --boundaries-action wrap-around-the-workspace up"
+alt-l = "focus --boundaries-action wrap-around-the-workspace right"
 alt-minus = "resize smart -50"
-alt-shift-1 = "move-node-to-workspace 1_daily"
-alt-shift-2 = "move-node-to-workspace 2_connect"
-alt-shift-3 = "move-node-to-workspace 3_focus"
-alt-shift-4 = "move-node-to-workspace 4_focus"
-alt-shift-5 = "move-node-to-workspace 5_explore"
+alt-r = "mode resize"
+alt-shift-1 = ["move-node-to-workspace 1_daily", "layout tiles horizontal vertical"]
+alt-shift-2 = ["move-node-to-workspace 2_connect", "layout tiles horizontal vertical"]
+alt-shift-3 = ["move-node-to-workspace 3_focus", "layout accordion horizontal vertical"]
+alt-shift-4 = ["move-node-to-workspace 4_focus", "layout accordion horizontal vertical"]
+alt-shift-5 = ["move-node-to-workspace 5_explore", "layout tiles horizontal vertical"]
 alt-shift-c = "reload-config"
 alt-shift-h = "move left"
 alt-shift-j = "move down"
@@ -63,12 +65,20 @@ esc = ["reload-config", "mode main"]
 f = ["layout floating tiling", "mode main"]
 r = ["flatten-workspace-tree", "mode main"]
 
+[mode.resize.binding]
+h = "resize width -50"
+j = "resize height -50"
+k = "resize height +50"
+l = "resize width +50"
+enter = "mode main"
+esc = "mode main"
+
 [workspace-to-monitor-force-assignment]
 m2 = ["secondary"]
 
 [[on-window-detected]]
 if.app-id = "com.microsoft.Outlook"
-run = "move-node-to-workspace 1_daily"
+run = ["move-node-to-workspace 1_daily"]
 
 [[on-window-detected]]
 if.app-id = "net.whatsapp.WhatsApp"
@@ -110,3 +120,23 @@ run = "layout floating"
 if.app-id = "com.apple.Music"
 run = "layout floating"
 
+[[on-window-detected]]
+if.app-id = "com.apple.systempreferences"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.calculator"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.ActivityMonitor"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.PhotoBooth"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.finder"
+if.window-title-regex-substring = "info|copy|move|delete|progress"
+run = "layout floating"

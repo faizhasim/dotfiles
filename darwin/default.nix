@@ -1,4 +1,5 @@
-{ pkgs, hostname, ... }: {
+{ pkgs, ... }:
+{
   imports = [
     ./os
     ./homebrew
@@ -12,7 +13,8 @@
     };
   };
 
-  programs = { zsh.enable = true; };
+  # Enable zsh as the default shell, but let home-manager manage it in ./home-manager/zsh.nix
+  programs.zsh.enable = true;
 
   launchd.user.agents.aerospace = {
     command = "${pkgs.aerospace}/Applications/AeroSpace.app/Contents/MacOS/AeroSpace";
@@ -25,4 +27,3 @@
   };
 
 }
-
