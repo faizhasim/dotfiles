@@ -30,13 +30,11 @@ alt-3 = "workspace 3_focus"
 alt-4 = "workspace 4_focus"
 alt-5 = "workspace 5_explore"
 alt-comma = "layout accordion horizontal vertical"
-alt-equal = "resize smart +50"
 alt-f = "fullscreen --no-outer-gaps"
 alt-h = "focus --boundaries-action wrap-around-the-workspace left"
 alt-j = "focus --boundaries-action wrap-around-the-workspace down"
 alt-k = "focus --boundaries-action wrap-around-the-workspace up"
 alt-l = "focus --boundaries-action wrap-around-the-workspace right"
-alt-minus = "resize smart -50"
 alt-r = "mode resize"
 alt-shift-1 = ["move-node-to-workspace 1_daily", "layout tiles horizontal vertical"]
 alt-shift-2 = ["move-node-to-workspace 2_connect", "layout tiles horizontal vertical"]
@@ -98,7 +96,7 @@ run = "move-node-to-workspace 2_connect"
 
 [[on-window-detected]]
 if.app-id = "us.zoom.xos"
-run = "move-node-to-workspace 2_connect"
+run = ["move-node-to-workspace 2_connect", "layout floating"]
 
 [[on-window-detected]]
 if.app-id = "com.github.wez.wezterm"
