@@ -59,6 +59,9 @@ config.macos_window_background_blur = 20
 config.max_fps = 120
 config.prefer_egl = true
 
+-- Enable kitty keyboard protocol for better keyboard support in terminal multiplexers
+config.enable_kitty_keyboard = true
+
 config.window_frame = {
   inactive_titlebar_bg = '#2E3440',            -- polar night (base)
   active_titlebar_bg = '#3B4252',              -- polar night (slightly lighter)

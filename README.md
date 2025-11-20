@@ -1,5 +1,21 @@
 # Dotfiles
 
+<!--toc:start-->
+
+- [Dotfiles](#dotfiles)
+  - [📚 Documentation](#📚-documentation)
+    - [Quick Links](#quick-links)
+  - [Quick Start](#quick-start)
+    - [Prerequisite](#prerequisite)
+  - [Installation](#installation)
+    - [Bootstrap OS](#bootstrap-os)
+    - [Install Lix](#install-lix)
+  - [Apply](#apply)
+    - [Apply Nix-Darwin Configuration](#apply-nix-darwin-configuration)
+  - [Manual Steps](#manual-steps) - [Karabiner-Elements](#karabiner-elements) - [saml2aws](#saml2aws) - [setup nvim](#setup-nvim)
+
+<!--toc:end-->
+
 Declarative macOS system configuration using Nix/Lix, nix-darwin, and home-manager.
 
 ## 📚 Documentation
@@ -55,6 +71,13 @@ curl -sSf -L https://install.lix.systems/lix | sh -s -- install
 ```shell
 sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#M3419
 sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#macmini01
+```
+
+Or, once darwin-rebuild is installed:
+
+```shell
+sudo darwin-rebuild switch --flake .#M3419
+sudo darwin-rebuild switch --flake .#macmini01
 ```
 
 <!-- markdownlint-enable MD013 -->

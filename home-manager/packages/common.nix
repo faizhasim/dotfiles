@@ -175,6 +175,7 @@ with pkgs;
   yt-dlp
 
   # Z
+  zellij # terminal multiplexer
   zip # ZIP archive creator
   zsh
 ]
