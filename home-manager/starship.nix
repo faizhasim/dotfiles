@@ -255,7 +255,7 @@
         threshold = 1;
         style = "fg:base04 bg:base02";
         format = "[ $symbol $ram_pct]($style)";
-        symbol = "󰍛";
+        symbol = "󰍛 ";
       };
 
       time = {

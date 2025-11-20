@@ -26,7 +26,7 @@ keybinds {
         bind "l" "Right" { MoveFocus "Right"; }
         bind "j" "Down" { MoveFocus "Down"; }
         bind "k" "Up" { MoveFocus "Up"; }
-        bind "p" { SwitchFocus; }
+        bind "p" { SwitchFocus;  SwitchToMode "Normal";}
         bind "n" { NewPane; SwitchToMode "Normal"; }
         bind "d" { NewPane "Down"; SwitchToMode "Normal"; }
         bind "r" { NewPane "Right"; SwitchToMode "Normal"; }
@@ -173,6 +173,21 @@ keybinds {
         bind "d" { Detach; }
         bind "Space" { NextSwapLayout; }
         bind "x" { CloseFocus; SwitchToMode "Normal"; }
+        bind "s" { LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij-choose-tree.wasm" {
+                floating true
+                move_to_focused_tab true
+                show_plugins false
+            }; SwitchToMode "Normal";
+        }
+        bind "g" { LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij-sessionizer.wasm" {
+            floating true
+            move_to_focused_tab true
+            cwd "/"
+            root_dirs "/Users/faizhasim/dev/faizhasim/;/Users/faizhasim/dev/seek-jobs/;/Users/faizhasim/dev/seek-jobs/noti-x/"
+            session_layout "default"
+        }; SwitchToMode "Normal";
+    }
+
     }
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
@@ -237,12 +252,23 @@ plugins {
     configuration location="zellij:configuration"
     plugin-manager location="zellij:plugin-manager"
     about location="zellij:about"
+
+    zj-quit location="https://github.com/cristiand391/zj-quit/releases/download/0.3.1/zj-quit.wasm" {
+        confirm_key "y"
+        cancel_key "Esc"
+    }
 }
 
 // Plugins to load in the background when a new session starts
 load_plugins {
   // "file:/path/to/my-plugin.wasm"
   // "https://example.com/my-plugin.wasm"
+}
+
+ui {
+  pane_frames {
+    rounded_corners true
+  }
 }
 
 show_startup_tips false
@@ -276,8 +302,8 @@ default_shell "zsh"
 // Options:
 //   - true (default)
 //   - false
-//
-pane_frames true
+// https://github.com/dj95/zjstatus/wiki/3-%E2%80%90-Configuration#general-configuration
+pane_frames false
 
 // Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
 // Options:
