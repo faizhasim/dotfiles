@@ -28,9 +28,19 @@
       url = "github:brumhard/krewfile";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zjstatus.url = "github:dj95/zjstatus";
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, home-manager, stylix, nord-dircolors, ... }:
+  outputs =
+    inputs@{
+      self,
+      darwin,
+      nixpkgs,
+      home-manager,
+      stylix,
+      nord-dircolors,
+      ...
+    }:
     let
 
       forAllSystems = nixpkgs.lib.genAttrs [
@@ -43,21 +53,30 @@
       createDarwin =
         hostname: username: system:
         let
-          overlays = import ./overlays;
+          overlays = import ./overlays {
+            inherit inputs;
+          };
           pkgs = import nixpkgs {
             inherit system;
-            config = { allowUnfree = true; };
+            config = {
+              allowUnfree = true;
+            };
           };
         in
-          darwin.lib.darwinSystem {
-            inherit system;
-            # makes all inputs availble in imported files
-            specialArgs = { inherit inputs; inherit hostname; };
-            modules = [
-              inputs.nix-index-database.darwinModules.nix-index
-              stylix.darwinModules.stylix
-              ./darwin
-              ({ pkgs, ... }: {
+        darwin.lib.darwinSystem {
+          inherit system;
+          # makes all inputs availble in imported files
+          specialArgs = {
+            inherit inputs;
+            inherit hostname;
+          };
+          modules = [
+            inputs.nix-index-database.darwinModules.nix-index
+            stylix.darwinModules.stylix
+            ./darwin
+            (
+              { pkgs, ... }:
+              {
                 nixpkgs.overlays = overlays;
                 # Fix the GID issue
                 ids.gids.nixbld = 350;
@@ -88,12 +107,19 @@
                 nix = {
                   settings = {
                     allowed-users = [ username ];
-                    experimental-features = [ "nix-command" "flakes" ];
+                    experimental-features = [
+                      "nix-command"
+                      "flakes"
+                    ];
                   };
 
                   gc = {
                     automatic = true;
-                    interval = { Weekday = 0; Hour = 2; Minute = 0; };
+                    interval = {
+                      Weekday = 0;
+                      Hour = 2;
+                      Minute = 0;
+                    };
                     options = "--delete-older-than 30d";
                   };
 
@@ -102,27 +128,45 @@
                   '';
                 };
 
-              })
-
-              home-manager.darwinModules.home-manager {
-                home-manager = {
-                  useGlobalPkgs = true;
-                  useUserPackages = true;
-                  backupFileExtension = "hm-backup";
-                  extraSpecialArgs = {
-                    inherit inputs;
-                    pkgs-zsh-fzf-tab =
-                      import inputs.nixpkgs-zsh-fzf-tab { inherit system; };
-                  };
-                  users.${username} = { pkgs, config, lib, ... }:
-                    import ./home-manager { inherit config pkgs lib inputs hostname username nord-dircolors; };
-
-                };
               }
-            ];
-          };
+            )
 
-    in {
+            home-manager.darwinModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                backupFileExtension = "hm-backup";
+                extraSpecialArgs = {
+                  inherit inputs;
+                  pkgs-zsh-fzf-tab = import inputs.nixpkgs-zsh-fzf-tab { inherit system; };
+                };
+                users.${username} =
+                  {
+                    pkgs,
+                    config,
+                    lib,
+                    ...
+                  }:
+                  import ./home-manager {
+                    inherit
+                      config
+                      pkgs
+                      lib
+                      inputs
+                      hostname
+                      username
+                      nord-dircolors
+                      ;
+                  };
+
+              };
+            }
+          ];
+        };
+
+    in
+    {
       formatter = forAllSystems (system: nixpkgs.legacyPackages."${system}".nixfmt);
       darwinConfigurations = {
         M3419 = createDarwin "M3419" "faizhasim" "aarch64-darwin";
@@ -130,6 +174,5 @@
         mbp01 = createDarwin "mbp01" "faizhasim" "x86_64-darwin";
       };
     };
-
 
 }
