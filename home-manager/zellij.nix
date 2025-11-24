@@ -15,11 +15,6 @@ in
 {
   programs.zellij.enable = true;
 
-  home.sessionVariables = {
-    ZELLIJ_AUTO_ATTACH = "false";
-    ZELLIJ_AUTO_EXIT = "true";
-  };
-
   xdg.configFile = {
 
     "zellij/config.kdl".source = ./zellij/config.kdl;

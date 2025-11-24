@@ -52,18 +52,6 @@
     '';
 
     initContent = ''
-      if [[ -z "$ZELLIJ" ]]; then
-          if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
-              zellij attach -c
-          else
-              zellij -l welcome
-          fi
-
-          if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
-              exit
-          fi
-      fi
-
       autoload -U compinit
       compinit
 
@@ -77,6 +65,43 @@
       # bindkey '^p' history-search-backward
       # bindkey '^n' history-search-forward
       bindkey '^f' fzf-file-widget
+
+      # Zellij session picker widget (Ctrl-b s)
+      zellij-session-picker() {
+        local session
+        session=$(zellij list-sessions -s 2>/dev/null | fzf --height=40% --reverse --prompt="Select Zellij session: ")
+        if [[ -n "$session" ]]; then
+          BUFFER="zellij attach \"$session\""
+          zle accept-line
+        fi
+        zle reset-prompt
+      }
+      zle -N zellij-session-picker
+
+      # Zellij session from zoxide (Ctrl-b g)
+      zellij-session-from-zoxide() {
+        local dir session_name
+        dir=$(zoxide query --list 2>/dev/null | fzf --height=40% --reverse --prompt="Select directory: ")
+        if [[ -n "$dir" ]]; then
+          session_name=$(basename "$dir")
+          BUFFER="cd \"$dir\" && zellij attach --create \"$session_name\""
+          zle accept-line
+        fi
+        zle reset-prompt
+      }
+      zle -N zellij-session-from-zoxide
+
+      # Prefix key handler for Ctrl-b
+      tmux-prefix() {
+        local key
+        read -sk key
+        case "$key" in
+          s) zle zellij-session-picker ;;
+          g) zle zellij-session-from-zoxide ;;
+        esac
+      }
+      zle -N tmux-prefix
+      bindkey '^b' tmux-prefix
 
       cd() {
         builtin cd "$@"

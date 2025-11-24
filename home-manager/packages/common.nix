@@ -95,6 +95,7 @@ with pkgs;
   lnav # Log file navigator
   loopwm # Tiling window manager, unfree
   # libfido2 # FIDO2 library
+  lua
 
   # M
   mas
