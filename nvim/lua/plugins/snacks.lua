@@ -17,5 +17,18 @@ return {
 
     opts.dashboard.preset.header = table.concat(logo, "\n")
     opts.terminal.win.position = "float"
+    opts.picker = {
+      hidden = true, -- Show hidden/dotfiles
+      sources = {
+        files = {
+          hidden = true, -- Show hidden/dotfiles
+          ignored = false, -- Respect .gitignore
+        },
+        grep = {
+          hidden = true,
+          ignored = false,
+        },
+      },
+    }
   end,
 }
