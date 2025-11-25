@@ -22,11 +22,11 @@ return {
       sources = {
         files = {
           hidden = true, -- Show hidden/dotfiles
-          ignored = false, -- Respect .gitignore
+          ignored = true, -- Such as  .gitignore
         },
         grep = {
           hidden = true,
-          ignored = false,
+          ignored = true,
         },
       },
     }
