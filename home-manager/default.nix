@@ -46,6 +46,7 @@
         nord-dircolors
         ;
     })
+    ./dnsmasq.nix
     ./gh-dash.nix
     ./gh.nix
     ./git.nix

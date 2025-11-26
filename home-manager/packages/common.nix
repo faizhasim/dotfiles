@@ -29,6 +29,7 @@ with pkgs;
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
   dive # analyse docker images
+  dnsmasq # DNS forwarder and DHCP server
   dockutil # Manage icons in the dock
   duf # disk usage
   dust # disk usage analyzer
