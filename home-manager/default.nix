@@ -54,6 +54,7 @@
     ./jankyborders.nix
     ./karabiner-elements.nix
     ./krewfile.nix
+    ./lazydocker.nix
     ./mise.nix
     ./npmrc.nix
     ./opencode.nix
