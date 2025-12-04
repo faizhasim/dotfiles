@@ -64,6 +64,7 @@ with pkgs;
   graph-easy # draw graphs in the terminal
   grc # colored log output
   gcc # GNU Compiler Collection
+  gum # Interactive prompts for shell scripts
 
   # H
   htop # Interactive process viewer

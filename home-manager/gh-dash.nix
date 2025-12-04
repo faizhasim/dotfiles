@@ -103,6 +103,45 @@ let
             name: lazygit
             command: cd {{ .RepoPath }} && lazygit
 
+        prs:
+          - key: m
+            name: quick merge (squash)
+            command: gh pr merge --squash --auto --repo {{ .RepoName }} {{ .PrNumber }}
+
+          - key: x
+            name: request changes
+            command: >
+              gh pr review --repo {{ .RepoName }} --request-changes
+              --body "$(gum input --prompt='What needs changing: ')"
+              {{ .PrNumber }}
+
+          - key: z
+            name: open in zellij
+            command: >
+              REPO_PATH="{{ .RepoPath }}" &&
+              REPO_PATH="''${REPO_PATH/#\~/$HOME}" &&
+              PR_NUMBER="{{ .PrNumber }}" &&
+              REPO_NAME="{{ .RepoName }}" &&
+              SESSION_NAME=$(echo "''$REPO_NAME" | tr '/' '-') &&
+              cd "''$REPO_PATH" &&
+              if [ -n "''$ZELLIJ" ]; then
+                gh pr checkout "''$PR_NUMBER" 2>&1 | head -n 5 &&
+                zellij action new-tab --cwd "''$REPO_PATH" --name "PR ''$PR_NUMBER" &&
+                zellij action write-chars "cd ''$REPO_PATH" &&
+                zellij action write 13
+              else
+                if gh pr checkout "''$PR_NUMBER" 2>&1; then
+                  exec zellij attach --create "''$SESSION_NAME"
+                else
+                  echo "" &&
+                  echo "⚠️  Failed to checkout PR ''$PR_NUMBER" &&
+                  echo "   This usually means you have uncommitted changes." &&
+                  echo "" &&
+                  gum confirm "Continue anyway to session?" &&
+                  exec zellij attach --create "''$SESSION_NAME"
+                fi
+              fi
+
       prSections:
         - title: "󰳐 author:@me"
           filters: "author:@me is:open archived:false sort:created-desc"
