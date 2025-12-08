@@ -8,4 +8,7 @@
       package = pkgs.mise;
     };
   };
+
+  # Install direnv-1password library
+  xdg.configFile."direnv/lib/1password.sh".source = "${inputs.direnv-1password}/1password.sh";
 }

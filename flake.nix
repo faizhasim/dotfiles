@@ -24,6 +24,10 @@
       url = "github:nordtheme/dircolors";
       flake = false;
     };
+    direnv-1password = {
+      url = "github:tmatilai/direnv-1password";
+      flake = false;
+    };
     krewfile = {
       url = "github:brumhard/krewfile";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -123,6 +123,22 @@
         "type": "github"
       }
     },
+    "direnv-1password": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1764185864,
+        "narHash": "sha256-jeDp6/jb2sFyZqw7C3JayquOOJ1ZQjDuyx3nZl2kt+I=",
+        "owner": "tmatilai",
+        "repo": "direnv-1password",
+        "rev": "183607aee5907965b0d576216b0ee74a42656c2d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tmatilai",
+        "repo": "direnv-1password",
+        "type": "github"
+      }
+    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -385,6 +401,7 @@
       "inputs": {
         "_1password-shell-plugins": "_1password-shell-plugins",
         "darwin": "darwin",
+        "direnv-1password": "direnv-1password",
         "home-manager": "home-manager",
         "krewfile": "krewfile",
         "nix-index-database": "nix-index-database",
