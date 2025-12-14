@@ -63,7 +63,8 @@ dotfiles/
 │       └── plugins/
 │
 ├── overlays/              # Package modifications
-│   └── ice-bar.nix       # Custom ice-bar version
+│   ├── ice-bar.nix       # Menu bar item hiding
+│   └── zjstatus.nix      # Zellij status bar plugin
 │
 ├── scripts/               # Setup and utility scripts
 │   ├── setup-nvim.sh
@@ -83,6 +84,7 @@ The entry point that defines:
 - **Configuration function**: `createDarwin` that assembles everything
 
 Key aspects:
+
 ```nix
 {
   inputs = {
@@ -127,6 +129,7 @@ Defines applications installed via Homebrew:
 - **{hostname}.nix** - Machine-specific packages
 
 Structure:
+
 ```nix
 {
   brews = []; # CLI tools from Homebrew
@@ -155,6 +158,7 @@ Package lists organized by machine:
 - **{hostname}.nix** - Machine-specific additions
 
 Categories include:
+
 - Development tools (go, rust, terraform, kubectl)
 - CLI utilities (bat, fd, ripgrep, fzf)
 - Media tools (ffmpeg, imagemagick)
@@ -167,9 +171,13 @@ Individual tool configurations:
 - **zsh.nix** - Shell setup, aliases, functions, plugins
 - **git.nix** - Git config, aliases, 1Password signing
 - **wezterm.nix** - Terminal emulator settings
+- **zellij.nix** - Terminal multiplexer with sessionizer and zjstatus
 - **aerospace.nix** - Window manager configuration
 - **mise.nix** - Runtime version manager (node, python, go, etc.)
 - **direnv.nix** - Per-directory environment management
+- **dnsmasq.nix** - Local DNS for development with direnv integration
+- **gh-dash.nix** - GitHub dashboard for PR management
+- **lazydocker.nix** - Docker terminal UI
 
 > [!TIP]
 > Each tool config is a separate module, making it easy to enable/disable features.
@@ -177,26 +185,37 @@ Individual tool configurations:
 ### 4. Neovim (nvim/)
 
 Neovim is managed **outside of Nix** using:
+
 - **LazyVim** distribution as the base
 - **GNU Stow** for symlinking configs
 - **Lazy.nvim** for plugin management
 
 Why separate from Nix?
+
 - Faster iteration during plugin experimentation
 - Better compatibility with LazyVim's update mechanism
 - Simpler management of Lua-based configurations
 
 The configuration includes:
-- Language servers for Go, TypeScript, Python, Nix, etc.
+
+- Language servers for Go, TypeScript, Python, Nix, Kotlin, Rust, etc.
 - GitHub Copilot and Sidekick integration
 - Custom keybindings and UI tweaks
 - Mini.files, Snacks.nvim, and other modern plugins
+- **neotest** integration for running tests (Jest, Vitest, Go, Python, Rust)
+- Custom Jest wrapper support (sku, skuba) for monorepo projects
+- Smear cursor animation and indentscope visualizations
 
 ### 5. Overlays (overlays/)
 
 Package modifications and custom versions:
 
 ```nix
+# overlays/zjstatus.nix
+final: prev: {
+  zjstatus = inputs.zjstatus.packages.${prev.system}.default;
+}
+
 # overlays/ice-bar.nix
 final: prev: {
   ice-bar = prev.ice-bar.overrideAttrs (old: {
@@ -206,7 +225,10 @@ final: prev: {
 }
 ```
 
-Currently only customizes ice-bar to use a specific development version.
+Active overlays:
+
+- **zjstatus** - Zellij status bar plugin from flake input
+- **ice-bar** - Menu bar item hiding (any alternative like HiddenBar would work too)
 
 ## Configuration Flow
 
@@ -233,6 +255,7 @@ packages = common ++ machineSpecific
 ```
 
 Same pattern applies to:
+
 - Nix packages (`home-manager/packages/`)
 - Homebrew packages (`darwin/homebrew/`)
 
@@ -259,7 +282,8 @@ launchd.user.agents.aerospace = {
 
 - **AeroSpace** - Window tiling manager
 - **borders** - Window border highlighting (via Homebrew)
-- **ice-bar** - Menu bar replacement
+- **ice-bar** - Menu bar item hiding (alternatives: HiddenBar, Bartender, etc.)
+- **dnsmasq** - Local DNS server for development (port 53535)
 
 ## Package Management Strategy
 
@@ -332,6 +356,7 @@ Signing  Plugins   Tokens       AWS Auth
 ```
 
 Key integrations:
+
 - **Git commit signing** via SSH with 1Password agent
 - **Shell plugins** for secure credential injection
 - **npm/pnpm** credentials via `op run`
@@ -343,6 +368,7 @@ Key integrations:
 > No secrets should ever be committed to this repository. All sensitive data is pulled from 1Password at runtime.
 
 Example secure pattern:
+
 ```bash
 # Bad: Hardcoded token
 export NPM_TOKEN="npm_xxxxxxxxxxxx"
@@ -363,6 +389,7 @@ stylix = {
 ```
 
 This automatically themes:
+
 - Terminal colors
 - Shell prompts
 - Potentially other compatible applications
@@ -395,3 +422,47 @@ brew update && brew upgrade
 
 - Learn how to customize in the [Configuration Guide](./configuration-guide.md)
 - Understand important caveats in the [Reference](./reference.md)
+- Learn about testing in Neovim in [neotest.md](./neotest.md)
+- Configure local DNS development in [dnsmasq.md](./dnsmasq.md)
+
+## Terminal Workflow
+
+The system provides a modern terminal-based development workflow:
+
+### WezTerm + Zellij
+
+```
+┌─────────────────────────────────┐
+│  WezTerm (Terminal Emulator)    │
+│  ├─ Nord theme via Stylix       │
+│  ├─ GPU acceleration            │
+│  └─ Ligature support            │
+└────────────┬────────────────────┘
+             │
+             ▼
+┌─────────────────────────────────┐
+│  Zellij (Terminal Multiplexer)  │
+│  ├─ Session management          │
+│  ├─ Sessionizer (Ctrl+o w)      │
+│  ├─ zjstatus (Nord themed)      │
+│  └─ Project-based workflows     │
+└────────────┬────────────────────┘
+             │
+             ▼
+┌─────────────────────────────────┐
+│  Shell (Zsh)                    │
+│  ├─ Oh-My-Zsh plugins           │
+│  ├─ Starship prompt             │
+│  ├─ direnv integration          │
+│  ├─ mise runtime management     │
+│  └─ 1Password shell plugins     │
+└─────────────────────────────────┘
+```
+
+### Development Tools Integration
+
+- **gh-dash**: Manage GitHub PRs without leaving terminal
+- **lazydocker**: Visual Docker management in terminal
+- **lazygit**: Git UI integrated with gh-dash
+- **neotest**: Run tests directly in Neovim
+- **dnsmasq**: Local DNS for domain-based development

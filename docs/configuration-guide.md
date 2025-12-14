@@ -376,6 +376,50 @@ config.keys = {
 }
 ```
 
+## Customizing Terminal Multiplexer (Zellij)
+
+Zellij config is in `home-manager/zellij/config.kdl` and `home-manager/zellij.nix`.
+
+### Built-in Features
+
+- **Sessionizer** - Quick project switcher (Ctrl+o + w)
+- **Session tree** - Visual session browser (Ctrl+o + e)
+- **zjstatus** - Custom status bar with Nord theme integration
+- **Session management** - Replicated in Zsh for quick access
+
+### Changing Keybindings
+
+Edit `home-manager/zellij/config.kdl`:
+
+```kdl
+keybinds {
+    normal {
+        bind "Alt h" { MoveFocus "Left"; }
+        bind "Alt l" { MoveFocus "Right"; }
+        bind "Alt j" { MoveFocus "Down"; }
+        bind "Alt k" { MoveFocus "Up"; }
+    }
+}
+```
+
+### Session Management from Shell
+
+Zellij sessions can be managed via Zsh aliases:
+
+```bash
+# List sessions
+zellij ls
+
+# Attach to session (or create if doesn't exist)
+zellij attach my-project -c
+
+# Sessionizer (fuzzy finder for project directories)
+# Ctrl+o w in Zellij, or run: zellij-sessionizer
+```
+
+> [!TIP]
+> The sessionizer plugin scans common development directories and lets you quickly switch between projects.
+
 ## Customizing Window Manager (AeroSpace)
 
 AeroSpace config is in `home-manager/aerospace/aerospace.toml`.
@@ -521,6 +565,104 @@ use mise
 
 > [!NOTE]
 > mise will automatically activate when you `cd` into directories with `.mise.toml` if direnv is enabled.
+
+## Local DNS Development (dnsmasq)
+
+dnsmasq configuration is in `home-manager/dnsmasq.nix` for local development domains.
+
+### Usage with direnv
+
+Add to your project's `.envrc`:
+
+```bash
+use dns "dev.seek.com.au"
+use dns "*.myapp.local"
+```
+
+This will:
+1. Configure dnsmasq to resolve the domain to 127.0.0.1
+2. Create macOS resolver for the domain (port 53535)
+3. Automatically clean up when you leave the directory
+
+### Manual dnsmasq Configuration
+
+Add custom domains in `~/.config/dnsmasq.d/`:
+
+```bash
+# ~/.config/dnsmasq.d/custom.conf
+address=/myapp.local/127.0.0.1
+```
+
+Reload dnsmasq:
+
+```bash
+pkill -HUP dnsmasq
+```
+
+### Testing DNS Resolution
+
+```bash
+dig @127.0.0.1 -p 53535 dev.seek.com.au
+# Should return: 127.0.0.1
+
+scutil --dns | grep "domain.*dev.seek.com.au"
+# Should show resolver configured
+```
+
+> [!TIP]
+> See [dnsmasq.md](./dnsmasq.md) for detailed configuration and troubleshooting.
+
+## GitHub Dashboard (gh-dash)
+
+gh-dash is configured in `home-manager/gh-dash.nix` for managing pull requests.
+
+### Custom PR Sections
+
+The configuration includes pre-defined sections:
+
+- **author:@me** - Your open PRs
+- **review-requested:@me** - PRs awaiting your review
+- **mention:@me** - PRs where you're mentioned
+- **Team PRs** - All open PRs for configured repositories
+
+### Custom Keybindings
+
+- `m` - Quick merge (squash + auto-merge)
+- `x` - Request changes with interactive comment
+- `z` - Open PR in Zellij session
+- `g` - Open repository in lazygit
+
+### Repository Paths
+
+Configure repository paths in `gh-dash.nix`:
+
+```nix
+repoPaths = {
+  "myorg/myrepo" = "~/dev/myorg/myrepo";
+  "myorg/*" = "~/dev/myorg/*";  # Wildcard support
+};
+```
+
+> [!NOTE]
+> The configuration uses manual YAML generation to prevent line wrapping issues with long filter strings.
+
+## Docker Management (lazydocker)
+
+lazydocker provides a terminal UI for Docker management.
+
+### Usage
+
+```bash
+lazydocker
+```
+
+Features:
+- View and manage containers, images, volumes, networks
+- View container logs in real-time
+- Execute commands in running containers
+- Nord-themed interface (via Stylix)
+
+Configuration is minimal (enabled in `home-manager/lazydocker.nix`).
 
 ## Customizing Fonts
 

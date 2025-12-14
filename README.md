@@ -29,6 +29,8 @@ Declarative macOS system configuration using Nix/Lix, nix-darwin, and home-manag
 - **[Configuration Guide](./docs/configuration-guide.md)** - Customise your setup
 - **[Reference](./docs/reference.md)** - Gotchas and important notes
 - **[AI Agents](./docs/index.md#ai-assisted-development)** - Learn about Context7-enabled prompts
+- **[Neotest Guide](./docs/neotest.md)** - Testing in Neovim
+- **[dnsmasq Guide](./docs/dnsmasq.md)** - Local DNS development
 
 ## Quick Start
 

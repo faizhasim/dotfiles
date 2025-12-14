@@ -112,6 +112,31 @@ This script will:
 
 After running this, launch `nvim` and let LazyVim download and configure all plugins automatically.
 
+### 6.4 Verify Services
+
+Check that key services are running:
+
+```shell
+# Check dnsmasq
+launchctl list | grep dnsmasq
+# Should show: org.nixos.dnsmasq
+
+# Check AeroSpace
+launchctl list | grep aerospace
+# Should show: org.nixos.aerospace
+
+# Test DNS resolution
+dig @127.0.0.1 -p 53535 localhost
+# Should return: 127.0.0.1
+```
+
+> [!TIP]
+> If services aren't running, reboot or manually start them:
+> ```bash
+> launchctl kickstart -k gui/$(id -u)/org.nixos.dnsmasq
+> launchctl kickstart -k gui/$(id -u)/org.nixos.aerospace
+> ```
+
 ## Post-Installation
 
 ### Verify Installation
@@ -126,9 +151,17 @@ nix --version
 which aerospace
 which wezterm
 which nvim
+which zellij
+which gh
 
 # Check shell configuration
 echo $EDITOR  # Should show: nvim
+
+# Check dnsmasq service
+launchctl list | grep dnsmasq
+
+# Test Zellij
+zellij --version
 ```
 
 ### Understanding darwin-rebuild
@@ -161,8 +194,9 @@ Now that you have the basic setup:
 
 1. Read the [Architecture](./architecture.md) guide to understand how everything fits together
 2. Review the [Configuration Guide](./configuration-guide.md) to customize your setup
-3. Bookmark the [Reference](./reference.md) page for important gotchas and limitations
-4. Check the [Reference](./reference.md) for important gotchas and limitations
+3. Check the [neotest.md](./neotest.md) guide for testing in Neovim
+4. Review the [dnsmasq.md](./dnsmasq.md) guide for local DNS development
+5. Bookmark the [Reference](./reference.md) page for important gotchas and limitations
 
 ## Getting Help
 

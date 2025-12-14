@@ -15,7 +15,43 @@ This document contains important gotchas, limitations, and design decisions you 
 - Benefit: Direct control over configuration
 - Drawback: Not fully declarative like other configs
 
-### Manual Homebrew Installation
+### Zellij Configuration Approach
+
+**Why:** Zellij uses a hybrid approach with both raw KDL and Nix-generated configs.
+
+**Structure:**
+- `home-manager/zellij/config.kdl` - Raw KDL for keybindings and general settings
+- `home-manager/zellij.nix` - Nix-generated layouts with Stylix color integration
+
+**Reason:** KDL syntax is simpler for keybindings, but layouts benefit from Nix's Nord theme integration via Stylix.
+
+**Impact:**
+- Keybindings: Edit `config.kdl` directly
+- Status bar styling: Automatically themed via Nix
+- Plugins: Managed via Nix fetchurl for version control
+
+### gh-dash Manual YAML Configuration
+
+**Why:** gh-dash config uses manual YAML generation (`pkgs.writeText`) instead of `programs.gh-dash.settings`.
+
+**Reason:** Home Manager's YAML generator wraps long lines at ~80 characters, breaking GitHub filter strings.
+
+**Example Problem:**
+```yaml
+# What we want:
+filters: "is:open review-requested:@me repo:A repo:B repo:C"
+
+# What nix-darwin generates (broken):
+filters: is:open review-requested:@me repo:A
+  repo:B repo:C
+```
+
+**Impact:**
+- Filter strings must remain on single lines
+- Manual YAML ensures correct formatting
+- Trade-off: Less type-safe but functionally correct
+
+**Reference:** See detailed comment in `home-manager/gh-dash.nix` lines 1-33.
 
 **Why:** Homebrew must be installed manually before running nix-darwin.
 
@@ -45,6 +81,65 @@ This document contains important gotchas, limitations, and design decisions you 
 - Configuration is still version-controlled, just not Nix-managed
 
 **Trade-off:** Direct file access and Mason support vs. complete Nix-managed approach.
+
+### dnsmasq Port Configuration
+
+**Why:** dnsmasq runs on port 53535 instead of standard port 53.
+
+**Reason:** 
+- macOS uses mDNSResponder on port 53
+- Port 5353 is reserved for multicast DNS
+- Port 53535 avoids conflicts while being high enough to not require root
+
+**Impact:**
+- Requires macOS resolver configuration in `/etc/resolver/`
+- Uses direnv `use dns` function for automatic setup
+- Works seamlessly with `scutil --dns` macOS DNS resolution
+
+**Configuration:**
+```bash
+# /etc/resolver/dev.seek.com.au
+nameserver 127.0.0.1
+port 53535
+```
+
+### neotest "Force Exiting Jest" False Failures
+
+**Issue:** Tests pass but neotest shows them as FAILED with "Force exiting Jest" warning.
+
+**Cause:** Jest exits before neotest's JSON output file is fully written to disk.
+
+**Impact:**
+- Visual status indicators are incorrect
+- Test output is still available and accurate
+- Tests actually passed despite FAILED status
+
+**Workaround:**
+- Check terminal output instead of relying on status icons
+- neotest is still valuable for running tests from Neovim
+- See [neotest.md](./neotest.md) for details
+
+**Status:** Known limitation, no current fix.
+
+### ice-bar vs Alternatives
+
+**Current:** ice-bar is used for hiding menu bar items.
+
+**Why ice-bar:**
+- Nix package available
+- Simple, does the job
+- Declaratively configured
+
+**Alternatives:**
+Any menu bar hiding app works equally well:
+- **HiddenBar** - Free, open source, simpler
+- **Bartender** - Feature-rich, paid
+- **Vanilla** - Free, minimalist
+
+**Impact:**
+- ice-bar is not special; easy to swap out
+- Configuration is minimal (just enable the service)
+- Any alternative provides the same value
 
 ### Three-Layer Package Management
 

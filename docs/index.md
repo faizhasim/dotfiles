@@ -22,6 +22,9 @@ This is a **declarative macOS system configuration** that uses Nix/Lix and nix-d
 - 🛠️ **Developer-Focused** - Modern CLI tools, LSPs, and AI assistance
 - 🤖 **AI-Assisted Development** - Context7-enabled prompts for smarter workflows
 - 📦 **Multi-Layer Package Management** - Nix, Homebrew, and mise working together
+- 🖥️ **Terminal Multiplexer** - Zellij with sessionizer for project-based workflows
+- 🌐 **Local DNS Development** - dnsmasq with direnv for domain resolution
+- 🧪 **Integrated Testing** - neotest for running tests directly in Neovim
 
 ## Philosophy
 
@@ -52,10 +55,12 @@ Currently configured for:
 - Shell configuration (Zsh with plugins)
 - Git configuration and aliases
 - Terminal emulator (WezTerm)
-- Editor setup (Neovim/LazyVim)
+- Terminal multiplexer (Zellij with sessionizer)
+- Editor setup (Neovim/LazyVim with neotest)
 - Window manager (AeroSpace)
-- Status bar (ice-bar)
-- Development tools and CLI utilities
+- Menu bar management (ice-bar for hiding menu items)
+- Development tools and CLI utilities (gh-dash, lazydocker, etc.)
+- Local DNS development (dnsmasq with direnv integration)
 
 ### Applications
 - **Nix packages** - CLI tools and some GUI apps
