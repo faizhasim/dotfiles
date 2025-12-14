@@ -58,6 +58,7 @@
     ./mise.nix
     ./npmrc.nix
     ./opencode.nix
+    ./presenterm.nix
     ./shell.nix
     ./sketchybar.nix
     ./starship.nix

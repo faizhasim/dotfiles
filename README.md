@@ -31,6 +31,7 @@ Declarative macOS system configuration using Nix/Lix, nix-darwin, and home-manag
 - **[AI Agents](./docs/index.md#ai-assisted-development)** - Learn about Context7-enabled prompts
 - **[Neotest Guide](./docs/neotest.md)** - Testing in Neovim
 - **[dnsmasq Guide](./docs/dnsmasq.md)** - Local DNS development
+- **[Presentation](./docs/SLIDES.md)** - Why this setup rocks (run with `presenterm docs/SLIDES.md`)
 
 ## Quick Start
 
