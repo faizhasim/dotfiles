@@ -1,7 +1,7 @@
 ---
 title: Dotfiles as Infrastructure
 sub_title: Declarative macOS Configuration
-author: Faiz Hasim
+author: Mohd Faiz Hasim
 theme:
   name: tokyonight-storm
 options:
@@ -22,11 +22,14 @@ Controls:
   g/G        First/last slide
 
 For more: https://mfontanini.github.io/presenterm/
+
+vim: noai:ts=2:sw=2 nofixendofline
+vim: set autoformat=false
 -->
 
 <!-- end_slide -->
 
-# Why Dotfiles? 🤔
+#   Why Dotfiles? 
 
 <!-- pause -->
 
@@ -54,7 +57,7 @@ What if it took **20 minutes**?
 
 ---
 
-# Why I Do This 🛠️
+# 󰣆  Why I Do This
 
 <!-- pause -->
 
@@ -80,7 +83,7 @@ To make it **intentional**
 
 ---
 
-# The Old Way 😫
+# 󰯈  The Old Way
 
 ```bash
 # Install Homebrew
@@ -104,7 +107,7 @@ brew install --cask 1password
 
 ---
 
-# The New Way 🚀
+# 󰳔  The New Way
 
 ```nix
 # In one file: darwin/homebrew/common.nix
@@ -126,7 +129,7 @@ darwin-rebuild switch --flake .
 
 <!-- pause -->
 
-**Done.** ✨
+**Done.**  󰙴  
 
 ---
 
@@ -177,7 +180,7 @@ system.defaults.dock = {
 
 ---
 
-# What I Manage 📦
+# 󰏖  What I Manage
 
 <!-- pause -->
 
@@ -208,7 +211,7 @@ system.defaults.dock = {
 
 ---
 
-# The Magic: Nix ✨
+# 󰙴  The Magic: Nix
 
 > [!note]
 > Nix is a **purely functional package manager**
@@ -253,7 +256,7 @@ graph LR
 
 ---
 
-# Three Machines, One Config 🖥️
+# 󰍹  Three Machines, One Config
 
 <!-- column_layout: [1, 1, 1] -->
 
@@ -299,9 +302,9 @@ packages = [docker colima terraform];
 
 ---
 
-# My Favorite Features 🎯
+# 󰸞  My Favorite Features
 
-## 🖥️ Terminal Multiplexer (Zellij)
+## 󰆍 Terminal Multiplexer (Zellij)
 
 <!-- pause -->
 
@@ -313,7 +316,7 @@ No more lost terminal sessions
 
 <!-- pause -->
 
-## 🌐 Local DNS (dnsmasq)
+## 󰖟 Local DNS (dnsmasq)
 
 <!-- pause -->
 
@@ -330,9 +333,9 @@ Perfect for microservices development
 
 ---
 
-# More Favorites 🎯
+# 󰸞  More Favorites
 
-## 🧪 Testing in Neovim (neotest)
+## 󰙨 Testing in Neovim (neotest)
 
 <!-- pause -->
 
@@ -346,7 +349,7 @@ Works with custom wrappers (sku, skuba) - requires customization
 
 <!-- pause -->
 
-## 📊 GitHub Dashboard (gh-dash)
+## 󰊤 GitHub Dashboard (gh-dash)
 
 <!-- pause -->
 
@@ -358,7 +361,7 @@ Opens in Zellij session automatically
 
 <!-- pause -->
 
-## 🎨 Terminal UIs (lazygit & lazydocker)
+## 󰔶 Terminal UIs (lazygit & lazydocker)
 
 <!-- pause -->
 
@@ -378,7 +381,7 @@ Nord-themed for visual consistency
 
 ---
 
-# The Stack 🥞
+# 󰒋  The Stack
 
 ```mermaid +render +width:100%
 graph TB
@@ -423,7 +426,7 @@ graph TB
 
 ---
 
-# Security First 🔒
+# 󰌾  Security First
 
 ```mermaid +render +width:100%
 %%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#5e81ac','primaryTextColor':'#eceff4','primaryBorderColor':'#81a1c1','lineColor':'#88c0d0','secondaryColor':'#81a1c1','tertiaryColor':'#8fbcbb','noteBkgColor':'#3b4252','noteTextColor':'#eceff4'}}}%%
@@ -455,7 +458,7 @@ sequenceDiagram
 
 ---
 
-# The Development Workflow 🔄
+# 󰑓  The Development Workflow
 
 ```mermaid
 flowchart TB
@@ -499,7 +502,7 @@ Everything themed with Nord 🎨
 
 ---
 
-# Why This Matters 💡
+# 󰛨  Why This Matters
 
 <!-- pause -->
 
@@ -535,7 +538,7 @@ Craft your own workflow to be productive
 
 ---
 
-# The Crazy Parts 🤪
+# 󰞷  The Crazy Parts
 
 <!-- pause -->
 
@@ -554,11 +557,11 @@ Craft your own workflow to be productive
 
 <!-- pause -->
 
-**But it works beautifully!** ✨
+**But it works beautifully!**  󰙴  
 
 ---
 
-# Trade-offs ⚖️
+# 󰖷  Trade-offs
 
 <!-- column_layout: [1, 1] -->
 
@@ -575,7 +578,7 @@ Craft your own workflow to be productive
 
 <!-- column: 1 -->
 
-## The Challenges 🤔
+## The Challenges  󰋗  
 
 - Learning curve (Nix)
 - Initial time investment
@@ -588,7 +591,7 @@ Craft your own workflow to be productive
 
 ---
 
-# Is It Worth It? 🎯
+# 󰸞  Is It Worth It?
 
 <!-- pause -->
 
@@ -622,11 +625,11 @@ Craft your own workflow to be productive
 
 <!-- pause -->
 
-**Then yes!** 🚀
+**Then yes!**  󰳔  
 
 ---
 
-# Getting Started 🚀
+# 󰳔  Getting Started
 
 ```bash
 # Clone the repo
@@ -656,7 +659,7 @@ sudo nix run ... nix-darwin -- switch --flake .#yourmachine
 
 ---
 
-# The Philosophy 🧘
+# 󰱫  The Philosophy
 
 <!-- column_layout: [1] -->
 
@@ -686,7 +689,7 @@ Keyboard-driven, fast, and consistent
 
 ---
 
-# Cool Details 🎨
+# 󰔶  Cool Details
 
 ## Nord Theme Everywhere
 
@@ -732,7 +735,7 @@ One command to jump anywhere
 
 ---
 
-# Real Example: DNS Setup 🌐
+# 󰖟  Real Example: DNS Setup
 
 <!-- pause -->
 
@@ -770,7 +773,7 @@ use dns "*.api.local"
 
 ---
 
-# Real Example: Testing 🧪
+# 󰙨  Real Example: Testing
 
 <!-- pause -->
 
@@ -803,11 +806,11 @@ In Neovim:
 - Fix it
 - `<leader>tl` - Re-run
 
-All without leaving editor! 🚀
+All without leaving editor!  󰳔  
 
 ---
 
-# The Documentation 📚
+# 󰈙  The Documentation
 
 <!-- pause -->
 
@@ -836,7 +839,7 @@ See exactly how everything works
 
 ---
 
-# AI-Assisted Development 🤖
+# 󰚩  AI-Assisted Development
 
 <!-- pause -->
 
@@ -866,7 +869,7 @@ Prevents scope creep
 
 ---
 
-# Package Management Strategy 📦
+# 󰏖  Package Management Strategy
 
 ```mermaid
 graph TB
@@ -903,7 +906,7 @@ graph TB
 
 ---
 
-# Continuous Improvement 🔄
+# 󰑓  Continuous Improvement
 
 <!-- pause -->
 
@@ -937,7 +940,7 @@ Something broke? Go back in time!
 
 ---
 
-# What's Next? 🔮
+# 󰇘  What's Next?
 
 <!-- pause -->
 
@@ -971,7 +974,7 @@ Your workflow maturing
 
 ---
 
-# The Bottom Line 💯
+# 󰄬  The Bottom Line
 
 <!-- pause -->
 
@@ -998,7 +1001,7 @@ Complete infrastructure-as-code system
 
 ---
 
-# Join the Journey! 🚀
+# 󰳔  Join the Journey
 
 <!-- column_layout: [1, 1] -->
 
@@ -1036,7 +1039,7 @@ Let's learn from each other!
 
 ---
 
-# Thank You! 🙏
+# 󰇥  Thank You
 
 <!-- pause -->
 
@@ -1060,4 +1063,4 @@ Questions?
 
 <!-- pause -->
 
-**Remember:** Your environment should work for you, not against you! ✨
+**Remember:** Your environment should work for you, not against you!  󰙴  ✨
