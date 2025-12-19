@@ -10,7 +10,7 @@ return {
       "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-jest",
       "marilari88/neotest-vitest",
-      "nvim-neotest/neotest-rust",
+      "rouge8/neotest-rust",
       "nvim-neotest/neotest-plenary",
     },
     opts = function(_, opts)
