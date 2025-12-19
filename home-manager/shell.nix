@@ -11,7 +11,6 @@
     zoxide.enable = true; # autojump
     jq.enable = true; # json parser
     bat.enable = true; # pretty cat
-    lazygit.enable = true; # git tui
     yazi = {
       enable = true; # file browser
       enableZshIntegration = true;

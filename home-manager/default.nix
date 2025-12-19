@@ -55,6 +55,7 @@
     ./karabiner-elements.nix
     ./krewfile.nix
     ./lazydocker.nix
+    ./lazygit.nix
     ./mise.nix
     ./npmrc.nix
     ./opencode.nix
