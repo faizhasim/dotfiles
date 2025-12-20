@@ -1,8 +1,8 @@
 ---
 description: Assists with infra & platform troubleshooting
 mode: subagent
-model: github-copilot/gpt-5-mini
-temperature: 0.25
+model: github-copilot/claude-sonnet-4.5
+temperature: 0.2
 tools:
   bash: true
   write: false

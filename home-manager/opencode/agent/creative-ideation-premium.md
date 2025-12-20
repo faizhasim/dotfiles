@@ -1,8 +1,8 @@
 ---
 description: Brainstorms multiple architecture or design approaches
 mode: subagent
-model: github-copilot/gpt-5
-temperature: 0.65
+model: github-copilot/gemini-3-pro
+temperature: 0.7
 tools:
   write: false
   edit: false
