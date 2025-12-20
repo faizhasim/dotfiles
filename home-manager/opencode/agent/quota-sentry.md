@@ -1,7 +1,7 @@
 ---
 description: Advises whether to escalate to premium model
 mode: subagent
-model: github-copilot/gpt-5-mini
+model: github-copilot/claude-haiku-4.5
 temperature: 0.1
 tools:
   write: false

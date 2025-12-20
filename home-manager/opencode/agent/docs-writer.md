@@ -1,8 +1,8 @@
 ---
 description: Drafts and refines technical documentation
 mode: subagent
-model: github-copilot/gpt-5-mini
-temperature: 0.35
+model: github-copilot/claude-haiku-4.5
+temperature: 0.3
 tools:
   write: true
   edit: true

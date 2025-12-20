@@ -1,7 +1,7 @@
 ---
 description: Reviews code and proposes safe phased refactor plans
 mode: subagent
-model: github-copilot/claude-sonnet-3.5
+model: github-copilot/claude-sonnet-4.5
 temperature: 0.15
 tools:
   write: false

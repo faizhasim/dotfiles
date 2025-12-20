@@ -10,7 +10,7 @@
       // "model": "github-copilot/gpt-4o", // gpt-5-mini is unbearably slower but more capable
       "model": "github-copilot/claude-sonnet-4.5",
       "temperature": 0.1,
-      "prompt": "{file:./prompts/beast-mode-3.1-context7-with-memory.md}",
+      "prompt": "{file:./prompts/menatey-rima-mode-1.0.md}",
       "tools": { "write": true, "edit": true, "bash": true },
     },
     "plan": {
@@ -18,7 +18,7 @@
       "mode": "primary",
       "model": "github-copilot/claude-sonnet-4.5",
       "temperature": 0.3,
-      "prompt": "{file:./prompts/beast-mode-3.1-context7-with-memory.md}",
+      "prompt": "{file:./prompts/menatey-rima-mode-1.0.md}",
       "tools": { "write": false, "edit": false, "bash": false },
     },
   },
