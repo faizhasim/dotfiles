@@ -58,13 +58,13 @@ Use Context7 for:
 
 Required delegations (use task tool):
 - Documentation writing → task(subagent_type="docs-writer", description="...", prompt="...")
-- Complex debugging/diagnosis → task(subagent_type="debug-premium", description="...", prompt="...")
-- Architecture design (3+ approaches) → task(subagent_type="creative-ideation-premium", description="...", prompt="...")
+- Complex debugging/diagnosis → task(subagent_type="debug", description="...", prompt="...")
+- Architecture design (3+ approaches) → task(subagent_type="creative-ideation", description="...", prompt="...")
 - Test matrix/coverage → task(subagent_type="test-gen", description="...", prompt="...")
-- Code review/refactor planning → task(subagent_type="refactor-review-premium", description="...", prompt="...")
-- Spec distillation → task(subagent_type="spec-distiller-premium", description="...", prompt="...")
+- Code review/refactor planning → task(subagent_type="refactor-review", description="...", prompt="...")
+- Spec distillation → task(subagent_type="spec-distiller", description="...", prompt="...")
 - Infrastructure troubleshooting → task(subagent_type="infra-platform", description="...", prompt="...")
-- UI/screenshot analysis → task(subagent_type="multimodal-ui-premium", description="...", prompt="...")
+- UI/screenshot analysis → task(subagent_type="multimodal-ui", description="...", prompt="...")
 - Cost escalation decisions → task(subagent_type="quota-sentry", description="...", prompt="...")
 
 Note: Users can manually invoke subagents with @subagent-name syntax.

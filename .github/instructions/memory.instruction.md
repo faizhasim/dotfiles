@@ -27,9 +27,42 @@ applyTo: "**"
 - **Custom Jest wrappers**: Some projects use wrappers around Jest (e.g., sku, skuba); command is `wrapper test` not `jest`; uses custom config; neotest-jest works via `jestCommand = "yarn wrapper test"`
 - **neotest-jest test file patterns**: Matches `*.test.[jt]sx?` and `*.spec.[jt]sx?` filename patterns (prioritizes filename over directory structure)
 
+## Known Issues
+
+### Neovim Stability (Dec 2025)
+**Issue**: Neovim crashes intermittently with zombie processes  
+**Root Causes**:
+- Embedded nvim processes (`--embed` flag) not cleaned up properly
+- Language server processes (copilot, yaml-ls, bash-ls) persist after crashes
+- TUI race conditions on abrupt exits
+- dropbar.nvim loaded eagerly causing startup issues
+- snacks.nvim image support may cause crashes on non-kitty terminals
+
+**Solutions Applied**:
+1. Created cleanup script: `scripts/nvim-cleanup.sh` (run periodically)
+2. Changed dropbar.nvim from `lazy=false` to `event="VeryLazy"`
+3. Added filetype exclusions for dropbar to prevent crashes
+4. Disabled snacks.nvim image support by default
+5. Copilot authentication errors (non-critical, can be ignored)
+
+**Monitoring**:
+- Check `ps aux | grep nvim` for zombie processes
+- Review logs: `~/.local/state/nvim/lsp.log`, `~/.local/state/nvim/log`
+- Run cleanup if >10 nvim processes exist
+
 ## Conversation History
 
-- Created new prompt: home-manager/opencode/prompts/beast-mode-3.1-context7-with-memory.md (in_progress)
+- Optimized menatey-rima-mode-1.0.md for context efficiency (v4):
+  - **FIXED**: Corrected subagent delegation mechanism - uses `task` tool with `subagent_type` parameter (NOT @mention)
+  - Added explicit delegation triggers with model info (debug-premium, test-gen, docs-writer, etc.)
+  - File size: 103 lines, 4KB (~1100 tokens)
+  - Multi-model optimized (Claude/Gemini/GLM/Haiku)
+  - Created test project in /tmp/opencode-subagent-test for validation
+  - ✅ **REBUILT**: darwin-rebuild completed, new prompt now active (Option C)
+  
+**Key finding**: OpenCode subagents are invoked via the `task` tool, not automatic delegation or @mention syntax. Primary agent must explicitly call the task tool with subagent_type parameter.
+
+**Important**: Previous 0/4 test results were invalid - darwin-rebuild had not been run yet. First valid testing starts now.
 
 ## Notes
 
