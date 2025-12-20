@@ -1,7 +1,7 @@
 return {
   {
     "Bekaboo/dropbar.nvim",
-    lazy = false,
+    event = "VeryLazy", -- Changed from lazy=false to prevent startup race conditions
     dependencies = { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     keys = {
       {
@@ -12,6 +12,14 @@ return {
         end,
         desc = "Pick symbols in winbar",
       },
+    },
+    opts = {
+      -- Disable dropbar in certain filetypes to prevent crashes
+      enable = function(buf, win, _)
+        local ft = vim.bo[buf].filetype
+        local excluded_fts = { "help", "terminal", "prompt", "TelescopePrompt", "neo-tree", "dashboard" }
+        return not vim.tbl_contains(excluded_fts, ft)
+      end,
     },
   },
 }

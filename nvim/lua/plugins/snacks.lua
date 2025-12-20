@@ -31,5 +31,9 @@ return {
       },
     }
     opts.scroll.enabled = false
+    -- Disable image support to prevent crashes on certain terminals
+    opts.image = {
+      enabled = false,
+    }
   end,
 }
