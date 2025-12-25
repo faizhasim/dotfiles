@@ -26,31 +26,9 @@ Design focused on: quota conservation, fast iteration, deep reasoning only when 
 - Requirement ambiguity causing conflicting interpretations.
 - Large refactor (>4 modules) with hidden coupling.
 
-## Primary Agents (JSON Config)
+## Primary Agents (Nix Config)
 
-Add/adjust in `opencode.jsonc`:
-
-```jsonc
-{
-  "$schema": "https://opencode.ai/config.json",
-  "agent": {
-    "build": {
-      "description": "Primary dev agent with full tool access",
-      "mode": "primary",
-      "model": "openai/gpt-4o",
-      "temperature": 0.3,
-      "tools": { "write": true, "edit": true, "bash": true },
-    },
-    "plan": {
-      "description": "Analysis & planning without direct changes",
-      "mode": "primary",
-      "model": "openai/gpt-4o",
-      "temperature": 0.15,
-      "tools": { "write": false, "edit": false, "bash": false },
-    },
-  },
-}
-```
+Configure in `home-manager/opencode.nix` using the `programs.opencode` module. See the actual config file for current settings.
 
 ## Subagent Markdown Definitions
 
@@ -359,10 +337,11 @@ The repository currently has 10 subagents configured in `home-manager/opencode/a
 
 ## Next Steps
 
-1. Subagent definitions are already in `home-manager/opencode/agent/`.
-2. Run `/models` in OpenCode to verify available model IDs.
-3. Test subagents with `@debug`, `@spec-distiller`, etc.
-4. Monitor usage and adjust model assignments if needed.
+1. Agents are configured in `home-manager/opencode.nix` via the Nix module.
+2. Agent definitions (markdown) are in `home-manager/opencode/agent/`.
+3. Run `/models` in OpenCode to verify available model IDs.
+4. Test subagents with `@debug`, `@spec-distiller`, etc.
+5. Monitor usage and adjust model assignments if needed.
 
 ---
 

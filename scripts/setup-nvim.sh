@@ -13,7 +13,7 @@ stow -v -t "$HOME/.config/nvim" nvim
 mise install
 corepack enable
 pnpm add -g @github/copilot
-pnpm add -g opencode-ai
+# opencode-ai now managed by mise (configured in home-manager/mise.nix)
 pnpm add -g markdown-toc
 pnpm add -g @mermaid-js/mermaid-cli
 
