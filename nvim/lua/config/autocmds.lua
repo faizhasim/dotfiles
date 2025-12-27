@@ -7,14 +7,15 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
--- User commands to toggle formatting (conform.nvim)
+-- User commands to toggle formatting (LazyVim)
+-- LazyVim respects vim.g.autoformat and vim.b.autoformat
 vim.api.nvim_create_user_command("FormatDisable", function(args)
   if args.bang then
     -- FormatDisable! will disable formatting just for this buffer
-    vim.b.disable_autoformat = true
+    vim.b.autoformat = false
     vim.notify("Autoformat disabled for current buffer", vim.log.levels.INFO)
   else
-    vim.g.disable_autoformat = true
+    vim.g.autoformat = false
     vim.notify("Autoformat disabled globally", vim.log.levels.INFO)
   end
 end, {
@@ -23,8 +24,8 @@ end, {
 })
 
 vim.api.nvim_create_user_command("FormatEnable", function()
-  vim.b.disable_autoformat = false
-  vim.g.disable_autoformat = false
+  vim.b.autoformat = true
+  vim.g.autoformat = true
   vim.notify("Autoformat re-enabled", vim.log.levels.INFO)
 end, {
   desc = "Re-enable autoformat-on-save",
@@ -32,8 +33,8 @@ end, {
 
 -- Show current format status
 vim.api.nvim_create_user_command("FormatStatus", function()
-  local global_status = vim.g.disable_autoformat and "disabled" or "enabled"
-  local buffer_status = vim.b.disable_autoformat and "disabled" or "enabled"
+  local global_status = vim.g.autoformat == false and "disabled" or "enabled"
+  local buffer_status = vim.b.autoformat == false and "disabled" or "enabled"
   vim.notify(
     string.format("Autoformat - Global: %s, Buffer: %s", global_status, buffer_status),
     vim.log.levels.INFO

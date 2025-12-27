@@ -59,12 +59,11 @@ notes/**/*.md
 ## Implementation Details
 
 - **Files modified:**
-  - `nvim/lua/plugins/conform.lua` - Configures conform.nvim to check disable flags
   - `nvim/lua/config/autocmds.lua` - Adds user commands
 
 - **How it works:**
-  - Commands set `vim.g.disable_autoformat` (global) or `vim.b.disable_autoformat` (buffer-local)
-  - conform.nvim checks these variables before formatting on save
+  - Commands set `vim.g.autoformat` (global) or `vim.b.autoformat` (buffer-local)
+  - LazyVim's formatting system checks these variables before formatting on save
 
 - **Restart required:**
-  - Restart Neovim or run `:Lazy reload conform.nvim` for changes to take effect
+  - Restart Neovim or reload config with `:Lazy reload LazyVim` for changes to take effect
