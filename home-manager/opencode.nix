@@ -2,12 +2,13 @@
 {
   programs.opencode = {
     enable = true;
-    # CRITICAL: Set to null - binary comes from mise, not Nix
+    # CRITICAL: Set to null - binary comes from Homebrew, not Nix
+    # Installed via darwin/homebrew/common.nix for reliable autoupdate
     package = null;
     
     settings = {
       theme = lib.mkForce "nord";
-      autoupdate = true;  # Keep enabled! Works with mise installation
+      autoupdate = true;  # Works with Homebrew installation
       share = "manual";
       
       provider.github-copilot.models."claude-sonnet-4.5".options = {

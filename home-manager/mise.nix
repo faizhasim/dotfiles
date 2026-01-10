@@ -9,8 +9,6 @@
         python = ["3.11"];
         bun = "latest";
         go = "1.25.3";
-        # OpenCode - managed via mise for auto-updates, config via home-manager
-        "github:sst/opencode" = "latest";
       };
       settings = {
         idiomatic_version_file_enable_tools = ["node" "java" "go" "python" "ruby" "terraform" "terragrunt" "yarn"];

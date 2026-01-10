@@ -11,6 +11,9 @@
 #      "totp-cli" # for backstage e2e tests
       "felixkratz/formulae/borders" # borders
       "markdownlint-cli2"
+      
+      # dev tools with native autoupdate
+      "opencode" # AI coding agent (official brew formula, autoupdate enabled)
     ];
     casks = [
       "1password"
