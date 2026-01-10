@@ -18,15 +18,30 @@ return {
     opts.dashboard.preset.header = table.concat(logo, "\n")
     opts.terminal.win.position = "float"
     opts.picker = {
-      hidden = true, -- Show hidden/dotfiles
+      hidden = true, -- Show hidden/dotfiles by default
       sources = {
         files = {
-          hidden = true, -- Show hidden/dotfiles
-          ignored = true, -- Such as  .gitignore
+          hidden = true, -- Show hidden/dotfiles by default
+          ignored = true, -- Show ignored files (e.g., .gitignore) by default
         },
         grep = {
           hidden = true,
-          ignored = true,
+          ignored = true, -- Show ignored files in grep by default
+        },
+      },
+      -- Keybindings for picker window (works in insert and normal mode)
+      -- NOTE: Default <a-h>/<a-i>/<a-r> conflict with AeroSpace
+      -- NOTE: Kitty protocol enabled in Zellij allows <c-h>/<c-i> to work in Neovim
+      win = {
+        input = {
+          keys = {
+            -- Toggle ignored files (useful for hiding node_modules temporarily)
+            ["<c-i>"] = { "toggle_ignored", mode = { "i", "n" }, desc = "Toggle Ignored Files" },
+            -- Toggle hidden/dotfiles
+            ["<c-h>"] = { "toggle_hidden", mode = { "i", "n" }, desc = "Toggle Hidden Files" },
+            -- Toggle regex mode (for grep)
+            ["<c-x>"] = { "toggle_regex", mode = { "i", "n" }, desc = "Toggle Regex Mode" },
+          },
         },
       },
     }

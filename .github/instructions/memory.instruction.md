@@ -27,6 +27,7 @@ applyTo: "**"
 - **Custom Jest wrappers**: Some projects use wrappers around Jest (e.g., sku, skuba); command is `wrapper test` not `jest`; uses custom config; neotest-jest works via `jestCommand = "yarn wrapper test"`
 - **neotest-jest test file patterns**: Matches `*.test.[jt]sx?` and `*.spec.[jt]sx?` filename patterns (prioritizes filename over directory structure)
 - **diffview.nvim** (Dec 2025): De facto standard for 3-way merge conflicts in Neovim; provides IntelliJ IDEA-level merge tool experience with 3-way/4-way diff layouts, conflict navigation (`[x`/`]x`), and resolution commands (`<leader>co/ct/cb/ca/cn`); integrates with LazyVim git keybindings under `<leader>g` prefix
+- **snacks.nvim picker toggles** (Dec 2025): Default `<a-h>`/`<a-i>`/`<a-r>` don't work due to AeroSpace hijacking Alt keys; Custom bindings: `<c-i>` toggle ignored (node_modules), `<c-h>` toggle hidden (dotfiles), `<c-x>` toggle regex; Kitty keyboard protocol in Zellij allows Ctrl keys to work inside Neovim despite terminal-level bindings
 
 ## Known Issues
 
