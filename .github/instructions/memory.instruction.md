@@ -56,6 +56,23 @@ applyTo: "**"
 - Review logs: `~/.local/state/nvim/lsp.log`, `~/.local/state/nvim/log`
 - Run cleanup if >10 nvim processes exist
 
+### macOS Code Signature Issues (Jan 2026)
+
+**Issue**: Neovim crashes when opening file picker (Space Space) with `SIGKILL (Code Signature Invalid)`
+
+**Root Cause**: macOS Sequoia 26.2+ rejects linker-signed dynamic libraries (treesitter parsers, native plugins) when loaded at runtime. Treesitter parsers compiled by Mason/nvim-treesitter are adhoc linker-signed, triggering code signature validation failures.
+
+**Solution**: Re-sign affected binaries with proper ad-hoc signatures:
+```bash
+cd ~/.local/share/nvim/site/parser && for f in *.so; do codesign --force --sign - "$f"; done
+```
+
+**Frequency**: Rare (1-3x/year)
+- Triggered by: `:TSInstall <language>`, nvim-treesitter updates that rebuild parsers, blink.cmp Rust binary updates
+- Already signed: 45 treesitter parsers, blink.cmp fuzzy matcher, telescope-fzf-native
+
+**Diagnostics**: Check crash reports in `~/Library/Logs/DiagnosticReports/nvim-*.ips` for `Code Signature Invalid` errors
+
 ## Conversation History
 
 - Optimized menatey-rima-mode-1.0.md for context efficiency (v4):
