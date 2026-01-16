@@ -1,4 +1,5 @@
 {
+  pkgs,
   ...
 }:
 {
@@ -139,11 +140,15 @@
         echo "Output command copied to clipboard: $output"
       }
 
-      export PNPM_HOME="$HOME/.local/share/pnpm"
-      export PATH="$PNPM_HOME:$PATH"
-
       [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
       [ -f ~/.config/zsh/extras.sh ] && source ~/.config/zsh/extras.sh
+
+      # Manually activate mise (we disabled auto-integration to control order)
+      eval "$(${pkgs.mise}/bin/mise activate zsh)"
+
+      # IMPORTANT: Add proto/bin AFTER mise activation
+      # mise resets PATH, so we must add proto after it runs
+      export PATH="$HOME/.proto/bin:$PATH"
 
     '';
   };

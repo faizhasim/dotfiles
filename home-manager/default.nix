@@ -18,7 +18,10 @@
       in
       common ++ machineSpecific;
     sessionPath = [
-      "$HOME/.local/bin" # to store things like `idea` cli
+      "$HOME/.local/share/pnpm" # pnpm global binaries
+      "$HOME/.local/bin" # custom CLIs like `idea`
+      # NOTE: proto/bin is NOT here - it's added manually in zsh.nix after mise activation
+      # because mise completely replaces PATH and doesn't include proto in its snapshot
     ];
 
     stateVersion = "23.11";

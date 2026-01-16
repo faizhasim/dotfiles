@@ -126,6 +126,7 @@ with pkgs;
   pngpaste # paste PNG image from clipboard
   postgresql # Database server
   presenterm # presentation tool
+  proto # used by moonrepo
   python3
 
   # R
