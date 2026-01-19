@@ -22,11 +22,11 @@ return {
       sources = {
         files = {
           hidden = true, -- Show hidden/dotfiles by default
-          ignored = true, -- Show ignored files (e.g., .gitignore) by default
+          ignored = false, -- Hide ignored files (e.g., .gitignore) by default
         },
         grep = {
           hidden = true,
-          ignored = true, -- Show ignored files in grep by default
+          ignored = false, -- Hide ignored files in grep by default
         },
       },
       -- Keybindings for picker window (works in insert and normal mode)
