@@ -16,7 +16,7 @@ Edit `home-manager/packages/common.nix`:
 {pkgs, ...}: {
   home.packages = with pkgs; [
     # ... existing packages ...
-    
+
     # Add your package here
     ripgrep
     jq
@@ -78,7 +78,7 @@ Edit `darwin/homebrew/common.nix`:
   taps = [
     "homebrew/cask-fonts"
   ];
-  
+
   casks = [
     "font-fira-code-nerd-font"
   ];
@@ -166,7 +166,7 @@ Some settings require manual `defaults write` commands. Add them to activation s
   system.activationScripts.postActivation.text = ''
     # Set screenshot location
     defaults write com.apple.screencapture location ~/Pictures/Screenshots
-    
+
     # Disable screenshot thumbnail
     defaults write com.apple.screencapture show-thumbnail -bool false
   '';
@@ -183,7 +183,7 @@ Shell setup is in `home-manager/zsh.nix`.
 {
   programs.zsh.shellAliases = {
     # ... existing aliases ...
-    
+
     # Add your aliases
     gs = "git status";
     gp = "git push";
@@ -196,12 +196,12 @@ Shell setup is in `home-manager/zsh.nix`.
 
 ```nix
 {
-  programs.zsh.initExtra = ''
+  programs.zsh.initContent = ''
     # Add custom function
     mkcd() {
       mkdir -p "$1" && cd "$1"
     }
-    
+
     # Kubernetes context switcher
     kctx() {
       kubectl config use-context "$1"
@@ -254,7 +254,7 @@ Git setup is in `home-manager/git.nix`.
 {
   programs.git.aliases = {
     # ... existing aliases ...
-    
+
     # Add your aliases
     co = "checkout";
     br = "branch";
@@ -271,7 +271,7 @@ Git setup is in `home-manager/git.nix`.
   programs.git = {
     userName = "Your Name";
     userEmail = "your.email@example.com";
-    
+
     extraConfig = {
       init.defaultBranch = "main";
       pull.rebase = true;
@@ -298,12 +298,13 @@ touch home-manager/packages/newmachine.nix
 ### 2. Define Package Lists
 
 `darwin/homebrew/newmachine.nix`:
+
 ```nix
 {...}: {
   casks = [
     # Machine-specific casks
   ];
-  
+
   brews = [
     # Machine-specific brews
   ];
@@ -311,6 +312,7 @@ touch home-manager/packages/newmachine.nix
 ```
 
 `home-manager/packages/newmachine.nix`:
+
 ```nix
 {pkgs, ...}: {
   home.packages = with pkgs; [
@@ -327,7 +329,7 @@ Add machine to `darwinConfigurations`:
 {
   darwinConfigurations = {
     # ... existing machines ...
-    
+
     newmachine = createDarwin "newmachine" "yourusername" "aarch64-darwin";
   };
 }
@@ -580,6 +582,7 @@ use dns "*.myapp.local"
 ```
 
 This will:
+
 1. Configure dnsmasq to resolve the domain to 127.0.0.1
 2. Create macOS resolver for the domain (port 53535)
 3. Automatically clean up when you leave the directory
@@ -657,6 +660,7 @@ lazydocker
 ```
 
 Features:
+
 - View and manage containers, images, volumes, networks
 - View container logs in real-time
 - Execute commands in running containers
@@ -674,10 +678,10 @@ Fonts are defined in `darwin/os/fonts.nix`.
 {pkgs, ...}: {
   fonts.packages = with pkgs; [
     # ... existing fonts ...
-    
+
     # Add Nerd Fonts
     (nerdfonts.override {fonts = ["JetBrainsMono" "FiraCode"];})
-    
+
     # Add system fonts
     fira-code
     jetbrains-mono
@@ -691,7 +695,7 @@ Fonts are defined in `darwin/os/fonts.nix`.
 # darwin/homebrew/common.nix
 {
   taps = ["homebrew/cask-fonts"];
-  
+
   casks = [
     "font-jetbrains-mono-nerd-font"
     "font-fira-code-nerd-font"
@@ -713,6 +717,7 @@ darwin-rebuild switch --flake .
 
 > [!TIP]
 > Add an alias for faster rebuilds:
+>
 > ```bash
 > alias dr="darwin-rebuild switch --flake ."
 > ```
@@ -758,7 +763,7 @@ Create a new module in `home-manager/`:
 # home-manager/my-tool.nix
 {config, pkgs, ...}: {
   home.packages = with pkgs; [my-tool];
-  
+
   home.file.".config/my-tool/config.yaml".text = ''
     setting: value
   '';

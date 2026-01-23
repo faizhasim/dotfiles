@@ -56,7 +56,7 @@ with pkgs;
   gh # GitHub CLI
   git
   git-lfs
-  gh-copilot # required by nvim sidekick
+  github-copilot-cli # required by nvim sidekick
   ghostscriptX
   glow # Markdown renderer for terminal
   gnupg # GNU Privacy Guard
@@ -114,7 +114,7 @@ with pkgs;
   nmap # net tools
   ngrok # Secure tunneling service, unfree
   nodePackages.prettier
-  nixfmt-rfc-style
+  nixfmt
 
   # O
   # obs-studio # Stream / recording software

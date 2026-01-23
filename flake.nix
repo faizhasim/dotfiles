@@ -84,11 +84,10 @@
                 nixpkgs.overlays = overlays;
                 # Fix the GID issue
                 ids.gids.nixbld = 350;
-                system = {
-                  stateVersion = 4;
-                  configurationRevision = self.rev or self.dirtyRev or null;
-                  primaryUser = username;
-                };
+
+                system.stateVersion = 4;
+                system.configurationRevision = self.rev or self.dirtyRev or null;
+                system.primaryUser = username;
 
                 users.users.${username} = {
                   home = "/Users/${username}";

@@ -38,7 +38,7 @@ alt-l = "focus --boundaries-action wrap-around-the-workspace right"
 alt-r = "mode resize"
 
 alt-t = "exec-and-forget open -b com.github.wez.wezterm"
-alt-w = "exec-and-forget open -b com.apple.Safari"
+alt-w = "mode browser-selection"
 alt-c = "exec-and-forget open -b com.tinyspeck.slackmacgap"
 alt-e = "exec-and-forget open -b com.microsoft.Outlook"
 alt-z = "exec-and-forget open -b us.zoom.xos"
@@ -93,40 +93,54 @@ l = "resize width +50"
 enter = "mode main"
 esc = "mode main"
 
+[mode.browser-selection.binding]
+s = ["exec-and-forget open -b com.apple.Safari", "mode main"]
+e = ["exec-and-forget open -b com.microsoft.edgemac", "mode main"]
+esc = "mode main"
+
 [workspace-to-monitor-force-assignment]
 m2 = ["secondary"]
 
-[[on-window-detected]]
-if.app-id = "com.microsoft.Outlook"
-run = ["move-node-to-workspace 1_daily"]
-
-[[on-window-detected]]
-if.app-id = "net.whatsapp.WhatsApp"
-run = ["move-node-to-workspace 1_daily"]
+# [[on-window-detected]]
+# if.app-id = "com.microsoft.Outlook"
+# run = ["move-node-to-workspace 1_daily"]
+#
+# [[on-window-detected]]
+# if.app-id = "net.whatsapp.WhatsApp"
+# run = ["move-node-to-workspace 1_daily"]
+#
+# [[on-window-detected]]
+# if.app-id = "com.apple.reminders"
+# run = ["layout floating", "move-node-to-workspace 1_daily"]
+#
+# [[on-window-detected]]
+# if.app-id = "md.obsidian"
+# run = "move-node-to-workspace 1_daily"
+#
+# [[on-window-detected]]
+# if.app-id = "com.tinyspeck.slackmacgap"
+# run = "move-node-to-workspace 2_connect"
+#
+# [[on-window-detected]]
+# if.app-id = "us.zoom.xos"
+# run = ["layout floating", "move-node-to-workspace 2_connect"]
+#
 
 [[on-window-detected]]
 if.app-id = "com.apple.reminders"
-run = ["layout floating", "move-node-to-workspace 1_daily"]
-
-[[on-window-detected]]
-if.app-id = "md.obsidian"
-run = "move-node-to-workspace 1_daily"
-
-[[on-window-detected]]
-if.app-id = "com.tinyspeck.slackmacgap"
-run = "move-node-to-workspace 2_connect"
+run = ["layout floating"]
 
 [[on-window-detected]]
 if.app-id = "us.zoom.xos"
-run = ["layout floating", "move-node-to-workspace 2_connect"]
+run = ["layout floating"]
 
 # [[on-window-detected]]
 # if.app-id = "com.github.wez.wezterm"
 # run = "move-node-to-workspace 3_focus"
-
-[[on-window-detected]]
-if.app-id = "com.apple.Safari"
-run = "move-node-to-workspace 5_explore"
+#
+# [[on-window-detected]]
+# if.app-id = "com.apple.Safari"
+# run = "move-node-to-workspace 5_explore"
 
 [[on-window-detected]]
 if.app-id = "com.fasttracksoftware.adminbyrequest"
