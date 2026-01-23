@@ -3,7 +3,7 @@
 This is a **Nix/nix-darwin configuration repository** for declarative macOS system management.
 
 ## Build/Apply Commands
-- **Initial build**: `sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#M3419` (or `#macmini01`, `#mbp01`)
+- **Initial build**: `sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#M3419` (or `#macmini01`)
 - **After initial setup**: `darwin-rebuild switch --flake .#M3419`
 - **Check flake**: `nix flake check`
 - **Update inputs**: `nix flake update`

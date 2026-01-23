@@ -59,9 +59,6 @@ sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- sw
 
 # For macmini01 (Apple Silicon)
 sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#macmini01
-
-# For mbp01 (Intel Mac)
-sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#mbp01
 ```
 
 > [!TIP]
@@ -205,7 +202,7 @@ If you encounter issues:
 1. Review the [Reference](./reference.md) guide for known limitations
 2. Review recent commits for breaking changes
 3. Open an issue on GitHub with:
-   - Your machine type (M3419, macmini01, mbp01)
+   - Your machine type (M3419, macmini01)
    - macOS version
    - Error messages and logs
    - Steps to reproduce

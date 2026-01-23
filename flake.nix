@@ -174,7 +174,6 @@
       darwinConfigurations = {
         M3419 = createDarwin "M3419" "faizhasim" "aarch64-darwin";
         macmini01 = createDarwin "macmini01" "faizhasim" "aarch64-darwin";
-        mbp01 = createDarwin "mbp01" "faizhasim" "x86_64-darwin";
       };
     };
 

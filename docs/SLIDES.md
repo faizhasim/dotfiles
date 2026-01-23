@@ -258,7 +258,7 @@ graph LR
 
 # 󰍹  Three Machines, One Config
 
-<!-- column_layout: [1, 1, 1] -->
+<!-- column_layout: [1, 1] -->
 
 <!-- column: 0 -->
 
@@ -275,14 +275,6 @@ Work machine
 **Apple Silicon**
 
 Home server
-
-<!-- column: 2 -->
-
-## mbp01
-
-**Intel Mac**
-
-Old laptop
 
 <!-- reset_layout -->
 

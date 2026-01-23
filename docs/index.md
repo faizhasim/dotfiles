@@ -41,7 +41,6 @@ This configuration follows several core principles:
 Currently configured for:
 - **M3419** - Apple Silicon (aarch64-darwin)
 - **macmini01** - Apple Silicon (aarch64-darwin)
-- **mbp01** - Intel Mac (x86_64-darwin)
 
 ## What Gets Managed
 

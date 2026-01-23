@@ -256,8 +256,7 @@ nix-collect-garbage --delete-older-than 30d
 
 **Current approach:**
 - System architecture is specified per machine in `flake.nix`
-- `M3419` and `macmini01` use `aarch64-darwin` (Apple Silicon)
-- `mbp01` uses `x86_64-darwin` (Intel)
+- Both `M3419` and `macmini01` use `aarch64-darwin` (Apple Silicon)
 
 **Potential issues:**
 - Some Homebrew casks may not support both architectures
