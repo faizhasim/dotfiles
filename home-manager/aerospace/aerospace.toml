@@ -24,11 +24,11 @@ top = 3
 preset = "qwerty"
 
 [mode.main.binding]
-alt-1 = "workspace 1_daily"
-alt-2 = "workspace 2_connect"
-alt-3 = "workspace 3_focus"
-alt-4 = "workspace 4_focus"
-alt-5 = "workspace 5_explore"
+alt-1 = "workspace 1"
+alt-2 = "workspace 2"
+alt-3 = "workspace 3"
+alt-4 = "workspace 4"
+alt-5 = "workspace 5"
 alt-comma = "layout accordion horizontal vertical"
 alt-shift-f = "fullscreen --no-outer-gaps"
 alt-h = "focus --boundaries-action wrap-around-the-workspace left"
@@ -44,24 +44,24 @@ alt-e = "exec-and-forget open -b com.microsoft.Outlook"
 alt-z = "exec-and-forget open -b us.zoom.xos"
 
 alt-shift-1 = [
-  "move-node-to-workspace 1_daily",
-  "layout tiles horizontal vertical",
+  "move-node-to-workspace 1",
+  # "layout tiles horizontal vertical",
 ]
 alt-shift-2 = [
-  "move-node-to-workspace 2_connect",
-  "layout tiles horizontal vertical",
+  "move-node-to-workspace 2",
+  # "layout tiles horizontal vertical",
 ]
 alt-shift-3 = [
-  "move-node-to-workspace 3_focus",
-  "layout accordion horizontal vertical",
+  "move-node-to-workspace 3",
+  # "layout accordion horizontal vertical",
 ]
 alt-shift-4 = [
-  "move-node-to-workspace 4_focus",
-  "layout accordion horizontal vertical",
+  "move-node-to-workspace 4",
+  # "layout accordion horizontal vertical",
 ]
 alt-shift-5 = [
-  "move-node-to-workspace 5_explore",
-  "layout tiles horizontal vertical",
+  "move-node-to-workspace 5",
+  # "layout tiles horizontal vertical",
 ]
 alt-shift-c = "reload-config"
 alt-shift-h = "move left"
