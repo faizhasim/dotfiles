@@ -145,10 +145,11 @@
 
       # Manually activate mise (we disabled auto-integration to control order)
       eval "$(${pkgs.mise}/bin/mise activate zsh)"
-
       # IMPORTANT: Add proto/bin AFTER mise activation
+
       # mise resets PATH, so we must add proto after it runs
-      export PATH="$HOME/.proto/bin:$PATH"
+      # export PATH="$HOME/.proto/bin:$PATH"
+      # eval "$(proto activate zsh)"
 
     '';
   };

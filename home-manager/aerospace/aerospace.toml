@@ -42,6 +42,7 @@ alt-w = "mode browser-selection"
 alt-c = "exec-and-forget open -b com.tinyspeck.slackmacgap"
 alt-e = "exec-and-forget open -b com.microsoft.Outlook"
 alt-z = "exec-and-forget open -b us.zoom.xos"
+alt-m = "exec-and-forget open -b com.apple.Music"
 
 alt-shift-1 = [
   "move-node-to-workspace 1",
