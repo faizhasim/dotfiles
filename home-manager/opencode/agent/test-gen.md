@@ -1,7 +1,7 @@
 ---
 description: Generates comprehensive test matrices
 mode: subagent
-model: github-copilot/claude-sonnet-4.5
+model: opencode/kimi-k2.5-free
 temperature: 0.2
 tools:
   write: false
