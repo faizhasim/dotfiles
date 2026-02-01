@@ -1,7 +1,7 @@
 ---
 description: Analyzes large documents and performs bulk operations
 mode: subagent
-model: opencode/big-pickle
+model: opencode/kimi-k2.5-free
 temperature: 0.1
 tools:
   bash: false

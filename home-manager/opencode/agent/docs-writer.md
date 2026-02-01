@@ -1,7 +1,7 @@
 ---
 description: Drafts and refines technical documentation
 mode: subagent
-model: github-copilot/claude-haiku-4.5
+model: opencode/kimi-k2.5-free
 temperature: 0.3
 tools:
   write: true

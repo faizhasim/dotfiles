@@ -1,7 +1,7 @@
 ---
 description: Advises whether to escalate to premium model
 mode: subagent
-model: github-copilot/claude-haiku-4.5
+model: opencode/kimi-k2.5-free
 temperature: 0.1
 tools:
   write: false

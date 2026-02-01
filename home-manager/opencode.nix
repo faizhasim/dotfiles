@@ -22,7 +22,7 @@
         build = {
           description = "Primary dev agent with full tool access";
           mode = "primary";
-          model = "github-copilot/claude-sonnet-4.5";
+          model = "opencode/kimi-k2.5-free";
           temperature = 0.1;
           prompt = "{file:${./opencode/prompts/menatey-rima-mode-1.0.md}}";
           permission = {
@@ -34,7 +34,7 @@
         plan = {
           description = "Analysis & planning without direct changes";
           mode = "primary";
-          model = "github-copilot/claude-sonnet-4.5";
+          model = "opencode/kimi-k2.5-free";
           temperature = 0.3;
           prompt = "{file:${./opencode/prompts/menatey-rima-mode-1.0.md}}";
           permission = {
