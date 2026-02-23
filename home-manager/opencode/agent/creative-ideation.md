@@ -1,8 +1,8 @@
 ---
 description: Brainstorms multiple architecture or design approaches
 mode: subagent
-model: opencode/kimi-k2.5-free
-temperature: 0.5
+model: github-copilot/gemini-3-pro-preview
+temperature: 0.7
 tools:
   write: false
   edit: false

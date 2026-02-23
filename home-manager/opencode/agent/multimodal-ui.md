@@ -1,7 +1,7 @@
 ---
 description: Analyzes UI screenshots and layout/style issues
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: github-copilot/gemini-3-pro-preview
 temperature: 0.25
 tools:
   write: false

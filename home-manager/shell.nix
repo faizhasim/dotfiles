@@ -14,6 +14,7 @@
     yazi = {
       enable = true; # file browser
       enableZshIntegration = true;
+      shellWrapperName = "yy";
     };
     btop.enable = true; # htop alternative
     broot.enable = true; # browser big folders

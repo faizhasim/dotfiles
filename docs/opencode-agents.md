@@ -1,16 +1,21 @@
-# OpenCode Agents Cheat Sheet (OpenCode Models)
+# OpenCode Agents Cheat Sheet (GitHub Copilot Models)
 
-Design focused on: cost efficiency, fast iteration, deep reasoning only when needed, and clear task routing for fullstack + platform engineering workflows.
+Design focused on: quota conservation, fast iteration, deep reasoning only when needed, and clear task routing for fullstack + platform engineering workflows.
 
-> Run `/models` in OpenCode to confirm available model IDs. Model availability may vary.
+> Adjust model version suffixes (dates) to match `/models` output. Run `/models` to confirm exact IDs before finalizing.
 
-## Model Allocation (OpenCode Provider)
+## Model Allocation (GitHub Copilot Enabled)
 
-| Tier              | Model (provider/id)         | Use Primarily For                                              | Escalate When                                    | Avoid Using For                  |
-| ----------------- | --------------------------- | -------------------------------------------------------------- | ------------------------------------------------ | -------------------------------- |
-| Primary           | `opencode/kimi-k2.5-free`   | Daily coding, debugging, docs, tests, architecture, refactoring | Complex multi-step reasoning beyond context      | Simple lookups, trivial Q&A      |
-| Large Context     | `opencode/big-pickle`       | Large document analysis, bulk operations, whole-module review   | Need reasoning + large context combined          | Quick tasks (overkill)           |
-| Fast/Light        | (provider-specific)         | Rapid iteration, boilerplate, quick routing                    | Need deeper analysis or precision                | Complex reasoning tasks          |
+| Tier | Model (provider/id) | Use Primarily For | Escalate When | Avoid Using For |
+| ------------------------- | -------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------- | --------------------------------------- |
+| Premium (top) | `anthropic/claude-sonnet-4-5-20250514` | Hard debugging (race/deadlock), deep architecture, complex refactors | Cross-service causal analysis; ambiguous business logic | Boilerplate, trivial doc edits |
+| Premium | `anthropic/claude-sonnet-4-20250514` | Spec distillation, architecture consolidation, policy logic | Need precision but not max reasoning | Highly creative divergence |
+| Premium (stretch) | `anthropic/claude-sonnet-3-5-2025XXXX` | Medium refactors, code reviews, risk surfacing | Repeated gaps from `gpt-4o` | Heavy multimodal tasks |
+| Premium (creative) | `openai/gpt-5` | Design brainstorming, multiple solution patterns | Need divergent options before converging | Deterministic patch planning |
+| Premium (multimodal) | `google/gemini-3-pro-preview` | UI screenshot/layout diagnosis, large context ingestion | Visual diff analysis, whole-module summarization | Simple text-only clarifications |
+| Workhorse | `openai/gpt-4o` | Daily coding, docs drafts, simple bugs, test generation | Stalls after 2 focused attempts | Concurrency or subtle state bugs |
+| Fast | `openai/gpt-4.1` | Rapid iteration, boilerplate scaffolding | Need more context fidelity | Deep reasoning or long summaries |
+| Ultra-light | `openai/gpt-5-mini` | Lookups, quick routing decisions, trivial Q&A | Need structured analysis | Anything requiring multi-step reasoning |
 
 ### Escalation Signals
 
@@ -35,7 +40,7 @@ Place these in `.opencode/agent/` (project) or `~/.config/opencode/agent/` (glob
 ---
 description: Investigates and diagnoses complex bugs
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: github-copilot/claude-sonnet-4.5
 temperature: 0.2
 tools:
   bash: true
@@ -59,15 +64,13 @@ Process:
 Output sections: Summary, Hypotheses (ranked), Evidence Needed, Recommended Fix, Test Matrix.
 ```
 
-**Note:** Uses `kimi-k2.5-free` for cost-effective deep debugging without Copilot quota consumption.
-
 ### 2. `refactor-review.md`
 
 ```markdown
 ---
 description: Reviews code and proposes safe phased refactor plans
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: github-copilot/claude-sonnet-4.5
 temperature: 0.15
 tools:
   write: false
@@ -89,7 +92,7 @@ Return sections: Hotspots, Plan (Phases), Risks, Tests.
 ---
 description: Converts vague requirements into actionable specs
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: github-copilot/claude-sonnet-4.5
 temperature: 0.2
 tools:
   write: false
@@ -111,7 +114,7 @@ Return concise structured lists.
 ---
 description: Drafts and refines technical documentation
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: github-copilot/claude-haiku-4.5
 temperature: 0.3
 tools:
   write: true
@@ -126,15 +129,13 @@ Maintain consistent terminology.
 Follow Mini Beast workflow: clarify goal, outline sections, iterate succinctly; never over-explain changes.
 ```
 
-**Note:** `kimi-k2.5-free` at temp 0.3 provides good balance of creativity and consistency for documentation.
-
 ### 5. `test-gen.md`
 
 ```markdown
 ---
 description: Generates comprehensive test matrices
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: github-copilot/claude-sonnet-4.5
 temperature: 0.2
 tools:
   write: false
@@ -158,8 +159,8 @@ Follow Mini Beast workflow: clarify, plan silently, output concise matrix.
 ---
 description: Brainstorms multiple architecture or design approaches
 mode: subagent
-model: opencode/kimi-k2.5-free
-temperature: 0.5
+model: github-copilot/gemini-3-pro-preview
+temperature: 0.7
 tools:
   write: false
   edit: false
@@ -170,15 +171,13 @@ For each: Summary, Pros, Cons, Complexity, Migration Path, Risks.
 Conclude with comparative recommendation & decision criteria.
 ```
 
-**Note:** Temperature 0.5 with `kimi-k2.5-free` provides balanced creative divergence without excessive variation. Kimi's native creativity at 0.7 was producing overly divergent outputs.
-
 ### 7. `multimodal-ui.md`
 
 ```markdown
 ---
 description: Analyzes UI screenshots and layout/style issues
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: github-copilot/gemini-3-pro-preview
 temperature: 0.25
 tools:
   write: false
@@ -193,15 +192,13 @@ Output: Issues, Suspected Causes, Fix Steps, Suggested Tests.
 Request missing snippets if incomplete.
 ```
 
-**Note:** `kimi-k2.5-free` supports multimodal inputs. Test with actual screenshots to verify analysis quality.
-
 ### 8. `infra-platform.md`
 
 ```markdown
 ---
 description: Assists with infra & platform troubleshooting
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: github-copilot/claude-sonnet-4.5
 temperature: 0.2
 tools:
   bash: true
@@ -227,7 +224,7 @@ Output: Environment Summary, Suspicions, Next Checks, Minimal Fix, Hardening Sug
 ---
 description: Advises whether to escalate to premium model
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: github-copilot/claude-haiku-4.5
 temperature: 0.1
 tools:
   write: false
@@ -239,8 +236,6 @@ Decide: stay / escalate / de-escalate.
 Return: Decision, Rationale, Recommended Agent.
 Follow Mini Beast workflow; keep output terse (3 sentences max).
 ```
-
-**Note:** With all agents now on `kimi-k2.5-free`, this agent primarily helps decide when to switch to other providers (GitHub Copilot) if configured.
 
 ## Usage Flow Examples
 
@@ -271,17 +266,13 @@ Use these when invoking agents (paste after @ mention):
 - 0.25–0.35: Balanced generation (tests, infra, docs)
 - 0.6+: Divergent ideation (architecture alternatives)
 
-## Cost Optimization Pattern
+## Quota Conservation Pattern
 
-With all agents on `opencode/kimi-k2.5-free` (free tier):
-
-1. **Default**: All work happens on `kimi-k2.5-free` at no cost
-2. **Escalation to premium**: If configured, escalate to GitHub Copilot models for:
-   - Tasks failing after 2 attempts on kimi
-   - Complex reasoning beyond kimi's context limits
-   - Need for specific model capabilities (e.g., Claude's reasoning)
-3. **De-escalation**: Return to `kimi-k2.5-free` for implementation after premium planning
-4. **Monitor rate limits**: Free tiers may have rate limits; adjust if you hit throttling
+1. Start cheap (`gpt-4o`, `gpt-4.1`).
+2. After 2 unsuccessful attempts or escalation signals → premium (`sonnet-*`).
+3. After premium reasoning, implementation & test writing revert to workhorse models.
+4. Use `gemini-3-pro-preview` only with screenshots or >150KB context to summarize.
+5. Use `gpt-5-mini` to decide escalation when uncertain.
 
 ## Validation Loop
 
@@ -305,7 +296,7 @@ If Copilot provider exposes different IDs (e.g. without date suffix) replace mod
 ---
 description: Analyzes large documents and performs bulk operations
 mode: subagent
-model: opencode/kimi-k2.5-free
+model: opencode/big-pickle
 temperature: 0.1
 tools:
   bash: false
@@ -325,26 +316,24 @@ Process:
 Output format: Summary, Key Findings (with references), Recommended Actions, Bulk Operation Scripts (if applicable).
 ```
 
-**Note:** Currently uses `kimi-k2.5-free`. Consider `opencode/big-pickle` for very large context windows if available.
-
 ## Actual Subagent Configuration
 
 The repository currently has 10 subagents configured in `home-manager/opencode/agent/`:
 
 | Subagent | Model | Temp | Tools | Use Case |
 |----------|-------|------|-------|----------|
-| `debug` | opencode/kimi-k2.5-free | 0.2 | bash (git restricted) | Complex bug investigation |
-| `refactor-review` | opencode/kimi-k2.5-free | 0.15 | read-only | Code review and refactor planning |
-| `spec-distiller` | opencode/kimi-k2.5-free | 0.2 | read-only | Requirements refinement |
-| `docs-writer` | opencode/kimi-k2.5-free | 0.3 | write, edit | Technical documentation |
-| `test-gen` | opencode/kimi-k2.5-free | 0.2 | read-only | Test matrix generation |
-| `creative-ideation` | opencode/kimi-k2.5-free | 0.7 | read-only | Architecture brainstorming |
-| `multimodal-ui` | opencode/kimi-k2.5-free | 0.25 | read-only | UI/screenshot analysis |
-| `infra-platform` | opencode/kimi-k2.5-free | 0.2 | bash (kubectl/docker restricted) | Infrastructure troubleshooting |
-| `quota-sentry` | opencode/kimi-k2.5-free | 0.1 | read-only | Cost escalation decisions |
-| `doc-analyser` | opencode/kimi-k2.5-free | 0.1 | read-only | Large document analysis |
+| `debug` | claude-sonnet-4.5 | 0.2 | bash (git restricted) | Complex bug investigation |
+| `refactor-review` | claude-sonnet-4.5 | 0.15 | read-only | Code review and refactor planning |
+| `spec-distiller` | claude-sonnet-4.5 | 0.2 | read-only | Requirements refinement |
+| `docs-writer` | claude-haiku-4.5 | 0.3 | write, edit | Technical documentation |
+| `test-gen` | claude-sonnet-4.5 | 0.2 | read-only | Test matrix generation |
+| `creative-ideation` | gemini-3-pro-preview | 0.7 | read-only | Architecture brainstorming |
+| `multimodal-ui` | gemini-3-pro-preview | 0.25 | read-only | UI/screenshot analysis |
+| `infra-platform` | claude-sonnet-4.5 | 0.2 | bash (kubectl/docker restricted) | Infrastructure troubleshooting |
+| `quota-sentry` | claude-haiku-4.5 | 0.1 | read-only | Cost escalation decisions |
+| `doc-analyser` | opencode/big-pickle | 0.1 | read-only | Large document analysis |
 
-**Note**: All agents now use `opencode/kimi-k2.5-free` for cost-effective operation. GitHub Copilot provider config is retained for optional premium escalation.
+**Note**: All GitHub Copilot models use `github-copilot/` prefix in actual config.
 
 ## Next Steps
 
