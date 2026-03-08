@@ -41,6 +41,7 @@
 let
   # Define noti repos once - used for both filters and repoPaths
   notiRepos = [
+    "SEEK-Jobs/noti-platform"
     "SEEK-Jobs/noti-tcp-infra"
     "SEEK-Jobs/noti-experience-resources"
     "SEEK-Jobs/noti-experience-toolbox"
@@ -67,19 +68,33 @@ let
   # Convert repo list to filter format: "repo:A repo:B repo:C"
   notiReposFilter = lib.concatMapStringsSep " " (repo: "repo:${repo}") notiRepos;
 
-  # Generate repoPaths: "SEEK-Jobs/noti-xxx" -> "~/dev/seek-jobs/noti-x/noti-xxx"
+  # Generate repoPaths with worktrunk structure
+  # Pattern: ~/dev/seek-jobs/customer-notification-system/<repo-name>/
+  # This points to the main worktree (actual branch name determined by worktrunk)
   notiRepoPaths = lib.listToAttrs (
     map (repo: {
       name = repo;
-      value = "~/dev/seek-jobs/noti-x/${lib.last (lib.splitString "/" repo)}";
+      value = "~/dev/seek-jobs/customer-notification-system/${lib.last (lib.splitString "/" repo)}";
     }) notiRepos
   );
 
-  # Combine noti repos with wildcard patterns
-  repoPaths = notiRepoPaths // {
-    "SEEK-Jobs/*" = "~/dev/seek-jobs/*";
-    "faizhasim/*" = "~/dev/faizhasim/*";
+  # Additional system repos
+  systemRepoPaths = {
+    "SEEK-Jobs/owners" = "~/dev/seek-jobs/owners/owners";
+    "SEEK-Jobs/owners-metrics-publisher" = "~/dev/seek-jobs/owners/owners-metrics-publisher";
+    "SEEK-Jobs/seek-backstage" = "~/dev/seek-jobs/seek-backstage/seek-backstage";
+    "SEEK-Jobs/build-agency" = "~/dev/seek-jobs/build-agency/build-agency";
+    "SEEK-Jobs/build-agency-strategies" = "~/dev/seek-jobs/build-agency/build-agency-strategies";
   };
+
+  # Combine all repos with wildcard patterns
+  repoPaths =
+    notiRepoPaths
+    // systemRepoPaths
+    // {
+      "SEEK-Jobs/*" = "~/dev/seek-jobs/misc/*";
+      "faizhasim/*" = "~/dev/faizhasim/*";
+    };
 
   # Generate YAML repoPaths section
   repoPathsYaml = lib.concatStringsSep "\n" (
@@ -125,20 +140,26 @@ let
               SESSION_NAME=$(echo "''$REPO_NAME" | tr '/' '-') &&
               cd "''$REPO_PATH" &&
               if [ -n "''$ZELLIJ" ]; then
-                gh pr checkout "''$PR_NUMBER" 2>&1 | head -n 5 &&
-                zellij action new-tab --cwd "''$REPO_PATH" --name "PR ''$PR_NUMBER" &&
-                zellij action write-chars "cd ''$REPO_PATH" &&
-                zellij action write 13
-              else
-                if gh pr checkout "''$PR_NUMBER" 2>&1; then
-                  exec zellij attach --create "''$SESSION_NAME"
+                WT_OUTPUT=$(yes n | wt switch "pr:''$PR_NUMBER" 2>&1) &&
+                echo "''$WT_OUTPUT" | grep -v "Install shell integration" | head -n 5 &&
+                NEW_PATH=$(echo "''$WT_OUTPUT" | grep "@ ~" | sed -n 's/.*@ \([^,]*\).*/\1/p' | sed "s|~|''$HOME|" | tail -1) &&
+                if [ -n "''$NEW_PATH" ] && [ -d "''$NEW_PATH" ]; then
+                  zellij action new-tab --cwd "''$NEW_PATH" --name "PR ''$PR_NUMBER" || exit 1 &&
+                  sleep 0.2 &&
+                  zellij action write-chars "cd \"''$NEW_PATH\" && clear && pwd && ''${EDITOR:-nvim} ." &&
+                  zellij action write 13
                 else
-                  echo "" &&
-                  echo "⚠️  Failed to checkout PR ''$PR_NUMBER" &&
-                  echo "   This usually means you have uncommitted changes." &&
-                  echo "" &&
-                  gum confirm "Continue anyway to session?" &&
-                  exec zellij attach --create "''$SESSION_NAME"
+                  echo "Failed to get worktree path: NEW_PATH=''$NEW_PATH"
+                fi
+              else
+                WT_OUTPUT=$(timeout 30 sh -c 'yes n | wt switch "pr:'"''$PR_NUMBER"'" 2>&1') &&
+                NEW_PATH=$(echo "''$WT_OUTPUT" | grep "@ ~" | sed -n 's/.*@ \([^,]*\).*/\1/p' | sed "s|~|''$HOME|" | tail -1) &&
+                if [ -n "''$NEW_PATH" ] && [ -d "''$NEW_PATH" ]; then
+                  cd "''$NEW_PATH" &&
+                  ''${EDITOR:-nvim} .
+                else
+                  echo "ERROR: Failed to get worktree path: NEW_PATH=''$NEW_PATH"
+                  exit 1
                 fi
               fi
 
