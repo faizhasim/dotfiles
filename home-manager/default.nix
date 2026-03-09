@@ -29,6 +29,7 @@
   imports = [
     inputs._1password-shell-plugins.hmModules.default
     inputs.krewfile.homeManagerModules.krewfile
+    inputs.worktrunk.homeModules.default
     (import ./aerospace.nix {
       inherit
         config
@@ -67,6 +68,7 @@
     ./starship.nix
     ./vscode.nix
     ./wezterm.nix
+    ./worktrunk.nix
     ./zellij.nix
     ./zsh.nix
   ];

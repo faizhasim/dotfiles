@@ -1,0 +1,146 @@
+# Worktrunk Configuration
+# External TOML file managed by Nix
+# See: https://worktrunk.dev/config/
+
+# Worktree path template
+# Pattern: Sibling directories with repo name prefix
+# Example: ~/dev/seek-jobs/customer-notification-system/noti-mailer/ (main repo)
+#          ~/dev/seek-jobs/customer-notification-system/noti-mailer.feature-auth/ (branch)
+worktree-path = "{{ repo_path }}/../{{ repo }}.{{ branch | sanitize }}"
+
+# Commit configuration
+[commit]
+# Staging behavior: "none" = manual git add required
+# Options: "all" (stage everything), "tracked" (only tracked files), "none"
+stage = "none"
+
+# Merge workflow configuration
+[merge]
+# Preserve individual commits (no squashing)
+squash = false
+
+# Commit any uncommitted changes before merging
+commit = true
+
+# Rebase onto target branch before merging
+rebase = true
+
+# Remove worktree after successful merge
+remove = true
+
+# Run project hooks during merge
+verify = true
+
+# List command defaults
+[list]
+summary = true
+
+# Don't show full details by default
+full = false
+
+# Don't include branches without worktrees
+branches = false
+
+# Don't include remote-only branches
+remotes = false
+
+# LLM commit message generation
+[commit.generation]
+# Use OpenCode CLI for commit message generation
+# OpenCode is installed via Homebrew and managed in home-manager/opencode.nix
+# Command receives diff via stdin and outputs commit message
+command = """opencode run "You are a commit message generator. Generate a conventional commit message following these rules:
+
+REQUIREMENTS:
+- Use imperative mood (Add feature, not Added feature)
+- Subject line under 50 characters
+- No quotes or code blocks in output
+- Match conventional commits format if used in recent commits
+- Focus on WHAT changed, not WHY (save that for PR description)
+
+FORMAT:
+<type>(<scope>): <subject>
+
+[optional body]
+
+STYLE GUIDE:
+- Common types: feat, fix, docs, style, refactor, test, chore
+- Scope is optional but helpful (e.g., api, ui, auth)
+- Body is optional, use for material changes that need explanation
+- Separate subject from body with blank line
+
+CONTEXT:
+The staged diff will be provided below. Analyze it and generate an appropriate commit message.
+
+Output ONLY the commit message text, nothing else.
+"""
+
+# Template for generating individual commit messages
+template = """
+Write a commit message for the staged changes below.
+
+<format>
+- Subject line under 50 chars
+- For material changes, add a blank line then a body paragraph explaining the change
+- Output only the commit message, no quotes or code blocks
+</format>
+
+<style>
+- Imperative mood: "Add feature" not "Added feature"
+- Match recent commit style (conventional commits if used)
+- Describe the change, not the intent or benefit
+</style>
+
+<diffstat>
+{{ git_diff_stat }}
+</diffstat>
+
+<diff>
+{{ git_diff }}
+</diff>
+
+<context>
+Branch: {{ branch }}
+{% if recent_commits %}<recent_commits>
+{% for commit in recent_commits %}- {{ commit }}
+{% endfor %}</recent_commits>{% endif %}
+</context>
+"""
+
+# Template for squashing multiple commits
+squash-template = """
+Combine these commits into a single commit message.
+
+<format>
+- Subject line under 50 chars
+- For material changes, add a blank line then a body paragraph explaining the change
+- Output only the commit message, no quotes or code blocks
+</format>
+
+<style>
+- Imperative mood: "Add feature" not "Added feature"
+- Match the style of commits being squashed (conventional commits if used)
+- Describe the change, not the intent or benefit
+</style>
+
+<commits branch="{{ branch }}" target="{{ target_branch }}">
+{% for commit in commits %}- {{ commit }}
+{% endfor %}</commits>
+
+<diffstat>
+{{ git_diff_stat }}
+</diffstat>
+
+<diff>
+{{ git_diff }}
+</diff>
+"""
+
+# Interactive picker configuration
+[switch.picker]
+# Use delta for diff preview (matches our git config)
+pager = "delta --paging=never"
+
+# Timeout for git commands during picker loading (ms)
+# Lower values show TUI faster; 0 disables timeouts
+timeout-ms = 200

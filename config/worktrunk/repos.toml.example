@@ -1,0 +1,53 @@
+# Worktrunk Repository Catalog
+# 
+# This file defines your repository structure and organization.
+# It serves as a single source of truth for:
+#   - gh-dash config generation (automatic repo path mapping)
+#   - (future) automated git clone --bare for new machine setup
+#   - (future) worktrunk workflow automation tools
+#
+# Location (after decryption): ~/.config/worktrunk/repos.toml
+# Encrypted source: secrets/worktrunk-repos.toml.age
+#
+# To edit: ./scripts/edit-worktrunk-repos.sh
+
+# Systems: Logical groupings of repositories within a worktrunk structure
+# Each system represents a coherent set of related repos
+#
+# Fields:
+#   name: System identifier (for documentation)
+#   org:  GitHub organization or user
+#   path: Relative path from ~/dev/ where repos live
+#   repos: List of repository names
+#
+# Example worktrunk structure:
+#   ~/dev/myorg/my-system/repo1/  (git worktree)
+#   ~/dev/myorg/my-system/repo2/  (git worktree)
+
+[[systems]]
+name = "my-system"
+org = "MyOrg"
+path = "myorg/my-system"
+repos = [
+  "repo-1",
+  "repo-2",
+  "repo-3",
+]
+
+[[systems]]
+name = "other-system"
+org = "MyOrg"
+path = "myorg/other-system"
+repos = ["service-a", "service-b"]
+
+# Wildcard patterns for catch-all repos
+# These match repos that don't fit into structured systems
+# Useful for:
+#   - Personal projects
+#   - Miscellaneous/experimental repos
+#   - Third-party repos you contribute to
+[wildcards]
+patterns = [
+  { org = "MyOrg", path = "~/dev/myorg/misc/*" },
+  { org = "faizhasim", path = "~/dev/faizhasim/*" },
+]

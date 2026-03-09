@@ -4,6 +4,7 @@ with pkgs;
 [
   # A
   aerospace
+  age # Encryption tool for secrets (used by agenix)
   aspell # Spell checker
   aspellDicts.en # English dictionary for aspell
   ast-grep # code searching and refactoring tool
@@ -50,6 +51,7 @@ with pkgs;
   gnused
   gnutar
   golangci-lint
+  gomplate # Template engine for generating text files
   gping # ping with a graph
   gzip
   gawk
@@ -143,6 +145,7 @@ with pkgs;
   sniffnet # monitor network traffic
   sqlfluff # sql linter and auto-formatter
   sshfs # mount folders via ssh
+  ssh-to-age # Convert SSH keys to age format (used by agenix)
   statix
   stow
 

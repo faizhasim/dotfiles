@@ -35,9 +35,13 @@ Declarative macOS system configuration using Nix/Lix, nix-darwin, and home-manag
 
 ## Quick Start
 
-### Prerequisite
+### Prerequisites
 
-Install [homebrew](https://brew.sh) separately:
+**Required:**
+1. [Homebrew](https://brew.sh) - Package manager (manual install)
+2. [1Password](https://1password.com) - For secrets management (installed by this config)
+
+Install Homebrew separately:
 
 ```shell
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -47,6 +51,8 @@ Install [homebrew](https://brew.sh) separately:
 > As [nix-homebrew](https://github.com/zhaofengli/nix-homebrew) manage taps as
 > flake inputs, this make hard to manage private taps from private Github.
 > Hence, homebrew installation is manual and we'll let nix-darwin manage the rest.
+>
+> 1Password (GUI + CLI) will be installed during the first darwin-rebuild run.
 
 ## Installation
 
@@ -64,6 +70,24 @@ curl -sSf -L https://install.lix.systems/lix | sh -s -- install
 
 > [!NOTE]
 > nix-darwin comes by default with Lix installation
+
+### Extract Agenix Key (First-time Setup)
+
+```shell
+# Use nix shell to temporarily get 1Password CLI (provided by this flake's input)
+nix shell 'github:1Password/shell-plugins#_1password' --command bash -c '
+  eval $(op signin)
+  op document get "agenix-decryption-key" --vault Private > ~/.ssh/agenix-key
+  chmod 600 ~/.ssh/agenix-key
+'
+```
+
+> [!IMPORTANT]
+> The agenix key must be extracted **before** running darwin-rebuild, since the activation
+> script runs as root and doesn't have access to your user's 1Password session.
+>
+> After the first darwin-rebuild, 1Password GUI and CLI will be permanently available via
+> the `_1password-shell-plugins` integration. Use `./scripts/edit-worktrunk-repos.sh` to edit secrets.
 
 ## Apply
 

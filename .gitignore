@@ -7,3 +7,8 @@ result-*
 .idea/
 *.iml
 *.iws
+
+### Private configuration files
+# gh-dash private repos (unencrypted, local only)
+# The encrypted version (*.age) is committed in secrets/
+home-manager/gh-dash/repos.toml
