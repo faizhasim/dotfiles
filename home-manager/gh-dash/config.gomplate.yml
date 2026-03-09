@@ -1,0 +1,76 @@
+# gh-dash configuration
+# Generated from gomplate template with data from repos.toml
+
+pager:
+  diff: delta
+
+smartFilteringAtLaunch: true
+
+repoPaths: {{ (datasource "data").repoPaths | data.ToJSONPretty "  " }}
+
+keybindings:
+  universal:
+    - key: g
+      name: lazygit
+      command: cd {{ "{{" }} .RepoPath {{ "}}" }} && lazygit
+
+  prs:
+    - key: m
+      name: quick merge (squash)
+      command: gh pr merge --squash --auto --repo {{ "{{" }} .RepoName {{ "}}" }} {{ "{{" }} .PrNumber {{ "}}" }}
+
+    - key: x
+      name: request changes
+      command: >
+        gh pr review --repo {{ "{{" }} .RepoName {{ "}}" }} --request-changes
+        --body "$(gum input --prompt='What needs changing: ')"
+        {{ "{{" }} .PrNumber {{ "}}" }}
+
+    - key: z
+      name: open in zellij
+      command: >
+        REPO_PATH="{{ "{{" }} .RepoPath {{ "}}" }}" &&
+        REPO_PATH="${REPO_PATH/#\~/$HOME}" &&
+        PR_NUMBER="{{ "{{" }} .PrNumber {{ "}}" }}" &&
+        REPO_NAME="{{ "{{" }} .RepoName {{ "}}" }}" &&
+        SESSION_NAME=$(echo "$REPO_NAME" | tr '/' '-') &&
+        cd "$REPO_PATH" &&
+        if [ -n "$ZELLIJ" ]; then
+          WT_OUTPUT=$(yes n | wt switch "pr:$PR_NUMBER" 2>&1) &&
+          echo "$WT_OUTPUT" | grep -v "Install shell integration" | head -n 5 &&
+          NEW_PATH=$(echo "$WT_OUTPUT" | grep "@ ~" | sed -n 's/.*@ \([^,]*\).*/\1/p' | sed "s|~|$HOME|" | tail -1) &&
+          if [ -n "$NEW_PATH" ] && [ -d "$NEW_PATH" ]; then
+            zellij action new-tab --cwd "$NEW_PATH" --name "PR $PR_NUMBER" || exit 1 &&
+            sleep 0.2 &&
+            zellij action write-chars "cd \"$NEW_PATH\" && clear && pwd && ${EDITOR:-nvim} ." &&
+            zellij action write 13
+          else
+            echo "Failed to get worktree path: NEW_PATH=$NEW_PATH"
+          fi
+        else
+          WT_OUTPUT=$(timeout 30 sh -c 'yes n | wt switch "pr:'"$PR_NUMBER"'" 2>&1') &&
+          NEW_PATH=$(echo "$WT_OUTPUT" | grep "@ ~" | sed -n 's/.*@ \([^,]*\).*/\1/p' | sed "s|~|$HOME|" | tail -1) &&
+          if [ -n "$NEW_PATH" ] && [ -d "$NEW_PATH" ]; then
+            cd "$NEW_PATH" &&
+            ${EDITOR:-nvim} .
+          else
+            echo "ERROR: Failed to get worktree path: NEW_PATH=$NEW_PATH"
+            exit 1
+          fi
+        fi
+
+prSections:
+  - title: "󰳐 author:@me"
+    filters: "author:@me is:open archived:false sort:created-desc"
+
+  - title: "󰳐 all requested reviews"
+    filters: "is:open sort:created-desc review-requested:@me{{ if (datasource "data").reposFilter }} {{ (datasource "data").reposFilter }}{{ end }}"
+
+  - title: "󰳐 mention:@me"
+    filters: "is:open mentions:@me sort:created-desc"
+
+  - title: "󰳏 is:open"
+    filters: "is:open"
+
+  - title: "󰳐 all reviews"
+    filters: "is:open sort:created-desc{{ if (datasource "data").reposFilter }} {{ (datasource "data").reposFilter }}{{ end }}"

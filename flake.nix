@@ -37,6 +37,12 @@
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.darwin.follows = "darwin";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -50,6 +56,14 @@
       ...
     }:
     let
+      # SSH key used for agenix secret decryption
+      # Private key stored in 1Password (document: "agenix-decryption-key")
+      # Extracted to ~/.ssh/agenix-key at system activation time
+      # Both representations of the same key — SSH for identityPaths, age for publicKeys
+      primarySshKey = {
+        ssh = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDmhrC+z9U+SYnvXhXRBWK47H34TMMr8cBdVpXuVHAAO";
+        age = "age1qry8eztm55zgxek5npyu22v4j7akzdfapn249gmfhpg5gkwcasasqhdygq";
+      };
 
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"
@@ -77,10 +91,12 @@
           specialArgs = {
             inherit inputs;
             inherit hostname;
+            inherit primarySshKey;
           };
           modules = [
             inputs.nix-index-database.darwinModules.nix-index
             stylix.darwinModules.stylix
+            inputs.agenix.darwinModules.default
             ./darwin
             (
               { pkgs, ... }:
@@ -88,6 +104,9 @@
                 nixpkgs.overlays = overlays;
                 # Fix the GID issue
                 ids.gids.nixbld = 350;
+
+                # Add agenix CLI to system packages
+                environment.systemPackages = [ inputs.agenix.packages.${system}.default ];
 
                 system.stateVersion = 4;
                 system.configurationRevision = self.rev or self.dirtyRev or null;
