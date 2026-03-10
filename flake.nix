@@ -43,6 +43,14 @@
       inputs.darwin.follows = "darwin";
       inputs.home-manager.follows = "home-manager";
     };
+    og-packs = {
+      url = "github:PeonPing/og-packs/v1.1.0";
+      flake = false;
+    };
+    peon-ping = {
+      url = "github:PeonPing/peon-ping/v2.8.1";
+      flake = false;
+    };
   };
 
   outputs =

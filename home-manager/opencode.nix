@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, inputs, ... }:
 {
   programs.opencode = {
     enable = true;
@@ -103,6 +103,42 @@
       refactor-review = ./opencode/agent/refactor-review.md;
       spec-distiller = ./opencode/agent/spec-distiller.md;
       test-gen = ./opencode/agent/test-gen.md;
+    };
+  };
+
+  home.file = {
+    # Plugin: peon-ping TypeScript adapter for OpenCode (pinned to peon-ping v2.8.1)
+    ".config/opencode/plugins/peon-ping.ts".source =
+      "${inputs.peon-ping}/adapters/opencode/peon-ping.ts";
+    # Sound pack: Orc Peon (CESP v1.0, pinned to og-packs v1.1.0)
+    ".openpeon/packs/peon" = {
+      source = "${inputs.og-packs}/peon";
+      recursive = true;
+    };
+
+    # Plugin config
+    ".config/opencode/peon-ping/config.json".text = builtins.toJSON {
+      active_pack = "peon";
+      volume = 0.5;
+      enabled = true;
+      desktop_notifications = true;
+      use_sound_effects_device = true;
+      categories = {
+        "session.start" = true;
+        "session.end" = true;
+        "task.acknowledge" = true;
+        "task.complete" = true;
+        "task.error" = true;
+        "task.progress" = true;
+        "input.required" = true;
+        "resource.limit" = true;
+        "user.spam" = true;
+      };
+      spam_threshold = 3;
+      spam_window_seconds = 10;
+      session_start_cooldown_seconds = 30;
+      pack_rotation = [ ];
+      debounce_ms = 500;
     };
   };
 }

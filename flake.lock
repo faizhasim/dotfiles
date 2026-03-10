@@ -457,6 +457,40 @@
         "type": "github"
       }
     },
+    "og-packs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770932817,
+        "narHash": "sha256-spao/GTIhH4c5HOmVc0umMvrwOaMRa4s5Pem1AWyUOw=",
+        "owner": "PeonPing",
+        "repo": "og-packs",
+        "rev": "6970d159571aebbfc7457cb6a6cf2b764c8467e6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PeonPing",
+        "ref": "v1.1.0",
+        "repo": "og-packs",
+        "type": "github"
+      }
+    },
+    "peon-ping": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771599328,
+        "narHash": "sha256-eTXYNMUxEweBtm1NDM4iSWwzqMM2dJfDJSFDp1FoDpM=",
+        "owner": "PeonPing",
+        "repo": "peon-ping",
+        "rev": "c86df5960ef61bf51169cf3520b4238132344abc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PeonPing",
+        "ref": "v2.8.1",
+        "repo": "peon-ping",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "_1password-shell-plugins": "_1password-shell-plugins",
@@ -468,6 +502,8 @@
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_2",
         "nord-dircolors": "nord-dircolors",
+        "og-packs": "og-packs",
+        "peon-ping": "peon-ping",
         "stylix": "stylix",
         "worktrunk": "worktrunk",
         "zjstatus": "zjstatus"
