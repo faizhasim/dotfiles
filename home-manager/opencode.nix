@@ -11,10 +11,30 @@
       autoupdate = true; # Works with Homebrew installation
       share = "manual";
 
-      provider.github-copilot.models."claude-sonnet-4.5".options = {
-        thinking = {
-          type = "enabled";
-          budgetTokens = 16000;
+      provider.github-copilot.models = {
+        "claude-sonnet-4.5".options = {
+          thinking = {
+            type = "enabled";
+            budgetTokens = 16000;
+          };
+        };
+        "claude-sonnet-4.6".options = {
+          thinking = {
+            type = "enabled";
+            budgetTokens = 16000;
+          };
+        };
+        "gemini-3.1-pro".options = {
+          thinking = {
+            type = "enabled";
+            budgetTokens = 20000; # Larger context window
+          };
+        };
+        "gpt-5-mini".options = {
+          thinking = {
+            type = "enabled";
+            budgetTokens = 8000; # Smaller, faster model
+          };
         };
       };
 
@@ -22,7 +42,7 @@
         build = {
           description = "Primary dev agent with full tool access";
           mode = "primary";
-          model = "github-copilot/claude-sonnet-4.5";
+          model = "github-copilot/claude-sonnet-4.6";
           temperature = 0.1;
           prompt = "{file:${./opencode/prompts/menatey-rima-mode-1.0.md}}";
           permission = {
@@ -34,7 +54,7 @@
         plan = {
           description = "Analysis & planning without direct changes";
           mode = "primary";
-          model = "github-copilot/claude-sonnet-4.5";
+          model = "github-copilot/claude-sonnet-4.6";
           temperature = 0.3;
           prompt = "{file:${./opencode/prompts/menatey-rima-mode-1.0.md}}";
           permission = {
@@ -43,6 +63,9 @@
             bash = "deny";
           };
         };
+        # Specialized agents (doc-analyzer and fast-code) removed here
+        # Specialized functionality is handled via subagents invoked by the
+        # primary agent prompt (see ./opencode/prompts/menatey-rima-mode-1.0.md).
       };
 
       mcp = {

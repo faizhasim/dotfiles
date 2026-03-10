@@ -1,7 +1,7 @@
 ---
 description: Analyzes large documents and performs bulk operations
 mode: subagent
-model: opencode/big-pickle
+model: github-copilot/gemini-3.1-pro
 temperature: 0.1
 tools:
   bash: false

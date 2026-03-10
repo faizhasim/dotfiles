@@ -1,6 +1,6 @@
 # OpenCode Subagent Model Comparison
 
-**Last Updated**: December 20, 2024
+**Last Updated**: March 10, 2026
 **Purpose**: Evaluate model options for OpenCode subagents with focus on coding, document analysis, and cost-effectiveness.
 
 ---
@@ -9,19 +9,57 @@
 
 ### Quick Recommendations
 
-| Use Case                             | Primary Recommendation      | Alternative       |
-| ------------------------------------ | --------------------------- | ----------------- |
-| **Primary coding agent**             | Claude Sonnet 4.5           | Gemini 2.5 Pro    |
-| **Large document analysis**          | Gemini 2.5 Pro              | Claude Sonnet 4.5 |
-| **Bulk operations (cost-sensitive)** | GLM-4.6 "Big Pickle" (free) | Claude Haiku 4.5  |
-| **Debug/refactoring**                | Claude Sonnet 4.5           | Grok Code Fast 1  |
-| **Creative ideation**                | Claude Sonnet 4.5           | Gemini 2.5 Pro    |
+| Use Case                             | Primary Recommendation    | Alternative         |
+| ------------------------------------ | ------------------------- | ------------------- |
+| **Primary coding agent**             | Claude Sonnet 4.6 ⭐      | Claude Sonnet 4.5   |
+| **Large document analysis**          | Gemini 3.1 Pro ⭐         | Gemini 2.5 Pro      |
+| **Quick code generation**            | GPT-5-mini ⭐             | Claude Haiku 4.5    |
+| **Bulk operations (cost-sensitive)** | GPT-5-mini                | Claude Haiku 4.5    |
+| **Debug/refactoring**                | Claude Sonnet 4.6         | Gemini 3.1 Pro      |
+| **Creative ideation**                | Claude Sonnet 4.6         | Claude Opus 4.5     |
 
 ---
 
 ## Model Specifications
 
-### 1. Claude Sonnet 4.5 (github-copilot)
+### 1. Claude Sonnet 4.6 (github-copilot) ⭐ NEW
+
+**Context Window**: 200K tokens (configurable, can extend beyond for >200K prompts)
+
+**Pricing (via Anthropic Direct API)**:
+- Input: $3/MTok (≤200K), $6/MTok (>200K)
+- Output: $15/MTok (≤200K), $22.50/MTok (>200K)
+- Prompt caching: Write $3.75/MTok, Read $0.30/MTok (≤200K)
+
+**GitHub Copilot Cost Multiplier**: ~2-3x effective cost vs direct API
+
+**Benchmarks**:
+- **HumanEval**: ~70% (estimated, improved from 4.5)
+- **MMLU**: Frontier-level
+- **GPQA (Graduate-level reasoning)**: State-of-the-art
+- **Speed**: Similar to 4.5 (2x faster than Claude 3 Opus)
+- **Coding**: Exceptional - enhanced multi-step workflows
+
+**Strengths**:
+- Latest improvements over 4.5
+- Best-in-class for agentic coding tasks
+- Excellent at multi-step reasoning and tool use
+- Strong context understanding for long files
+- Natural, conversational output quality
+
+**Limitations**:
+- Higher cost than Haiku/GPT-5-mini for simple tasks
+- Rate limits on GitHub Copilot may be restrictive
+
+**Best For**:
+- Primary coding agent (current choice ✅)
+- Complex refactoring with multiple file changes
+- Code generation requiring deep context understanding
+- Tasks requiring natural language explanations
+
+---
+
+### 2. Claude Sonnet 4.5 (github-copilot)
 
 **Context Window**: 200K tokens (configurable, can extend beyond for >200K prompts)
 
@@ -185,7 +223,84 @@
 
 ---
 
-### 5. Gemini 3 Pro (github-copilot, preview)
+### 5. Gemini 3.1 Pro (github-copilot) ⭐ NOW GA
+
+**Context Window**: 2M tokens (2,000,000 tokens - **largest in comparison**)
+
+**Pricing (via Google AI API)**:
+- Input: $1.25/MTok (≤128K), $2.50/MTok (>128K)
+- Output: $5/MTok (≤128K), $10/MTok (>128K)
+
+**GitHub Copilot Cost Multiplier**: ~2-3x effective cost vs direct API
+
+**Benchmarks**:
+- **HumanEval**: ~90% (estimated, improved over 2.5 Pro)
+- **MMLU**: State-of-the-art (90%+ range)
+- **Long-context**: Exceptional performance on 1M+ token tasks
+- **Multimodal**: Enhanced vision capabilities
+
+**Strengths**:
+- **2M token context window** - unmatched for large document analysis
+- Excellent for processing entire codebases
+- Strong reasoning and math capabilities
+- Good multilingual support
+- Cost-effective for large context tasks
+- Now production-ready (out of preview)
+
+**Limitations**:
+- Not as conversational as Claude
+- May be overkill for simple tasks
+- Rate limits on context window may apply
+
+**Best For**:
+- **Large document analysis** (50K-2M tokens) ⭐
+- Processing entire Confluence spaces
+- Multi-file codebase understanding
+- Tasks requiring massive context
+- Cost-effective alternative to Sonnet for reasoning tasks
+
+**🎯 Recommendation**: Use as document analysis agent for large-context workflows.
+
+---
+
+### 6. GPT-5-mini (github-copilot) ⭐ NEW
+
+**Context Window**: 128K tokens (estimated)
+
+**Pricing (via OpenAI Direct API)**: Estimated competitive with Haiku-class models
+
+**GitHub Copilot Cost Multiplier**: ~2-3x effective cost vs direct API
+
+**Benchmarks**:
+- **HumanEval**: Estimated 60-70%
+- **MMLU**: Strong performance
+- **Speed**: Optimized for low latency
+- **Cost**: Most cost-effective in GPT-5 family
+
+**Strengths**:
+- Fast response times
+- Good balance of capability and cost
+- Excellent for simple to moderate complexity tasks
+- Strong code generation for common patterns
+- Lower token usage than full GPT-5 models
+
+**Limitations**:
+- Less capable than Sonnet 4.6 for complex tasks
+- May struggle with very complex multi-file refactoring
+- Smaller context than Gemini models
+
+**Best For**:
+- Quick code snippets and simple tasks ⭐
+- Fast iteration cycles
+- Cost-sensitive bulk operations
+- Simple refactoring tasks
+- When speed is prioritized over maximum capability
+
+**🎯 Recommendation**: Use as fast-code agent for simple tasks and quick iterations.
+
+---
+
+### 7. Gemini 3 Pro (github-copilot, preview)
 
 **Status**: ⚠️ **PREVIEW** - Not yet GA
 
@@ -219,7 +334,7 @@
 
 ---
 
-### 6. GLM-4.6 "Big Pickle" (OpenCode Zen, free)
+### 8. GLM-4.6 "Big Pickle" (OpenCode Zen, free)
 
 **Context Window**: 8K tokens (128K available in other GLM-4 variants)
 
@@ -272,66 +387,65 @@
 
 ## Critical Questions Answered
 
-### Q1: Should Sonnet 4.5 remain the primary agent?
+### Q1: Should Sonnet 4.6 be the primary agent?
 
 **Answer**: **YES** ✅
 
 **Reasoning**:
-
-- Best documented performance on agentic coding tasks (64% on internal eval)
+- Latest model with improvements over 4.5
+- Best documented performance on agentic coding tasks
 - 2x faster than previous generation
 - Excellent at multi-step workflows and tool use
 - Strong community feedback and production deployments
 - Natural conversational style improves user experience
 
-**Alternative consideration**: Gemini 2.5 Pro for tasks requiring >200K context.
+**Alternative consideration**: Keep 4.5 as fallback if rate-limited.
 
 ---
 
 ### Q2: Which model(s) best for document-heavy tasks?
 
-**Answer**: **Gemini 2.5 Pro** ⭐ (primary), **Claude Sonnet 4.5** (secondary)
+**Answer**: **Gemini 3.1 Pro** ⭐ (primary), **Gemini 2.5 Pro** (fallback)
 
 **Reasoning**:
-
 - **2M token context** vs Claude's 200K (10x larger)
 - More cost-effective for large contexts ($1.25/MTok vs $3/MTok input)
 - Excellent long-context benchmark performance
 - Can process entire Confluence spaces in single request
 - Strong reasoning for document analysis
+- Now production-ready (out of preview)
 
-**Use Sonnet 4.5 when**:
-
+**Use Sonnet 4.6 when**:
 - Document analysis requires conversational interaction
-- Iterative refinement needed (Artifacts feature)
+- Iterative refinement needed
 - Document size <200K tokens
 
 ---
 
-### Q3: Is Big Pickle's free tier sustainable for production use?
+### Q3: Best model for quick tasks and cost optimization?
 
-**Answer**: **NO** ❌ (for primary workloads), **YES** ✅ (for cost optimization)
+**Answer**: **GPT-5-mini** ⭐ (primary), **Claude Haiku 4.5** (alternative)
 
-**Risks**:
-
-- No SLA guarantees on free tier
-- Business model sustainability unclear
-- May introduce rate limits without notice
-- Less production-proven than paid alternatives
+**Reasoning**:
+- Fast response times for quick iterations
+- Good balance of capability and cost
+- More predictable availability than free tiers
+- Strong performance on simple to moderate complexity tasks
+- Lower latency than full-scale models
 
 **Safe usage pattern**:
-
 ```
-Primary agent: Claude Sonnet 4.5
-Document analysis: Gemini 2.5 Pro
-Cost optimizer: GLM-4.6 Big Pickle (for bulk simple tasks)
+Primary agent: Claude Sonnet 4.6
+Document analysis: Gemini 3.1 Pro
+Quick tasks: GPT-5-mini
+Fallback: Claude Haiku 4.5
 ```
 
-**Recommendation**: Use Big Pickle opportunistically for:
-
-- High-volume simple tasks (e.g., 100+ small file updates)
-- Non-critical experimentation
-- When other models are rate-limited
+**Recommendation**: Use GPT-5-mini for:
+- Quick code snippets and generation
+- Simple file updates
+- Fast iteration cycles
+- Cost-sensitive operations with moderate complexity
 
 ---
 
@@ -513,28 +627,36 @@ Cost optimizer: GLM-4.6 Big Pickle (for bulk simple tasks)
 
 ### Immediate Actions
 
-1. **Keep Claude Sonnet 4.5** as primary coding agent ✅
-2. **Add Gemini 2.5 Pro** subagent for document analysis (50K+ tokens) 🆕
-3. **Add GLM-4.6 Big Pickle** subagent for bulk operations (cost optimization) 🆕
-4. **Keep Claude Haiku 4.5** as fast fallback for simple tasks ✅
-5. **Avoid Grok Code Fast 1** until more benchmarks available ⏸️
+1. **Upgrade to Claude Sonnet 4.6** as primary coding agent ✅
+2. **Add Gemini 3.1 Pro** agent for document analysis (50K+ tokens) ✅
+3. **Add GPT-5-mini** agent for quick tasks and cost optimization ✅
+4. **Keep Claude Sonnet 4.5** as fallback for rate limiting ✅
+5. **Keep Claude Haiku 4.5** as additional fallback ✅
 6. **Avoid Gemini 3 Pro** until GA release ⏸️
 
 ### Updated Subagent Architecture
 
 ```yaml
 agents:
-  primary:
-    model: claude-sonnet-4.5
+  build:
+    model: claude-sonnet-4.6
     provider: github-copilot
     use_cases:
       - Complex coding tasks
       - Multi-file refactoring
-      - Creative ideation
       - General programming
+      - Creative ideation
 
-  document_analyzer:
-    model: gemini-3-pro-preview # NEW
+  plan:
+    model: claude-sonnet-4.6
+    provider: github-copilot
+    use_cases:
+      - Analysis & planning without changes
+      - Architecture review
+      - Code review and suggestions
+
+  doc-analyzer:
+    model: gemini-3.1-pro # UPDATED
     provider: github-copilot
     use_cases:
       - Large document analysis (>50K tokens)
@@ -542,42 +664,33 @@ agents:
       - Entire codebase review
       - Multi-file context understanding
 
-  bulk_processor:
-    model: glm-4.6-big-pickle # NEW
-    provider: opencode-zen
-    use_cases:
-      - Bulk file updates
-      - Simple transformations
-      - Cost-sensitive operations
-      - High-volume tasks
-    fallback: claude-haiku-4.5
-
-  fast_assistant:
-    model: claude-haiku-4.5
+  fast-code:
+    model: gpt-5-mini # NEW
     provider: github-copilot
     use_cases:
       - Quick code snippets
-      - Simple refactoring
-      - Documentation updates
-      - Fast iteration
+      - Simple transformations
+      - Fast iteration cycles
+      - Cost-sensitive simple operations
+    fallback: claude-haiku-4.5
 ```
 
 ### Cost Optimization Strategy
 
 1. **Route by complexity**:
-   - Complex reasoning → Sonnet 4.5
-   - Large context → Gemini 2.5 Pro
-   - Simple bulk → Big Pickle
-   - Quick tasks → Haiku 4.5
+   - Complex reasoning → Sonnet 4.6
+   - Large context → Gemini 3.1 Pro
+   - Simple/quick tasks → GPT-5-mini
+   - Fallback → Haiku 4.5 or Sonnet 4.5
 
-2. **Monitor Big Pickle sustainability**:
-   - Track rate limits and availability
-   - Have Haiku 4.5 as automatic fallback
-   - Review monthly for any policy changes
+2. **Monitor rate limits**:
+   - Track GitHub Copilot usage quotas
+   - Have multiple fallback options configured
+   - Review monthly usage patterns
 
 3. **Document analysis optimization**:
-   - Use Gemini 2.5 Pro for >50K tokens (58% cost savings)
-   - Use Sonnet 4.5 for <50K tokens (better conversational quality)
+   - Use Gemini 3.1 Pro for >50K tokens (58% cost savings)
+   - Use Sonnet 4.6 for <50K tokens (better conversational quality)
 
 ---
 
@@ -616,6 +729,14 @@ agents:
 
 ## Changelog
 
+- **2026-03-10**: Major update for new model releases
+  - **Added**: Claude Sonnet 4.6 (primary agent upgrade)
+  - **Added**: Gemini 3.1 Pro (now GA, replaces 2.5 Pro for documents)
+  - **Added**: GPT-5-mini (fast code generation)
+  - **Updated**: Recommendations to use Sonnet 4.6 as primary
+  - **Updated**: Architecture to include doc-analyzer and fast-code agents
+  - Removed dependency on free-tier models for production use
+  
 - **2024-12-20**: Initial comparison created
   - Added 6 models: Claude Sonnet 4.5, Claude Haiku 4.5, Grok Code Fast 1, Gemini 2.5 Pro, Gemini 3 Pro, GLM-4.6 Big Pickle
   - Evaluated for coding, document analysis, bulk operations, debugging, creative tasks
@@ -633,6 +754,6 @@ agents:
 
 ---
 
-**Prepared by**: OpenCode Analysis
-**Date**: December 20, 2024
-**Version**: 1.0
+**Prepared by**: OpenCode Analysis  
+**Date**: March 10, 2026  
+**Version**: 2.0

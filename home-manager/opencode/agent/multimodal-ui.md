@@ -1,7 +1,7 @@
 ---
 description: Analyzes UI screenshots and layout/style issues
 mode: subagent
-model: github-copilot/gemini-3-pro-preview
+model: github-copilot/gemini-3.1-pro
 temperature: 0.25
 tools:
   write: false
