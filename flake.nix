@@ -72,6 +72,12 @@
         age = "age1qry8eztm55zgxek5npyu22v4j7akzdfapn249gmfhpg5gkwcasasqhdygq";
       };
 
+      # OpenCode model profile: "github-premium" | "opencode-go" | "github-standard"
+      # - github-premium: Full premium access (Claude Sonnet 4.6, Gemini 3 Pro, etc.)
+      # - opencode-go: Fallback to opencode-go models (Kimi, GLM)
+      # - github-standard: Emergency fallback to GitHub's free tier models
+      opencodeModelProfile = "opencode-go";
+
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"
         "aarch64-linux"
@@ -99,6 +105,7 @@
             inherit inputs;
             inherit hostname;
             inherit primarySshKey;
+            inherit opencodeModelProfile;
           };
           modules = [
             inputs.nix-index-database.darwinModules.nix-index
@@ -171,7 +178,7 @@
                 useUserPackages = true;
                 backupFileExtension = "hm-backup";
                 extraSpecialArgs = {
-                  inherit inputs;
+                  inherit inputs opencodeModelProfile;
                   pkgs-zsh-fzf-tab = import inputs.nixpkgs-zsh-fzf-tab { inherit system; };
                 };
                 users.${username} =
@@ -190,6 +197,7 @@
                       hostname
                       username
                       nord-dircolors
+                      opencodeModelProfile
                       ;
                   };
 

@@ -1,7 +1,7 @@
 ---
 description: Assists with infra & platform troubleshooting
 mode: subagent
-model: github-copilot/claude-sonnet-4.6
+model: @PRIMARY_MODEL@
 temperature: 0.2
 tools:
   bash: true

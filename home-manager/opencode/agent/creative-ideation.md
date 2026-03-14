@@ -1,7 +1,7 @@
 ---
 description: Brainstorms multiple architecture or design approaches
 mode: subagent
-model: github-copilot/gemini-3.1-pro
+model: @LARGE_CONTEXT_MODEL@
 temperature: 0.7
 tools:
   write: false

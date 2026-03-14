@@ -6,6 +6,7 @@
   hostname,
   username,
   nord-dircolors,
+  opencodeModelProfile,
   ...
 }:
 {
@@ -61,7 +62,7 @@
     ./lazygit.nix
     ./mise.nix
     ./npmrc.nix
-    ./opencode.nix
+    (import ./opencode.nix { inherit lib inputs opencodeModelProfile; })
     ./presenterm.nix
     ./shell.nix
     ./sketchybar.nix

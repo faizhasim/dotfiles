@@ -1,7 +1,7 @@
 ---
 description: Analyzes large documents and performs bulk operations
 mode: subagent
-model: github-copilot/gemini-3.1-pro
+model: @LARGE_CONTEXT_MODEL@
 temperature: 0.1
 tools:
   bash: false
