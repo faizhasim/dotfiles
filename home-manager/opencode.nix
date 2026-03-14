@@ -1,10 +1,11 @@
 {
   lib,
   inputs,
-  opencodeModelProfile,
   ...
 }:
 let
+  opencodeModelProfile = inputs.opencodeModelProfile or "github-premium";
+
   # Model profile definitions
   # - github-premium: Full premium access (Claude Sonnet 4.6, Gemini 3 Pro, etc.)
   # - opencode-go: Fallback to opencode-go models (Kimi, GLM)

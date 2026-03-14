@@ -31,25 +31,9 @@
     inputs._1password-shell-plugins.hmModules.default
     inputs.krewfile.homeManagerModules.krewfile
     inputs.worktrunk.homeModules.default
-    (import ./aerospace.nix {
-      inherit
-        config
-        pkgs
-        lib
-        inputs
-        username
-        ;
-    })
+    ./aerospace.nix
+    ./dircolors.nix
     ./direnv.nix
-    (import ./dircolors.nix {
-      inherit
-        config
-        pkgs
-        lib
-        inputs
-        nord-dircolors
-        ;
-    })
     ./dnsmasq.nix
     ./gh-dash.nix
     ./gh.nix
@@ -62,7 +46,7 @@
     ./lazygit.nix
     ./mise.nix
     ./npmrc.nix
-    (import ./opencode.nix { inherit lib inputs opencodeModelProfile; })
+    ./opencode.nix
     ./presenterm.nix
     ./shell.nix
     ./sketchybar.nix
@@ -76,7 +60,7 @@
 
   programs._1password-shell-plugins = {
     enable = true;
-    plugins = with pkgs; [ gh ];
+    plugins = [ pkgs.gh ];
   };
 
 }
