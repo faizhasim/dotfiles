@@ -45,7 +45,7 @@ with pkgs;
   fzf # Fuzzy finder
 
   # G
-  gnupg
+  gnupg # GNU Privacy Guard
   gnugrep
   gnumake
   gnused
@@ -61,7 +61,6 @@ with pkgs;
   github-copilot-cli # required by nvim sidekick
   ghostscriptX
   glow # Markdown renderer for terminal
-  gnupg # GNU Privacy Guard
   gopls # Go language server
   graph-easy # draw graphs in the terminal
   grc # colored log output

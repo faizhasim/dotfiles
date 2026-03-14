@@ -31,13 +31,13 @@
       autohide-delay = 0.0;
       autohide-time-modifier = 0.0;
       dashboard-in-overlay = true;
-#      largesize = 85;
-#      tilesize = 50;
-#      magnification = true;
+      #      largesize = 85;
+      #      tilesize = 50;
+      #      magnification = true;
       launchanim = false;
       mru-spaces = false;
-#      show-recents = false;
-#      show-process-indicators = false;
+      #      show-recents = false;
+      #      show-process-indicators = false;
       static-only = true;
     };
 

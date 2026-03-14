@@ -1,12 +1,20 @@
-{ config, pkgs, lib, inputs, username, ... }: {
- # Disabled sketchybar integration and use ice-bar instead
- # programs.aerospace = {
- #  enable = true;
- #  package = pkgs.aerospace;
- #  launchd = {
- #   enable = true;
- #   keepAlive = true;
- #  };
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  username,
+  ...
+}:
+{
+  # Disabled sketchybar integration and use ice-bar instead
+  # programs.aerospace = {
+  #  enable = true;
+  #  package = pkgs.aerospace;
+  #  launchd = {
+  #   enable = true;
+  #   keepAlive = true;
+  #  };
   # userSettings = {
   #   after-startup-command = [
   #     # "exec-and-forget /etc/profiles/per-user/${username}/bin/sketchybar --reload" # add reload flag
@@ -102,6 +110,6 @@
   #   };
   #
   # };
- # };
- home.file.".config/aerospace/aerospace.toml".text = builtins.readFile ./aerospace/aerospace.toml;
+  # };
+  home.file.".config/aerospace/aerospace.toml".text = builtins.readFile ./aerospace/aerospace.toml;
 }

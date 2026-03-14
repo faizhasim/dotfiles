@@ -3,8 +3,16 @@
 {
   # Use built-in networking options for static configuration
   networking = {
-    knownNetworkServices = [ "Wi-Fi" "Thunderbolt Bridge" ];
-    dns = [ "9.9.9.9" "149.112.112.112" "1.1.1.1" "8.8.8.8" ];
+    knownNetworkServices = [
+      "Wi-Fi"
+      "Thunderbolt Bridge"
+    ];
+    dns = [
+      "9.9.9.9"
+      "149.112.112.112"
+      "1.1.1.1"
+      "8.8.8.8"
+    ];
   };
 
   # Additional dynamic network settings through activation script

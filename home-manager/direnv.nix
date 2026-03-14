@@ -1,4 +1,12 @@
-{ config, pkgs, lib, inputs, username, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  username,
+  ...
+}:
+{
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;

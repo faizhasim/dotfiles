@@ -1,4 +1,14 @@
-{ config, pkgs, lib, inputs, nord-dircolors, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+let
+  nord-dircolors = inputs.nord-dircolors;
+in
+{
   programs.dircolors = {
     enable = true;
     enableZshIntegration = true;

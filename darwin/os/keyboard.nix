@@ -13,16 +13,14 @@
     # Set delay until repeat (in milliseconds)
     InitialKeyRepeat = 20;
 
-
     NSAutomaticSpellingCorrectionEnabled = false;
     NSAutomaticCapitalizationEnabled = false;
     NSAutomaticPeriodSubstitutionEnabled = false;
     NSAutomaticDashSubstitutionEnabled = false;
     NSAutomaticQuoteSubstitutionEnabled = false;
 
-
     # Optional settings (uncomment if needed)
-     AppleKeyboardUIMode = 3;  # Full Keyboard Access - all controls
+    AppleKeyboardUIMode = 3; # Full Keyboard Access - all controls
     # "com.apple.keyboard.fnState" = false;  # Use F1, F2, etc. as standard function keys
   };
 

@@ -45,7 +45,7 @@ in
   # latest tagged release. Runs after "homebrew" due to alphabetical ordering.
   system.activationScripts.homebrewMdmFix.text = ''
     echo >&2 "Ensuring Homebrew git stable branch ref..."
-    
+
     if [ -d "/opt/homebrew/.git" ]; then
       cd "/opt/homebrew" && \
       git rev-parse $(git describe --tags $(git rev-list --tags --max-count=1)) \

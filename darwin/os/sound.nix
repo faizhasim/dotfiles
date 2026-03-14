@@ -16,10 +16,10 @@
 
     # Alert volume (50%)
     defaults write NSGlobalDomain com.apple.sound.beep.volume -float 0.6065307
-    
+
     # Disable the sound effects on boot
     sudo nvram SystemAudioVolume=" "
-    
+
     # Optional: Set custom system alert sound
     # defaults write com.apple.systemsound com.apple.sound.beep.sound -string "/System/Library/Sounds/Blow.aiff"
   '';

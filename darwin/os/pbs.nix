@@ -8,7 +8,7 @@
       "enabled_context_menu" = 1;
       "enabled_services_menu" = 1;
     }'
-    
+
     # Flush the services cache to apply changes
     /System/Library/CoreServices/pbs -flush
   '';

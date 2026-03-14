@@ -116,6 +116,14 @@
               { pkgs, ... }:
               {
                 nixpkgs.overlays = overlays;
+                nixpkgs.config.allowUnfree = true;
+                # nixpkgs.config = {
+                #   allowUnfree = true;
+                #   # allowBroken = true;
+                #   allowInsecure = false;
+                #   # allowUnsupportedSystem = true;
+                # };
+
                 # Fix the GID issue
                 ids.gids.nixbld = 350;
 
@@ -137,13 +145,6 @@
                   localHostName = hostname;
                 };
 
-                nixpkgs.config = {
-                  allowUnfree = true;
-                  # allowBroken = true;
-                  allowInsecure = false;
-                  # allowUnsupportedSystem = true;
-                };
-
                 nix = {
                   settings = {
                     allowed-users = [ username ];
@@ -162,10 +163,6 @@
                     };
                     options = "--delete-older-than 30d";
                   };
-
-                  extraOptions = ''
-                    experimental-features = nix-command flakes
-                  '';
                 };
 
               }
@@ -179,7 +176,6 @@
                 backupFileExtension = "hm-backup";
                 extraSpecialArgs = {
                   inherit inputs opencodeModelProfile;
-                  pkgs-zsh-fzf-tab = import inputs.nixpkgs-zsh-fzf-tab { inherit system; };
                 };
                 users.${username} =
                   {

@@ -20,7 +20,7 @@
 
       # Optional settings (uncomment if needed)
       # QLPanelAnimationDuration = 0;  # Opening and closing speed of Quick Look windows
-      NSAutomaticWindowAnimationsEnabled = false;  # Opening and closing window animations
+      NSAutomaticWindowAnimationsEnabled = false; # Opening and closing window animations
       # NSUseAnimatedFocusRing = false;  # Disable animated focus ring
       # NSTextShowsControlCharacters = true;  # Display ASCII control characters using caret notation
       # NSQuitAlwaysKeepsWindows = false;  # Disable Resume system-wide

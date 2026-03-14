@@ -12,7 +12,6 @@
     # Scroll bar visibility
     AppleShowScrollBars = "WhenScrolling";
 
-
     AppleScrollerPagingBehavior = true;
 
     # Optional settings (uncomment if needed)

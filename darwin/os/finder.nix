@@ -8,7 +8,6 @@
       AppleShowAllFiles = true;
     };
 
-
     finder = {
       AppleShowAllExtensions = true;
       AppleShowAllFiles = true;

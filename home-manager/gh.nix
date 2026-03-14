@@ -1,14 +1,24 @@
-{ config, pkgs, lib, inputs, ... }: {
- programs.gh = {
-  enable = true;
-  gitCredentialHelper = {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+{
+  programs.gh = {
     enable = true;
-    hosts = [ "https://github.com" "https://gist.github.com" ];
+    gitCredentialHelper = {
+      enable = true;
+      hosts = [
+        "https://github.com"
+        "https://gist.github.com"
+      ];
+    };
+    package = pkgs.gh;
+    settings = {
+      editor = "nvim";
+      git_protocol = "ssh";
+    };
   };
-  package = pkgs.gh;
-  settings = {
-    editor = "nvim";
-    git_protocol = "ssh";
-  };
- };
 }
