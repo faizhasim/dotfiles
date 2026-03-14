@@ -1,4 +1,10 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  system,
+  ...
+}:
 let
   inherit (config.lib.stylix) colors;
 
@@ -25,7 +31,7 @@ in
       layout {
           default_tab_template {
               pane size=1 borderless=true {
-                  plugin location="file:${pkgs.zjstatus}/bin/zjstatus.wasm" {
+                  plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
 
                       format_left   "{mode} {tabs}"
                       format_center ""

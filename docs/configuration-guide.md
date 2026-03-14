@@ -386,7 +386,7 @@ Zellij config is in `home-manager/zellij/config.kdl` and `home-manager/zellij.ni
 
 - **Sessionizer** - Quick project switcher (Ctrl+o + w)
 - **Session tree** - Visual session browser (Ctrl+o + e)
-- **zjstatus** - Custom status bar with Nord theme integration
+- **zjstatus** - Custom status bar
 - **Session management** - Replicated in Zsh for quick access
 
 ### Changing Keybindings

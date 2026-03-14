@@ -64,7 +64,6 @@ dotfiles/
 │
 ├── overlays/              # Package modifications
 │   ├── ice-bar.nix       # Menu bar item hiding
-│   └── zjstatus.nix      # Zellij status bar plugin
 │
 ├── scripts/               # Setup and utility scripts
 │   ├── setup-nvim.sh
@@ -171,7 +170,7 @@ Individual tool configurations:
 - **zsh.nix** - Shell setup, aliases, functions, plugins
 - **git.nix** - Git config, aliases, 1Password signing
 - **wezterm.nix** - Terminal emulator settings
-- **zellij.nix** - Terminal multiplexer with sessionizer and zjstatus
+- **zellij.nix** - Terminal multiplexer with sessionizer
 - **aerospace.nix** - Window manager configuration
 - **mise.nix** - Runtime version manager (node, python, go, etc.)
 - **direnv.nix** - Per-directory environment management
@@ -211,11 +210,6 @@ The configuration includes:
 Package modifications and custom versions:
 
 ```nix
-# overlays/zjstatus.nix
-final: prev: {
-  zjstatus = inputs.zjstatus.packages.${prev.system}.default;
-}
-
 # overlays/ice-bar.nix
 final: prev: {
   ice-bar = prev.ice-bar.overrideAttrs (old: {
@@ -227,7 +221,6 @@ final: prev: {
 
 Active overlays:
 
-- **zjstatus** - Zellij status bar plugin from flake input
 - **ice-bar** - Menu bar item hiding (any alternative like HiddenBar would work too)
 
 ## Configuration Flow
@@ -444,7 +437,6 @@ The system provides a modern terminal-based development workflow:
 │  Zellij (Terminal Multiplexer)  │
 │  ├─ Session management          │
 │  ├─ Sessionizer (Ctrl+o w)      │
-│  ├─ zjstatus (Nord themed)      │
 │  └─ Project-based workflows     │
 └────────────┬────────────────────┘
              │

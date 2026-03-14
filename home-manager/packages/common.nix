@@ -36,7 +36,7 @@ with pkgs;
   dust # disk usage analyzer
 
   # F
-  fastfetch
+  fastfetch # System information tool
   fd # Fast find alternative
   fblog # json log viewer
   ffmpeg # video editing and cutting
@@ -109,7 +109,6 @@ with pkgs;
   # N
   ncurses # Terminal control library with terminfo database
   neovim
-  neofetch # System information tool
   neohtop # nice htop GUI alternative
   nil # nix language server
   nixd # nix language server

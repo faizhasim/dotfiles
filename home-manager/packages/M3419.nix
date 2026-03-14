@@ -6,7 +6,7 @@ with pkgs;
   buildkite-cli
 
   # L
-  localstack
+  # localstack  # Temporarily disabled - broken in latest nixpkgs
 
   # S
   snyk
