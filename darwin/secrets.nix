@@ -50,33 +50,51 @@ in
     };
   };
 
-  # Extract agenix decryption key from 1Password before secrets are decrypted
-  # NOTE: This runs as root, so it can only extract the key if:
-  # 1. The key already exists (extracted by user beforehand), OR
-  # 2. 1Password service account token is set via OP_SERVICE_ACCOUNT_TOKEN
+  # Verify agenix decryption key exists before proceeding
+  # The key must be extracted manually BEFORE running darwin-rebuild:
+  #   op document get 'agenix-decryption-key' --vault Private > ~/.ssh/agenix-key && chmod 600 ~/.ssh/agenix-key
+  #
+  # NOTE: We cannot extract from 1Password during activation because:
+  # - Activation runs as root, which doesn't have access to user's 1Password CLI session
+  # - Interactive prompts would block the build
+  # - Only works if OP_SERVICE_ACCOUNT_TOKEN is set (for CI/automation)
   system.activationScripts.preActivation.text = lib.mkBefore ''
     AGENIX_KEY_PATH="/Users/${config.system.primaryUser}/.ssh/agenix-key"
 
-    if [ ! -f "$AGENIX_KEY_PATH" ]; then
-      echo >&2 "⚠️  Agenix key not found at $AGENIX_KEY_PATH"
-      echo >&2 "Attempting to extract from 1Password..."
-      
-      if ${pkgs.lib.getExe pkgs._1password-cli} document get "agenix-decryption-key" --vault Private > "$AGENIX_KEY_PATH" 2>/dev/null; then
-        chmod 600 "$AGENIX_KEY_PATH"
-        echo >&2 "✓ Successfully extracted agenix key from 1Password"
-      else
+    # Check if key exists AND has content
+    if [ -s "$AGENIX_KEY_PATH" ]; then
+      echo >&2 "✓ Agenix key exists at $AGENIX_KEY_PATH"
+      chmod 600 "$AGENIX_KEY_PATH" 2>/dev/null || true
+    else
+      # If OP_SERVICE_ACCOUNT_TOKEN is set, try non-interactive extraction
+      if [ -n "''${OP_SERVICE_ACCOUNT_TOKEN:-}" ]; then
+        echo >&2 "Attempting non-interactive 1Password extraction (service account)..."
+        if ${pkgs.lib.getExe pkgs._1password-cli} document get "agenix-decryption-key" --vault Private > "$AGENIX_KEY_PATH" 2>/dev/null && [ -s "$AGENIX_KEY_PATH" ]; then
+          chmod 600 "$AGENIX_KEY_PATH"
+          echo >&2 "✓ Successfully extracted agenix key via service account"
+        else
+          rm -f "$AGENIX_KEY_PATH"
+          # Fall through to error message
+        fi
+      fi
+
+      # Still no key? Fail with clear instructions
+      if [ ! -s "$AGENIX_KEY_PATH" ]; then
+        # Clean up any empty/broken file
+        [ -f "$AGENIX_KEY_PATH" ] && rm -f "$AGENIX_KEY_PATH"
+
         echo >&2 ""
-        echo >&2 "❌ Failed to extract agenix key from 1Password."
+        echo >&2 "❌ Agenix decryption key not found at $AGENIX_KEY_PATH"
         echo >&2 ""
-        echo >&2 "This activation script runs as root and doesn't have access to your 1Password CLI session."
+        echo >&2 "This must be extracted BEFORE running darwin-rebuild."
         echo >&2 ""
-        echo >&2 "Please run this command in your user session BEFORE darwin-rebuild:"
+        echo >&2 "Run this command first (without sudo):"
         echo >&2 "  op document get 'agenix-decryption-key' --vault Private > ~/.ssh/agenix-key && chmod 600 ~/.ssh/agenix-key"
+        echo >&2 ""
+        echo >&2 "Then retry: sudo darwin-rebuild switch --flake .#${hostname}"
         echo >&2 ""
         exit 1
       fi
-    else
-      echo >&2 "✓ Agenix key already exists at $AGENIX_KEY_PATH"
     fi
   '';
 

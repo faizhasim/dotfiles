@@ -7,6 +7,7 @@ ZSH_CONFIG_DIR="$HOME/.config/zsh"
 ZSH_EXTRAS="$ZSH_CONFIG_DIR/extras.sh"
 
 mkdir -p "$ZSH_CONFIG_DIR"
+mkdir -p "$HOME/.config/nvim"
 
 stow -v -t "$HOME/.config/nvim" nvim
 
