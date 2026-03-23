@@ -156,12 +156,23 @@ in
 
       tui.scroll_acceleration.enabled = true;
     };
-
-    # Custom agents (10 files) with dynamic model substitution
-    agents = agentFiles;
   };
 
+  # Subagent definitions - placed in ~/.config/opencode/agent/
+  # These are invoked via @agentname syntax and should NOT be in settings.agent
   home.file = {
+    # Subagents (mode: subagent)
+    ".config/opencode/agent/debug.md".source = agentFiles.debug;
+    ".config/opencode/agent/refactor-review.md".source = agentFiles.refactor-review;
+    ".config/opencode/agent/spec-distiller.md".source = agentFiles.spec-distiller;
+    ".config/opencode/agent/infra-platform.md".source = agentFiles.infra-platform;
+    ".config/opencode/agent/test-gen.md".source = agentFiles.test-gen;
+    ".config/opencode/agent/docs-writer.md".source = agentFiles.docs-writer;
+    ".config/opencode/agent/quota-sentry.md".source = agentFiles.quota-sentry;
+    ".config/opencode/agent/creative-ideation.md".source = agentFiles.creative-ideation;
+    ".config/opencode/agent/doc-analyser.md".source = agentFiles.doc-analyser;
+    ".config/opencode/agent/multimodal-ui.md".source = agentFiles.multimodal-ui;
+
     # Plugin: peon-ping TypeScript adapter for OpenCode (pinned to peon-ping v2.8.1)
     ".config/opencode/plugins/peon-ping.ts".source =
       "${inputs.peon-ping}/adapters/opencode/peon-ping.ts";
