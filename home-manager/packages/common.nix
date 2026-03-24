@@ -127,7 +127,21 @@ with pkgs;
   postgresql # Database server
   presenterm # presentation tool
   proto # used by moonrepo
-  python3
+  (python3.withPackages (
+    ps: with ps; [
+      pdfplumber
+      pypdf
+      reportlab
+      pytesseract
+      pdf2image
+      pandas
+    ]
+  ))
+  poppler-utils # provides pdftotext, pdfimages
+  pdftk # PDF toolkit for merging, splitting, rotating
+
+  # Q
+  qpdf # PDF manipulation CLI
 
   # R
   raycast
@@ -151,6 +165,7 @@ with pkgs;
   tealdeer # community driven man pages
   tectonic # pdf latex
   termdown # terminal countdown
+  tesseract # OCR engine
   terraform # Infrastructure as code tool
   terraform-docs
   # terraform-ls # Terraform language server

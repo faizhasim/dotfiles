@@ -16,6 +16,7 @@
         python = [ "3.11" ];
         bun = "latest";
         go = "1.25.3";
+        uv = "latest"; # Fast Python package manager
       };
       settings = {
         idiomatic_version_file_enable_tools = [
