@@ -30,9 +30,27 @@
   lib,
   ...
 }:
+let
+  # Package the wt-ensure-repo script for use by gh-dash
+  # Note: Using yq-go (mikefarah/yq Go version) instead of yq (python-yq)
+  # because they have different CLI syntax
+  wt-ensure-repo = pkgs.writeShellApplication {
+    name = "wt-ensure-repo";
+    runtimeInputs = with pkgs; [
+      git
+      yq-go
+      jq
+      worktrunk
+    ];
+    text = builtins.readFile ../scripts/wt-ensure-repo.sh;
+  };
+in
 {
   # Enable gh-dash (installs package and sets up as gh extension)
   programs.gh-dash.enable = true;
+
+  # Install the wt-ensure-repo helper script
+  home.packages = [ wt-ensure-repo ];
 
   # Don't generate config file - it's generated at activation time by the script
   # The script runs after agenix decrypts repos.toml and creates config.yml
