@@ -14,8 +14,9 @@
     };
 
     # Allow WezTerm to set environment variables for remote pane integration
+    # See: https://wezterm.org/ssh.html
     etc."ssh/sshd_config.d/99-wezterm.conf".text = ''
-      AcceptEnv WEZTERM_REMOTE_PANE WEZTERM_PANE WEZTERM_UNIX_SOCKET WEZTERM_SSH
+      AcceptEnv WEZTERM_REMOTE_PANE WEZTERM_PANE WEZTERM_UNIX_SOCKET WEZTERM_SSH COLORTERM TERM TERM_PROGRAM TERM_PROGRAM_VERSION
     '';
   };
 
