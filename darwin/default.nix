@@ -4,7 +4,7 @@
     ./os
     ./homebrew
     ./stylix.nix
-    ./secrets.nix
+    ./activation.nix
   ];
 
   environment = {

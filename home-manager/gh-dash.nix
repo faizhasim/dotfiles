@@ -5,7 +5,7 @@
 # 1. Encrypted worktrunk catalog: secrets/worktrunk-repos.toml.age (committed to git)
 # 2. At system activation:
 #    a. agenix decrypts → ~/.config/worktrunk/repos.toml
-#    b. scripts/generate-gh-dash-config.sh reads repos.toml → generates config.yml
+#    b. lib/nix-internal/generate-gh-dash-config.sh reads repos.toml → generates config.yml
 # 3. gh-dash reads config.yml at runtime
 #
 # Why this approach?
@@ -22,8 +22,8 @@
 # 4. No manual file updates needed
 #
 # Catalog example: config/worktrunk/repos.toml.example
-# Generator: scripts/generate-gh-dash-config.sh
-# Encryption config: darwin/secrets.nix
+# Generator: lib/nix-internal/generate-gh-dash-config.sh
+# Activation scripts: darwin/activation.nix
 {
   config,
   pkgs,
@@ -42,7 +42,7 @@ let
       jq
       worktrunk
     ];
-    text = builtins.readFile ../scripts/wt-ensure-repo.sh;
+    text = builtins.readFile ../lib/nix-internal/wt-ensure-repo.sh;
   };
 in
 {

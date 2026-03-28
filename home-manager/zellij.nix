@@ -22,8 +22,8 @@ in
   programs.zellij.enable = true;
 
   xdg.configFile = {
-
-    "zellij/config.kdl".source = ./zellij/config.kdl;
+    # zellij/config.kdl is generated dynamically from repos.toml via activation script
+    # see: darwin/activation.nix generateZellijConfig
     "zellij/plugins/zellij-choose-tree.wasm".source = zellij-choose-tree;
     "zellij/plugins/zellij-sessionizer.wasm".source = zellij-sessionizer;
 
