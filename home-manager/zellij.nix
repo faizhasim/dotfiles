@@ -8,6 +8,13 @@
 let
   inherit (config.lib.stylix) colors;
 
+  # NOTE: When Zellij updates in nixpkgs, update this hash by running:
+  # nix-prefetch-url https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm
+  zjstatus = pkgs.fetchurl {
+    url = "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm";
+    sha256 = "sha256-SB74yRpHjPAnC1l3i5iAoRXzVs6D+1c2Qj2M9Y2yTtE=";
+  };
+
   zellij-choose-tree = pkgs.fetchurl {
     url = "https://github.com/laperlej/zellij-choose-tree/releases/latest/download/zellij-choose-tree.wasm";
     sha256 = "sha256-OGHLzCM9wg0CLm5SSr3bmElcciBIqamalQjgkTuzAeg=";
@@ -24,6 +31,7 @@ in
   xdg.configFile = {
 
     "zellij/config.kdl".source = ./zellij/config.kdl;
+    "zellij/plugins/zjstatus.wasm".source = zjstatus;
     "zellij/plugins/zellij-choose-tree.wasm".source = zellij-choose-tree;
     "zellij/plugins/zellij-sessionizer.wasm".source = zellij-sessionizer;
 
@@ -31,7 +39,7 @@ in
       layout {
           default_tab_template {
               pane size=1 borderless=true {
-                  plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
+                  plugin location="file:~/.config/zellij/plugins/zjstatus.wasm" {
 
                       format_left   "{mode} {tabs}"
                       format_center ""
@@ -54,7 +62,7 @@ in
                       mode_tab           "#[bg=#${colors.base07},fg=#${colors.base02},bold] TAB#[fg=#${colors.base07}]"
                       mode_scroll        "#[bg=#${colors.base0A},fg=#${colors.base02},bold] SCROLL#[fg=#${colors.base0A}]"
                       mode_enter_search  "#[bg=#${colors.base0D},fg=#${colors.base02},bold] ENT-SEARCH#[fg=#${colors.base0D}]"
-                      mode_search        "#[bg=#${colors.base0D},fg=#${colors.base02},bold] SEARCHARCH#[fg=#${colors.base0D}]"
+                      mode_search        "#[bg=#${colors.base0D},fg=#${colors.base02},bold] SEARCH#[fg=#${colors.base0D}]"
                       mode_rename_tab    "#[bg=#${colors.base07},fg=#${colors.base02},bold] RENAME-TAB#[fg=#${colors.base07}]"
                       mode_rename_pane   "#[bg=#${colors.base0D},fg=#${colors.base02},bold] RENAME-PANE#[fg=#${colors.base0D}]"
                       mode_session       "#[bg=#${colors.base0E},fg=#${colors.base02},bold] SESSION#[fg=#${colors.base0E}]"
@@ -83,11 +91,6 @@ in
                   }
               }
               children
-              pane size=1 borderless=true {
-                  plugin location="status-bar" {
-                      classic false
-                  }
-              }
           }
       }'';
   };
