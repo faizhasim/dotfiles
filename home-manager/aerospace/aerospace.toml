@@ -1,3 +1,4 @@
+config-version = 2
 accordion-padding = 30
 after-login-command = []
 automatically-unhide-macos-hidden-apps = false
