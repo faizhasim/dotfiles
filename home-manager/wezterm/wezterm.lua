@@ -59,9 +59,9 @@ config.macos_window_background_blur = 20
 config.max_fps = 120
 config.prefer_egl = true
 
--- Disable kitty keyboard protocol to avoid conflicts with Zellij
--- Zellij has its own support, having both enabled causes ctrl-d issues
-config.enable_kitty_keyboard = false
+-- Enable kitty keyboard protocol for proper modifier key handling (Shift+Enter, etc.)
+-- Zellij supports this protocol and passes it through to applications like OpenCode
+config.enable_kitty_keyboard = true
 
 config.window_frame = {
   inactive_titlebar_bg = '#2E3440',            -- polar night (base)

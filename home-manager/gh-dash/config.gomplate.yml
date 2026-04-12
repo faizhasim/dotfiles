@@ -42,6 +42,9 @@ keybindings:
           cd "$NEW_PATH" && ${EDITOR:-nvim} .;
         fi
 
+defaults:
+  prApproveComment: '<img width="815" height="808" alt="Image" src="https://github.com/user-attachments/assets/4cfd4325-1bfe-4cfe-8ae1-2151dc7f3662" />'
+
 prSections:
   - title: "󰳐 author:@me"
     filters: "author:@me is:open archived:false sort:created-desc"

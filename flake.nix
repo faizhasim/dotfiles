@@ -76,7 +76,7 @@
       # - github-premium: Full premium access (Claude Sonnet 4.6, Gemini 3 Pro, etc.)
       # - opencode-go: Fallback to opencode-go models (Kimi, GLM)
       # - github-standard: Emergency fallback to GitHub's free tier models
-      opencodeModelProfile = "opencode-go";
+      opencodeModelProfile = "github-premium";
 
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"
