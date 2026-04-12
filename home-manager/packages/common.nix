@@ -118,6 +118,7 @@ with pkgs;
 
   # O
   # obs-studio # Stream / recording software
+  ocrmypdf # OCR engine wrapper producing searchable PDF/A output
   openssh # SSH client and server
   openai-whisper
 
