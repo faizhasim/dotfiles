@@ -12,6 +12,7 @@
     #      "totp-cli" # for backstage e2e tests
     "felixkratz/formulae/borders" # borders
     "markdownlint-cli2"
+    "datadog-labs/pack/pup"
 
     # dev tools with native autoupdate
     "opencode" # AI coding agent (official brew formula, autoupdate enabled)
@@ -74,6 +75,7 @@
     "snyk/tap"
     "ankitpokhrel/jira-cli"
     "FelixKratz/formulae"
+    "datadog-labs/pack"
     # custom
     #      "FelixKratz/formulae" # borders
     #      "databricks/tap" # databricks
