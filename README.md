@@ -107,6 +107,14 @@ sudo darwin-rebuild switch --flake .#M3419
 sudo darwin-rebuild switch --flake .#macmini01
 ```
 
+> [!NOTE]
+> Some Homebrew formulae require GitHub authentication to download (e.g. private taps).
+> If you see `Error: You must be authenticated to GitHub`, pass your token inline:
+>
+> ```shell
+> sudo HOMEBREW_GITHUB_API_TOKEN="$(op read op://vault/item/field)" darwin-rebuild switch --flake .#M3419
+> ```
+
 <!-- markdownlint-enable MD013 -->
 
 [Lix]: https://lix.systems/install/
