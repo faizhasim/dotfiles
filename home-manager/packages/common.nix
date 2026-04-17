@@ -113,7 +113,7 @@ with pkgs;
   nixd # nix language server
   nmap # net tools
   ngrok # Secure tunneling service, unfree
-  nodePackages.prettier
+  prettier
   nixfmt
 
   # O
