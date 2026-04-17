@@ -1,4 +1,6 @@
 {
+  config,
+  pkgs,
   lib,
   inputs,
   opencodeModelProfile,
@@ -66,15 +68,22 @@ let
   };
 in
 {
+  # Enable stylix theme integration for opencode
+  stylix.targets.opencode.enable = true;
+
+  # Home Manager opencode module
   programs.opencode = {
     enable = true;
-    # CRITICAL: Set to null - binary comes from Homebrew, not Nix
-    # Installed via darwin/homebrew/common.nix for reliable autoupdate
-    package = null;
 
+    # Using dummy package because binary comes from Homebrew
+    # (Installed via darwin/homebrew/common.nix for reliable autoupdate)
+    # Dummy provides version for home-manager's versionAtLeast check
+    package = pkgs.opencode-dummy;
+
+    # Main opencode configuration (goes to opencode.json)
+    # NOTE: Do NOT put theme/tui/keybinds here - they go in separate options below
     settings = {
-      theme = lib.mkForce "nord";
-      autoupdate = true; # Works with Homebrew installation
+      autoupdate = true;
       share = "manual";
 
       provider.github-copilot.models = {
@@ -93,13 +102,13 @@ in
         "gemini-3.1-pro".options = {
           thinking = {
             type = "enabled";
-            budgetTokens = 20000; # Larger context window
+            budgetTokens = 20000;
           };
         };
         "gpt-5-mini".options = {
           thinking = {
             type = "enabled";
-            budgetTokens = 8000; # Smaller, faster model
+            budgetTokens = 8000;
           };
         };
       };
@@ -129,9 +138,6 @@ in
             bash = "deny";
           };
         };
-        # Specialized agents (doc-analyzer and fast-code) removed here
-        # Specialized functionality is handled via subagents invoked by the
-        # primary agent prompt (see ./opencode/prompts/menatey-rima-mode-1.0.md).
       };
 
       mcp = {
@@ -153,13 +159,19 @@ in
           };
         };
       };
+    };
 
-      tui.scroll_acceleration.enabled = true;
+    # TUI-specific settings (goes to tui.json)
+    # stylix will set theme = "stylix" automatically
+    tui = {
+      scroll_acceleration = {
+        enabled = true;
+      };
     };
   };
 
   # Subagent definitions - placed in ~/.config/opencode/agent/
-  # These are invoked via @agentname syntax and should NOT be in settings.agent
+  # These are invoked via @agentname syntax
   home.file = {
     # Subagents (mode: subagent)
     ".config/opencode/agent/debug.md".source = agentFiles.debug;
