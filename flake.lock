@@ -6,11 +6,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1756860511,
-        "narHash": "sha256-AA8vN5YMXcCznWfaH/2AgtRNpZPG4wvbLTT79u0b+LU=",
+        "lastModified": 1774625180,
+        "narHash": "sha256-zVAN88RCvAKyAVCjve2wBzAL4yJq7LzTZgcwnGH2hdo=",
         "owner": "1Password",
         "repo": "shell-plugins",
-        "rev": "49810df8fe11221250a890191185c6e59aea8d1e",
+        "rev": "9a19f93022d5422f15b327f10c1a6312273252e8",
         "type": "github"
       },
       "original": {
@@ -427,10 +427,10 @@
       "flake": false,
       "locked": {
         "lastModified": 1771599328,
-        "narHash": "sha256-eTXYNMUxEweBtm1NDM4iSWwzqMM2dJfDJSFDp1FoDpM=",
+        "narHash": "sha256-KIp3qxiQ+WO1TqoCTCl3YdkhrrZduY3qvxsoE+UIFzU=",
         "owner": "PeonPing",
         "repo": "peon-ping",
-        "rev": "c86df5960ef61bf51169cf3520b4238132344abc",
+        "rev": "dabdbd9956915c43f71d34146e6bcc5d19baa8de",
         "type": "github"
       },
       "original": {
