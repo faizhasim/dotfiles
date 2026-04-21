@@ -31,6 +31,9 @@ remove = true
 # Run project hooks during merge
 verify = true
 
+# Fast-forward merge (set false to always create merge commits)
+ff = true
+
 # List command defaults
 [list]
 summary = true
@@ -113,11 +116,27 @@ Combine these commits into a single commit message.
 </diff>
 """
 
-# Interactive picker configuration
+# Switch configuration
+[switch]
+# Auto-change directory after switching (requires shell integration)
+cd = true
+
 [switch.picker]
 # Use delta for diff preview (matches our git config)
 pager = "delta --paging=never"
 
-# Timeout for git commands during picker loading (ms)
-# Lower values show TUI faster; 0 disables timeouts
-timeout-ms = 200
+# Aliases - run as `wt <name>`
+[aliases]
+# Quick switch to default branch (main/master)
+main = "wt switch $(wt config state default-branch)"
+
+# List with full details
+lsf = "wt list --full"
+
+# Switch to previous branch
+back = "wt switch -"
+
+# Smart switch with fuzzy finder
+fuzzy = "wt switch --picker"
+
+
