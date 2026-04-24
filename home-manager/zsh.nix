@@ -50,6 +50,11 @@
 
     profileExtra = ''
       eval $(/opt/homebrew/bin/brew shellenv)
+
+      # Zellij socket dir - macOS TMPDIR is too long for session names >22 chars
+      # Max socket path is 103 bytes, macOS TMPDIR can be ~50+ bytes
+      export ZELLIJ_SOCKET_DIR="$HOME/.cache/zellij/sockets"
+      mkdir -p "$ZELLIJ_SOCKET_DIR"
     '';
 
     initContent = ''

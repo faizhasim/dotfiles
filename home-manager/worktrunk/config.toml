@@ -53,8 +53,7 @@ remotes = false
 # OpenCode is installed via Homebrew and managed in home-manager/opencode.nix
 # Command receives diff via stdin and outputs commit message
 # Note: Using literal string with single quotes to avoid shell escaping issues
-command = '''opencode run 'You are a commit message generator. Generate a conventional commit message following these rules: REQUIREMENTS: Use imperative mood (Add feature, not Added feature). Subject line under 50 characters. No quotes or code blocks in output. Match conventional commits format if used in recent commits. Focus on WHAT changed, not WHY (save that for PR description). FORMAT: <type>(<scope>): <subject> [optional body]. STYLE GUIDE: Common types: feat, fix, docs, style, refactor, test, chore. Scope is optional but helpful (e.g., api, ui, auth). Body is optional, use for material changes that need explanation. Separate subject from body with blank line. CONTEXT: The staged diff will be provided below. Analyze it and generate an appropriate commit message. Output ONLY the commit message text, nothing else.''''
-
+command = "opencode run -m github-copilot/gpt-5-mini --variant low"
 # Template for generating individual commit messages
 template = """
 Write a commit message for the staged changes below.
@@ -136,7 +135,8 @@ lsf = "wt list --full"
 # Switch to previous branch
 back = "wt switch -"
 
-# Smart switch with fuzzy finder
-fuzzy = "wt switch --picker"
+# New branch
+nb = "wt switch --create {{ args }}"
 
-
+r = "wt remove"
+sw = "wt sw {{ args }}"
