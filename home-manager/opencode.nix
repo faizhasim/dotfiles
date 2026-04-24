@@ -18,9 +18,9 @@ let
       largeContext = "github-copilot/gemini-3.1-pro";
     };
     opencode-go = {
-      primary = "opencode-go/kimi-k2.5";
-      fast = "opencode-go/kimi-k2.5";
-      largeContext = "opencode-go/glm-4.5";
+      primary = "opencode-go/kimi-k2.6";
+      fast = "opencode-go/kimi-k2.6";
+      largeContext = "opencode-go/glm-5.1";
     };
     github-standard = {
       primary = "github-copilot/gpt-4.1";
