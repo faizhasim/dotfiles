@@ -23,7 +23,9 @@ jobs:
         run: nix flake metadata
 
       - name: Check formatting
-        run: nix fmt -- --check
+        run: |
+          nix fmt
+          git diff --exit-code || (echo "❌ Formatting check failed. Run 'nix fmt' locally and commit changes." && exit 1)
 
       - name: Check formatter package (cross-platform)
         run: nix build .#formatter.x86_64-linux --no-link
