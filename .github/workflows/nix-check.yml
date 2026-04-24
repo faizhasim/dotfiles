@@ -1,0 +1,32 @@
+name: Nix Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Check flake evaluation
+        run: nix flake check --no-build
+
+      - name: Check formatting
+        run: nix fmt -- --check
+
+      - name: Install statix
+        run: nix profile install nixpkgs#statix
+
+      - name: Run statix lint
+        run: statix check

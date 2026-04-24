@@ -1,0 +1,58 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:best-practices"],
+
+  // Run on Saturday mornings (Asia/Kuala_Lumpur timezone)
+  timezone: "Asia/Kuala_Lumpur",
+  schedule: ["before 4am on Saturday"],
+
+  dependencyDashboard: true,
+
+  // Enable Nix manager (currently in beta)
+  nix: {
+    enabled: true,
+  },
+
+  // Weekly flake.lock maintenance
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: ["before 4am on Saturday"],
+  },
+
+  // Package-specific rules
+  packageRules: [
+    // Separate PR per flake input (easier to test/rollback individually)
+    {
+      matchManagers: ["nix"],
+      groupName: null, // null = separate PRs
+      separateMinorPatch: true,
+    },
+
+    // Group all mise tool updates together (stable, low risk)
+    {
+      matchManagers: ["mise"],
+      groupName: "mise tools",
+      groupSlug: "mise-tools",
+    },
+
+    // Wait 3 days for nixpkgs updates (avoid bleeding edge bugs)
+    {
+      matchDepNames: ["nixpkgs"],
+      minimumReleaseAge: "3 days",
+    },
+  ],
+
+  // Limit PR noise
+  prConcurrentLimit: 5,
+  prHourlyLimit: 2,
+
+  // No auto-merge until CI trust is established
+  automerge: false,
+
+  // Label all dependency PRs
+  labels: ["dependencies"],
+
+  // Commit message format: "update <depName> to <version>"
+  commitMessageTopic: "{{depName}}",
+  commitMessageExtra: "to {{newVersion}}",
+}
