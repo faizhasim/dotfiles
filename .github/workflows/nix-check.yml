@@ -19,11 +19,14 @@ jobs:
           extra-conf: |
             experimental-features = nix-command flakes
 
-      - name: Check flake evaluation
-        run: nix flake check --no-build
+      - name: Check flake metadata
+        run: nix flake metadata
 
       - name: Check formatting
         run: nix fmt -- --check
+
+      - name: Check formatter package (cross-platform)
+        run: nix build .#formatter.x86_64-linux --no-link
 
       - name: Install statix
         run: nix profile install nixpkgs#statix
