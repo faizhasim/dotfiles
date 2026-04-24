@@ -24,7 +24,9 @@ jobs:
 
       - name: Check formatting
         run: |
-          nix fmt
+          # Find all .nix files and format them
+          find . -name "*.nix" -type f -not -path "./.git/*" | xargs nix fmt --
+          # Check if any files were modified
           git diff --exit-code || (echo "❌ Formatting check failed. Run 'nix fmt' locally and commit changes." && exit 1)
 
       - name: Check formatter package (cross-platform)
