@@ -1,5 +1,4 @@
-_:
-{
+_: {
   brews = [
     # "pkgxdev/made/pkgx" # run anything
 

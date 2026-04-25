@@ -1,5 +1,4 @@
-_:
-{
+_: {
   brews = [ ];
   casks = [
     "discord"

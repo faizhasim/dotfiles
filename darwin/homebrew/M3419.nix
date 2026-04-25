@@ -1,5 +1,4 @@
-_:
-{
+_: {
   brews = [
     "seek-jobs/tools/gantry"
     # Automat formula relies on Github release (via gh auth), in which I couldn't make it work yet
