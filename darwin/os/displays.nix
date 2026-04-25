@@ -2,16 +2,20 @@
 
 {
   # Settings that can be applied through nix-darwin
-  system.defaults.NSGlobalDomain = {
-    # Subpixel font rendering on non-Apple LCDs (2 = Medium)
-    AppleFontSmoothing = 0;
-  };
+  system = {
+    defaults = {
+      NSGlobalDomain = {
+        # Subpixel font rendering on non-Apple LCDs (2 = Medium)
+        AppleFontSmoothing = 0;
+      };
 
-  system.defaults.spaces.spans-displays = true;
+      spaces.spans-displays = true;
 
-  system.defaults.screencapture = {
-    include-date = true;
-    location = "~/Pictures/screencapture/";
+      screencapture = {
+        include-date = true;
+        location = "~/Pictures/screencapture/";
+      };
+    };
   };
 
   # For settings that need system-level permissions or are not directly supported

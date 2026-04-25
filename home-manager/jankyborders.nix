@@ -1,6 +1,4 @@
-{
-  ...
-}:
+_:
 {
   # use homebrew until nix compile using SDK 26 https://github.com/NixOS/nixpkgs/issues/343210#issuecomment-3313995590
   # services.jankyborders = {

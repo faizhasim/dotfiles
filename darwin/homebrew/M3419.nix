@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   brews = [
     "seek-jobs/tools/gantry"

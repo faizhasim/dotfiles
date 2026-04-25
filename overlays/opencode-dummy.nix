@@ -1,7 +1,7 @@
 # Dummy opencode package for home-manager module compatibility
 # The real opencode binary comes from Homebrew, but home-manager's
 # opencode module requires a package with a version for its warnings logic.
-{ }:
+_:
 final: prev: {
   opencode-dummy = prev.stdenvNoCC.mkDerivation {
     pname = "opencode";
