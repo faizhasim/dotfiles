@@ -19,6 +19,10 @@ jobs:
       contents: read
       pull-requests: read
       issues: read
+    env:
+      # Composite actions do not inherit step-level env vars.
+      # This must be set at the job level so the opencode CLI can access it.
+      OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -27,7 +31,5 @@ jobs:
 
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
           model: opencode-go/kimi-k2.6
