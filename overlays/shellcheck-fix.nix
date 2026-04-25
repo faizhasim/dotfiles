@@ -1,8 +1,7 @@
 # Fix nix-darwin shellcheck validation failing on info-level warnings
 # Adds exclusions for SC2317/SC2329 which are info-level warnings about
 # unreachable code and unused functions in the activation script structure
-{ ... }:
-final: prev: {
+_: final: prev: {
   shellcheck =
     prev.runCommand "shellcheck-patched"
       {

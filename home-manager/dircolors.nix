@@ -6,7 +6,7 @@
   ...
 }:
 let
-  nord-dircolors = inputs.nord-dircolors;
+  inherit (inputs) nord-dircolors;
 in
 {
   programs.dircolors = {

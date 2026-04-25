@@ -38,9 +38,11 @@
     };
     agenix = {
       url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.darwin.follows = "darwin";
-      inputs.home-manager.follows = "home-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        darwin.follows = "darwin";
+        home-manager.follows = "home-manager";
+      };
     };
     og-packs = {
       url = "github:PeonPing/og-packs/v1.1.0";
@@ -130,9 +132,11 @@
                 # Add agenix CLI to system packages
                 environment.systemPackages = [ inputs.agenix.packages.${system}.default ];
 
-                system.stateVersion = 4;
-                system.configurationRevision = self.rev or self.dirtyRev or null;
-                system.primaryUser = username;
+                system = {
+                  stateVersion = 4;
+                  configurationRevision = self.rev or self.dirtyRev or null;
+                  primaryUser = username;
+                };
 
                 users.users.${username} = {
                   home = "/Users/${username}";

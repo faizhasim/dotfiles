@@ -104,13 +104,17 @@ let
 in
 {
   # Create dnsmasq configuration directory and files
-  xdg.configFile."dnsmasq.conf".text = dnsmasqConfig;
+  xdg = {
+    configFile = {
+      "dnsmasq.conf".text = dnsmasqConfig;
 
-  # Create dnsmasq.d directory for modular configs
-  xdg.configFile."dnsmasq.d/.keep".text = "# Keep directory";
+      # Create dnsmasq.d directory for modular configs
+      "dnsmasq.d/.keep".text = "# Keep directory";
 
-  # Create direnv stdlib for use_dns function
-  xdg.configFile."direnv/lib/dns.sh".text = direnvStdlib;
+      # Create direnv stdlib for use_dns function
+      "direnv/lib/dns.sh".text = direnvStdlib;
+    };
+  };
 
   # Configure launchd service for dnsmasq (macOS)
   launchd.agents.dnsmasq = {
