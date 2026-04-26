@@ -21,8 +21,6 @@ jobs:
       contents: read
       pull-requests: read
       issues: read
-    env:
-      OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -31,5 +29,7 @@ jobs:
 
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
           model: opencode-go/kimi-k2.6
