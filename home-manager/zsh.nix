@@ -58,8 +58,17 @@
     '';
 
     initContent = ''
-      autoload -U compinit
-      compinit
+      # Uncomment next two lines to profile startup: zmodload zsh/zprof ... zprof
+      # zmodload zsh/zprof
+
+      # Cache completions; only regenerate if .zcompdump is older than 24h
+      autoload -Uz compinit
+      local zcompdump="$ZDOTDIR/.zcompdump"
+      if [[ -n "$zcompdump"(#qN.mh+24) ]]; then
+        compinit
+      else
+        compinit -C
+      fi
 
       [ -f ~/.env/env.sh ] && source ~/.env/env.sh
 
@@ -148,14 +157,21 @@
       [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
       [ -f ~/.config/zsh/extras.sh ] && source ~/.config/zsh/extras.sh
 
-      # Manually activate mise (we disabled auto-integration to control order)
-      eval "$(${pkgs.mise}/bin/mise activate zsh)"
-      # IMPORTANT: Add proto/bin AFTER mise activation
+      # Cache mise activation to avoid binary invocation every shell
+      local mise_cache="$HOME/.cache/mise/mise-activate.zsh"
+      local mise_bin="${pkgs.mise}/bin/mise"
+      if [[ ! -f "$mise_cache" || "$mise_bin" -nt "$mise_cache" ]]; then
+        mkdir -p "$(dirname "$mise_cache")"
+        "$mise_bin" activate zsh > "$mise_cache"
+      fi
+      source "$mise_cache"
 
+      # IMPORTANT: Add proto/bin AFTER mise activation
       # mise resets PATH, so we must add proto after it runs
       # export PATH="$HOME/.proto/bin:$PATH"
       # eval "$(proto activate zsh)"
 
+      # zprof
     '';
   };
 }

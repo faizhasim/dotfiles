@@ -22,6 +22,8 @@
 
   # Enable zsh as the default shell, but let home-manager manage it in ./home-manager/zsh.nix
   programs.zsh.enable = true;
+  # Disable system-wide completion init so home-manager can handle it with caching
+  programs.zsh.enableCompletion = false;
 
   launchd.user.agents.aerospace = {
     command = "${pkgs.aerospace}/Applications/AeroSpace.app/Contents/MacOS/AeroSpace";
