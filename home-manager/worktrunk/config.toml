@@ -115,6 +115,37 @@ Combine these commits into a single commit message.
 </diff>
 """
 
+# Copy local mise overrides and AI agent configs from primary worktree to new worktrees.
+# Runs blocking before --execute commands start, ensuring agents have full context.
+# Using [[pre-start]] pipeline blocks (preferred over table form for pre-* hooks).
+[[pre-start]]
+# Copy local mise overrides (.mise.toml, mise.local.toml)
+mise-local = """
+for file in .mise.toml mise.local.toml; do
+  src="{{ primary_worktree_path }}/$file"
+  dst="{{ worktree_path }}/$file"
+  if [ -f "$src" ] && [ ! -e "$dst" ]; then
+    cp "$src" "$dst"
+  fi
+done
+"""
+
+[[pre-start]]
+# Copy local AI agent configurations (.opencode/, .agent/, AGENTS.md)
+ai-local = """
+for item in .opencode .agent AGENTS.md; do
+  src="{{ primary_worktree_path }}/$item"
+  dst="{{ worktree_path }}/$item"
+  if [ -e "$src" ] && [ ! -e "$dst" ]; then
+    if [ -d "$src" ]; then
+      cp -a "$src" "$dst"
+    else
+      cp "$src" "$dst"
+    fi
+  fi
+done
+"""
+
 # Switch configuration
 [switch]
 # Auto-change directory after switching (requires shell integration)
@@ -138,5 +169,20 @@ back = "wt switch -"
 # New branch
 nb = "wt switch --create {{ args }}"
 
-r = "wt remove"
-sw = "wt sw {{ args }}"
+# Sync local configs (.mise.toml, mise.local.toml, .opencode, .agent, AGENTS.md)
+# from primary worktree to all existing worktrees that are missing them.
+sync-local = """
+wt step for-each -- '
+for item in .mise.toml mise.local.toml .opencode .agent AGENTS.md; do
+  src="{{ primary_worktree_path }}/$item"
+  if [ -e "$src" ] && [ ! -e "$item" ]; then
+    if [ -d "$src" ]; then
+      cp -R "$src" "$item"
+    else
+      cp "$src" "$item"
+    fi
+    echo "Copied $item"
+  fi
+done
+'
+"""
