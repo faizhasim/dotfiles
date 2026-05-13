@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   # rustup manages cargo/rustc; only add cargo bin to PATH and config via env
   home.sessionPath = lib.mkAfter [ "$HOME/.cargo/bin" ];
