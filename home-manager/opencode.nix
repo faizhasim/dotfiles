@@ -158,6 +158,19 @@ in
             CONTEXT7_API_KEY = "{env:OPENCODE_CONTEXT7_API}";
           };
         };
+        exa = {
+          type = "remote";
+          url = "https://mcp.exa.ai/mcp";
+          enabled = true;
+        };
+        playwright = {
+          type = "local";
+          command = [
+            "pnpx"
+            "@playwright/mcp@latest"
+          ];
+          enabled = true;
+        };
       };
     };
 

@@ -32,6 +32,7 @@ with pkgs;
   dive # analyse docker images
   dnsmasq # DNS forwarder and DHCP server
   dockutil # Manage icons in the dock
+  drawio # Draw.io diagram editor
   duf # disk usage
   dust # disk usage analyzer
 
