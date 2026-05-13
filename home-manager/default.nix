@@ -32,6 +32,7 @@
     inputs.krewfile.homeManagerModules.krewfile
     inputs.worktrunk.homeModules.default
     ./aerospace.nix
+    ./cargo.nix
     ./dircolors.nix
     ./direnv.nix
     ./dnsmasq.nix
