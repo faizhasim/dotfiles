@@ -55,6 +55,11 @@
       # Max socket path is 103 bytes, macOS TMPDIR can be ~50+ bytes
       export ZELLIJ_SOCKET_DIR="$HOME/.cache/zellij/sockets"
       mkdir -p "$ZELLIJ_SOCKET_DIR"
+
+      # Per-project opencode overrides (merged on top of global config)
+      # Place private/company-specific MCPs here, outside the dotfiles repo
+      local opencode_overrides="$HOME/.config/opencode/opencode-overrides.json"
+      [[ -f "$opencode_overrides" ]] && export OPENCODE_CONFIG="$opencode_overrides"
     '';
 
     initContent = ''
@@ -157,10 +162,12 @@
       [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
       [ -f ~/.config/zsh/extras.sh ] && source ~/.config/zsh/extras.sh
 
-      # Cache mise activation to avoid binary invocation every shell
+      # Cache mise activation (saves ~100ms per shell start)
+      # Invalidated when .zshenv home-manager symlink changes (i.e., any rebuild)
       local mise_cache="$HOME/.cache/mise/mise-activate.zsh"
       local mise_bin="${pkgs.mise}/bin/mise"
-      if [[ ! -f "$mise_cache" || "$mise_bin" -nt "$mise_cache" ]]; then
+      local zshenv="$HOME/.zshenv"
+      if [[ ! -f "$mise_cache" || "$zshenv" -nt "$mise_cache" || "$mise_bin" -nt "$mise_cache" ]]; then
         mkdir -p "$(dirname "$mise_cache")"
         "$mise_bin" activate zsh > "$mise_cache"
       fi
