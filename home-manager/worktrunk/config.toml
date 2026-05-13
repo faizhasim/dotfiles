@@ -53,66 +53,30 @@ remotes = false
 # OpenCode is installed via Homebrew and managed in home-manager/opencode.nix
 # Command receives diff via stdin and outputs commit message
 # Note: Using literal string with single quotes to avoid shell escaping issues
-command = "opencode run -m github-copilot/gpt-5-mini --variant low"
+command = "opencode run -m opencode-go/deepseek-v4-flash --variant low"
 # Template for generating individual commit messages
 template = """
-Write a commit message for the staged changes below.
+Write a conventional commit message.
 
-<format>
-- Subject line under 50 chars
-- For material changes, add a blank line then a body paragraph explaining the change
-- Output only the commit message, no quotes or code blocks
-</format>
+Format: <type>(<scope>): <subject>
+Body: optional, bullet points only, keep brief
+Output: the commit message only, no extra text
 
-<style>
-- Imperative mood: "Add feature" not "Added feature"
-- Match recent commit style (conventional commits if used)
-- Describe the change, not the intent or benefit
-</style>
-
-<diffstat>
-{{ git_diff_stat }}
-</diffstat>
-
-<diff>
-{{ git_diff }}
-</diff>
-
-<context>
 Branch: {{ branch }}
-{% if recent_commits %}<recent_commits>
-{% for commit in recent_commits %}- {{ commit }}
-{% endfor %}</recent_commits>{% endif %}
-</context>
+{{ git_diff }}
 """
 
 # Template for squashing multiple commits
 squash-template = """
-Combine these commits into a single commit message.
+Combine these {{ commits | length }} commits into one message:
+{% for c in commits %}
+- {{ c }}
+{% endfor %}
 
-<format>
-- Subject line under 50 chars
-- For material changes, add a blank line then a body paragraph explaining the change
-- Output only the commit message, no quotes or code blocks
-</format>
+Branch: {{ branch }}
 
-<style>
-- Imperative mood: "Add feature" not "Added feature"
-- Match the style of commits being squashed (conventional commits if used)
-- Describe the change, not the intent or benefit
-</style>
-
-<commits branch="{{ branch }}" target="{{ target_branch }}">
-{% for commit in commits %}- {{ commit }}
-{% endfor %}</commits>
-
-<diffstat>
-{{ git_diff_stat }}
-</diffstat>
-
-<diff>
+Diff:
 {{ git_diff }}
-</diff>
 """
 
 # Copy local mise overrides and AI agent configs from primary worktree to new worktrees.
