@@ -158,6 +158,14 @@ in
         };
       };
 
+      # Custom command: GitHub PR creation/update with Jira cross-reference + meme
+      command.github-pr = {
+        description = "Create or update a GitHub PR for the current branch with Jira cross-reference and contextual meme";
+        agent = "build";
+        subtask = true;
+        template = "{file:${./opencode/commands/github-pr.md}}";
+      };
+
       mcp = {
         docker-mcp = {
           type = "local";

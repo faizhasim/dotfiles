@@ -53,14 +53,14 @@ remotes = false
 # OpenCode is installed via Homebrew and managed in home-manager/opencode.nix
 # Command receives diff via stdin and outputs commit message
 # Note: Using literal string with single quotes to avoid shell escaping issues
-command = "opencode run -m opencode-go/deepseek-v4-flash --variant low --pure"
+command = "opencode run -m opencode-go/deepseek-v4-flash --variant low --pure | sed '/^```/d'"
 # Template for generating individual commit messages
 template = """
 Write a conventional commit message.
 
 Format: <type>(<scope>): <subject>
 Body: optional, bullet points only, keep brief
-Output: the commit message only, no extra text
+Output only the commit message — no markdown, no backticks, no code blocks, no extra commentary
 
 Branch: {{ branch }}
 {{ git_diff }}
@@ -77,6 +77,8 @@ Branch: {{ branch }}
 
 Diff:
 {{ git_diff }}
+
+Output only the commit message — no markdown, no backticks, no code blocks, no extra commentary
 """
 
 # Copy local mise overrides and AI agent configs from primary worktree to new worktrees.
