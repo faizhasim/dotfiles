@@ -74,11 +74,12 @@
         age = "age1qry8eztm55zgxek5npyu22v4j7akzdfapn249gmfhpg5gkwcasasqhdygq";
       };
 
-      # OpenCode model profile: "github-premium" | "opencode-go" | "github-standard"
+      # OpenCode model profile: "github-premium" | "opencode-go" | "opencode-go-deepseek" | "github-standard"
       # - github-premium: Full premium access (Claude Sonnet 4.6, Gemini 3 Pro, etc.)
       # - opencode-go: Fallback to opencode-go models (Kimi, GLM)
+      # - opencode-go-deepseek: opencode-go base with DeepSeek V4 (flash build, pro plan, both variant high)
       # - github-standard: Emergency fallback to GitHub's free tier models
-      opencodeModelProfile = "github-premium";
+      opencodeModelProfile = "opencode-go-deepseek";
 
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"

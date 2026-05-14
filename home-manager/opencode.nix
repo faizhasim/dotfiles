@@ -10,6 +10,7 @@ let
   # Model profile definitions
   # - github-premium: Full premium access (Claude Sonnet 4.6, Gemini 3 Pro, etc.)
   # - opencode-go: Fallback to opencode-go models (Kimi, GLM)
+  # - opencode-go-deepseek: opencode-go base with DeepSeek V4 models (flash build, pro plan)
   # - github-standard: Emergency fallback to GitHub's free tier models
   modelProfiles = {
     github-premium = {
@@ -21,6 +22,12 @@ let
       primary = "opencode-go/kimi-k2.6";
       fast = "opencode-go/kimi-k2.6";
       largeContext = "opencode-go/glm-5.1";
+    };
+    opencode-go-deepseek = {
+      primary = "opencode-go/deepseek-v4-flash";
+      fast = "opencode-go/deepseek-v4-flash";
+      largeContext = "opencode-go/deepseek-v4-pro";
+      plan = "opencode-go/deepseek-v4-pro";
     };
     github-standard = {
       primary = "github-copilot/gpt-4.1";
@@ -113,6 +120,17 @@ in
         };
       };
 
+      # DeepSeek V4 models via opencode-go: use reasoning_effort: "high" for variant high
+      # Both V4 Flash and V4 Pro support thinking mode configurable via reasoning_effort
+      provider."opencode-go".models = {
+        "deepseek-v4-flash".options = {
+          reasoning_effort = "high";
+        };
+        "deepseek-v4-pro".options = {
+          reasoning_effort = "high";
+        };
+      };
+
       agent = {
         build = {
           description = "Primary dev agent with full tool access";
@@ -129,7 +147,7 @@ in
         plan = {
           description = "Analysis & planning without direct changes";
           mode = "primary";
-          model = models.primary;
+          model = models.plan or models.primary;
           temperature = 0.3;
           prompt = "{file:${./opencode/prompts/menatey-rima-mode-1.0.md}}";
           permission = {

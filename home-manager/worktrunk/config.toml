@@ -53,7 +53,7 @@ remotes = false
 # OpenCode is installed via Homebrew and managed in home-manager/opencode.nix
 # Command receives diff via stdin and outputs commit message
 # Note: Using literal string with single quotes to avoid shell escaping issues
-command = "opencode run -m opencode-go/deepseek-v4-flash --variant low"
+command = "opencode run -m opencode-go/deepseek-v4-flash --variant low --pure"
 # Template for generating individual commit messages
 template = """
 Write a conventional commit message.
