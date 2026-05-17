@@ -8,6 +8,8 @@
 }:
 
 let
+  inherit (config.lib.stylix) colors;
+
   # Model profiles — resolved from flake variable with fallback
   # Returns { provider, primary, fast, largeContext, plan } with provider/ prefix
   models = import ./model-profiles.nix { profileName = aiHarnessModelProfile; };
@@ -24,6 +26,84 @@ let
       ''
         jq . "$jsonPath" > "$out"
       '';
+
+  # Helper: format base16 color as hex with # prefix for pi.dev theme
+  piColor = name: "#${colors.${name}}";
+
+  # Stylix → pi.dev theme: maps base16 Nord palette to pi's 51 color tokens
+  # Base16 references: https://github.com/tinted-theming/base16
+  piTheme = {
+    name = "stylix";
+    colors = {
+      # Accents & borders
+      accent = piColor "base0D";
+      border = piColor "base02";
+      borderAccent = piColor "base0D";
+      borderMuted = piColor "base03";
+      success = piColor "base0B";
+      error = piColor "base08";
+      warning = piColor "base09";
+      muted = piColor "base03";
+      dim = piColor "base03";
+
+      # Text
+      text = piColor "base05";
+      thinkingText = piColor "base03";
+
+      # Messages
+      selectedBg = piColor "base02";
+      userMessageBg = piColor "base01";
+      userMessageText = piColor "base05";
+      customMessageBg = piColor "base01";
+      customMessageText = piColor "base05";
+      customMessageLabel = piColor "base0D";
+
+      # Tool boxes
+      toolPendingBg = piColor "base00";
+      toolSuccessBg = piColor "base00";
+      toolErrorBg = piColor "base00";
+      toolTitle = piColor "base0D";
+      toolOutput = piColor "base05";
+
+      # Markdown
+      mdHeading = piColor "base0A";
+      mdLink = piColor "base0D";
+      mdLinkUrl = piColor "base03";
+      mdCode = piColor "base0B";
+      mdCodeBlock = piColor "base01";
+      mdCodeBlockBorder = piColor "base02";
+      mdQuote = piColor "base03";
+      mdQuoteBorder = piColor "base02";
+      mdHr = piColor "base02";
+      mdListBullet = piColor "base0D";
+
+      # Diff
+      toolDiffAdded = piColor "base0B";
+      toolDiffRemoved = piColor "base08";
+      toolDiffContext = piColor "base03";
+
+      # Syntax highlighting
+      syntaxKeyword = piColor "base0E";
+      syntaxFunction = piColor "base0D";
+      syntaxVariable = piColor "base09";
+      syntaxString = piColor "base0B";
+      syntaxNumber = piColor "base09";
+      syntaxType = piColor "base0A";
+      syntaxOperator = piColor "base05";
+      syntaxPunctuation = piColor "base03";
+      syntaxComment = piColor "base03";
+
+      # Thinking levels
+      thinkingOff = piColor "base03";
+      thinkingLow = piColor "base04";
+      thinkingMinimal = piColor "base0D";
+      thinkingMedium = piColor "base0B";
+      thinkingHigh = piColor "base08";
+      thinkingXhigh = piColor "base0F";
+      bashMode = piColor "base0B";
+      bashOutput = piColor "base05";
+    };
+  };
 
   # Pi.dev packages (installed automatically on first startup via ResourceLoader)
   # pi.dev reads settings.json → finds missing packages → runs npm install via npmCommand
@@ -91,7 +171,7 @@ in
       # models.primary (for --model flag), but settings.json needs
       # just the model name.
       defaultModel = models.model;
-      theme = "dark";
+      theme = "stylix"; # Custom theme generated from Stylix/Nord base16
       # Use mise-managed node for npm operations (matches mise.nix node = "lts")
       npmCommand = [
         "mise"
@@ -136,8 +216,8 @@ in
     # Prompt templates directory — for custom system prompt overrides
     ".pi/agent/prompts/.keep".text = "# Prompt templates go here as *.md files";
 
-    # Themes directory — custom JSON theme files
-    ".pi/agent/themes/.keep".text = "# Custom themes go here as *.json files";
+    # Nord-based theme generated from Stylix base16 palette
+    ".pi/agent/themes/stylix.json".source = prettyJson piTheme;
   };
 
   # opencode-go provider: pi.dev has built-in support, no custom models.json needed.
