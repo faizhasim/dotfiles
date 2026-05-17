@@ -79,7 +79,7 @@
       # - opencode-go: Fallback to opencode-go models (Kimi, GLM)
       # - opencode-go-deepseek: opencode-go base with DeepSeek V4 (flash build, pro plan, both variant high)
       # - github-standard: Emergency fallback to GitHub's free tier models
-      opencodeModelProfile = "opencode-go-deepseek";
+      aiHarnessModelProfile = "opencode-go-deepseek";
 
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"
@@ -108,7 +108,7 @@
             inherit inputs;
             inherit hostname;
             inherit primarySshKey;
-            inherit opencodeModelProfile;
+            inherit aiHarnessModelProfile;
           };
           modules = [
             inputs.nix-index-database.darwinModules.nix-index
@@ -180,7 +180,7 @@
                 useUserPackages = true;
                 backupFileExtension = "hm-backup";
                 extraSpecialArgs = {
-                  inherit inputs opencodeModelProfile;
+                  inherit inputs aiHarnessModelProfile;
                 };
                 users.${username} =
                   {
@@ -198,7 +198,7 @@
                       hostname
                       username
                       nord-dircolors
-                      opencodeModelProfile
+                      aiHarnessModelProfile
                       ;
                   };
 

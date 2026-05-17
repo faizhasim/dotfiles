@@ -3,41 +3,13 @@
   pkgs,
   lib,
   inputs,
-  opencodeModelProfile,
+  aiHarnessModelProfile,
   ...
 }:
 let
-  # Model profile definitions
-  # - github-premium: Full premium access (Claude Sonnet 4.6, Gemini 3 Pro, etc.)
-  # - opencode-go: Fallback to opencode-go models (Kimi, GLM)
-  # - opencode-go-deepseek: opencode-go base with DeepSeek V4 models (flash build, pro plan)
-  # - github-standard: Emergency fallback to GitHub's free tier models
-  modelProfiles = {
-    github-premium = {
-      primary = "github-copilot/claude-sonnet-4.6";
-      fast = "github-copilot/claude-haiku-4.5";
-      largeContext = "github-copilot/gemini-3.1-pro";
-    };
-    opencode-go = {
-      primary = "opencode-go/kimi-k2.6";
-      fast = "opencode-go/kimi-k2.6";
-      largeContext = "opencode-go/glm-5.1";
-    };
-    opencode-go-deepseek = {
-      primary = "opencode-go/deepseek-v4-flash";
-      fast = "opencode-go/deepseek-v4-flash";
-      largeContext = "opencode-go/deepseek-v4-pro";
-      plan = "opencode-go/deepseek-v4-pro";
-    };
-    github-standard = {
-      primary = "github-copilot/gpt-4.1";
-      fast = "github-copilot/gpt-5-mini";
-      largeContext = "github-copilot/gpt-4o";
-    };
-  };
-
-  # Select models based on profile
-  models = modelProfiles.${opencodeModelProfile} or modelProfiles.github-premium;
+  # Model profiles — resolved from flake variable with fallback
+  # Returns { provider, primary, fast, largeContext, plan } with provider/ prefix
+  models = import ./model-profiles.nix { profileName = aiHarnessModelProfile; };
 
   # Agent file paths
   agentDir = ./opencode/agent;
@@ -197,7 +169,15 @@ in
           ];
           enabled = true;
         };
+        context-mode = {
+          type = "local";
+          command = [ "context-mode" ];
+          enabled = true;
+        };
       };
+
+      # context-mode plugin for lifecycle hooks (sandbox routing, session continuity)
+      plugin = [ "context-mode" ];
     };
 
     # TUI-specific settings (goes to tui.json)

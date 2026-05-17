@@ -6,7 +6,7 @@
   hostname,
   username,
   nord-dircolors,
-  opencodeModelProfile,
+  aiHarnessModelProfile,
   ...
 }:
 {
@@ -48,6 +48,7 @@
     ./mise.nix
     ./npmrc.nix
     ./opencode.nix
+    ./pi.nix
     ./presenterm.nix
     ./shell.nix
     ./sketchybar.nix
