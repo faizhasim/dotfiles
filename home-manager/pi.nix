@@ -206,15 +206,17 @@ in
     # auth.json is NOT managed by Nix — pi.dev writes auth tokens here during /login.
     # A Nix store symlink would be read-only, so we let pi create and manage it.
 
-    # Global agent instructions — same Menatey Rima prompt as opencode
-    # Shared file at opencode/prompts/menatey-rima-mode-1.0.md
-    ".pi/agent/AGENTS.md".text = builtins.readFile ./opencode/prompts/menatey-rima-mode-1.0.md;
+    # Pi-optimised Menatey Rima prompt — see ./pi/agent/AGENTS.md
+    ".pi/agent/AGENTS.md".text = builtins.readFile ./pi/agent/AGENTS.md;
 
-    # Agent definitions directory — for pi-subagents
-    ".pi/agent/agents/.keep".text = "# Agent definitions go here as *.md files";
+    # Agent definitions directory — pi-subagents auto-discovers built-in agents
+    ".pi/agent/agents/.keep".text = "# Custom agent definitions go here as *.md files";
 
     # Prompt templates directory — for custom system prompt overrides
     ".pi/agent/prompts/.keep".text = "# Prompt templates go here as *.md files";
+
+    # pi-peon sound notification config — static file
+    ".pi/agent/peon/config.json".source = ./pi/agent/peon/config.json;
 
     # Nord-based theme generated from Stylix base16 palette
     ".pi/agent/themes/stylix.json".source = prettyJson piTheme;
