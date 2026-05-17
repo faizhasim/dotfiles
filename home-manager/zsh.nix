@@ -173,8 +173,7 @@
       fi
       source "$mise_cache"
 
-      # IMPORTANT: Add proto/bin AFTER mise activation
-      # mise resets PATH, so we must add proto after it runs
+      # IMPORTANT: Add paths AFTER mise activation — mise resets PATH
       # export PATH="$HOME/.proto/bin:$PATH"
       # eval "$(proto activate zsh)"
 

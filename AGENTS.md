@@ -4,7 +4,7 @@ This is a **Nix/nix-darwin configuration repository** for declarative macOS syst
 
 ## Build/Apply Commands
 - **Initial build**: `sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#M3419` (or `#macmini01`)
-- **After initial setup**: `darwin-rebuild switch --flake .#M3419`
+- **After initial setup**: `sudo HOMEBREW_GITHUB_API_TOKEN="$(op read op://personal/Github/token)" darwin-rebuild switch --flake .#M3419`
 - **Check flake**: `nix flake check`
 - **Update inputs**: `nix flake update`
 - **Format Nix files**: `nix fmt`

@@ -15,8 +15,10 @@
         node = "lts";
         python = [ "3.11" ];
         bun = "latest";
+        pnpm = "latest";
         go = "1.25.3";
         uv = "latest"; # Fast Python package manager
+        "npm:@earendil-works/pi-coding-agent" = "latest"; # pi coding agent CLI
       };
       settings = {
         idiomatic_version_file_enable_tools = [
@@ -28,6 +30,7 @@
           "terraform"
           "terragrunt"
           "yarn"
+          "pnpm"
         ];
         plugin_autoupdate_last_check_duration = "1 week";
 
@@ -41,6 +44,10 @@
 
         env_file = ".env";
         experimental = true;
+
+        npm = {
+          package_manager = "pnpm"; # use pnpm as package manager for mise npm backend
+        };
       };
     };
   };
