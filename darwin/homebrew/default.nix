@@ -15,8 +15,8 @@ in
     #   VN = 1494451650;
     # };
     onActivation = {
-      # "zap" removes manually installed brews and casks
-      cleanup = "zap";
+      # "uninstall" removes brews/casks not in Brewfile; use "zap" to also remove config files
+      cleanup = "uninstall";
       # cleanup = "none";
       autoUpdate = true;
       upgrade = true;

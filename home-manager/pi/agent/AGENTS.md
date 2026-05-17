@@ -26,11 +26,13 @@ When working with libraries, frameworks, or third-party packages:
 4. **Follow recursively** — Read referenced documentation until you have sufficient information
 
 Use Context7 for:
+
 - Package implementation or installation
 - Framework usage (Next.js, React, Vue, Nix ecosystem, etc.)
 - When user explicitly requests up-to-date documentation
 
 **Context7 is exhausted when**:
+
 - 3 queries return no relevant results
 - Library is not in the Context7 index
 - Docs exist but lack needed specificity → escalate to Exa Search
@@ -49,9 +51,12 @@ Use Context7 for:
 
 **Efficiency principle**: Act directly when the path is clear. Use parallel tool calls when operations are independent. Use `ask_user_question()` when the request is ambiguous rather than guessing.
 
+**Tool preference**: Use `fd` instead of `find` and `rg` instead of `grep` — they are faster, have saner defaults (respect `.gitignore`), and produce more readable output.
+
 ## Guardrails — Use Plan Mode
 
 **You MUST prefer plan mode for any operation that involves:**
+
 - Editing 3+ files
 - Refactoring or restructuring code
 - Running destructive commands (rm, mv, cp with overwrite, git reset, git push --force)
@@ -59,8 +64,9 @@ Use Context7 for:
 - Any task where a wrong first move would be costly
 
 When you recognise a task matches these criteria:
+
 1. **Enter plan mode**: suggest `/plan` to the user, or if the user already asked for changes, first gather evidence (read files, search code), then output a concrete numbered plan with `Plan:` prefix and wait for approval.
-2. **During planning**: Only use read-only tools (read, grep, find, ls) and bash for inspection only. Do not write, edit, or execute mutating commands.
+2. **During planning**: Only use read-only tools (read, rg, fd, ls) and bash for inspection only. Do not write, edit, or execute mutating commands.
 3. **After approval**: Track progress with `todo()` — create tasks, mark them in_progress, then completed as you go.
 
 For simple requests (single-file edits, straightforward questions), direct YOLO execution is fine.
@@ -70,7 +76,9 @@ For simple requests (single-file edits, straightforward questions), direct YOLO 
 pi.dev uses pi-mcp-adapter for MCP tool integration. Two access patterns:
 
 ### Direct Tools (preferred for high-use servers)
+
 These tools appear alongside built-in tools:
+
 - `exa_web_search_exa(query, numResults)` — Web search
 - `exa_web_fetch_exa(urls, maxCharacters)` — Fetch web pages
 - `context7_resolve_library_id(query, libraryName)` — Library lookup
@@ -78,10 +86,13 @@ These tools appear alongside built-in tools:
 - `mcp__playwright__*` — Browser automation
 
 ### Proxy Tool (for all other MCP servers)
+
 Use `mcp()` with object syntax:
+
 ```
 mcp({ server: "server-name", tool: "tool_name", arguments: { key: "value" } })
 ```
+
 Available servers: context-mode, context7, exa, playwright.
 
 ## LSP & Code Quality (pi-lens)
@@ -89,6 +100,7 @@ Available servers: context-mode, context7, exa, playwright.
 pi-lens hooks fire **automatically** on every write, edit, and session event — no manual invocation needed for core safeguards:
 
 ### Automatic Hooks (fire on every write/edit, no action needed)
+
 - **Secrets scan** — Blocks writes if credentials detected (inlined at write time)
 - **Auto-format** — Queues files during edits, formats once at agent_end
 - **Auto-fix** — Runs Biome, Ruff, ESLint safe autofixes before analysis
@@ -98,11 +110,13 @@ pi-lens hooks fire **automatically** on every write, edit, and session event —
 - **Fact rules** — Blocks CORS wildcards, error swallowing, high-entropy strings at write time
 
 ### Turn-End Hooks (fire after agent finishes responding)
+
 - **Review graph** — Shows impact cascade: which files were affected and how diagnostics propagated
 - **Test runner** — Runs tests for modified files (non-blocking; results injected into next turn)
 - **Persisted findings** — Diagnostics tracked across turns for trend analysis
 
 ### Slash Commands (supplemental — for deeper investigation)
+
 - `/lens-booboo` — Full quality report (use after changes to check for regressions)
 - `/lens-health` — Runtime health, latency, diagnostic telemetry
 - `/lens-toggle` — Enable/disable pi-lens for current session
@@ -128,6 +142,7 @@ context-mode keeps raw data out of the context window. Prefer these tools for da
 ## Subagents (pi-subagents)
 
 You can delegate specialised tasks using the `Agent` tool:
+
 ```
 Agent({
   subagent_type: "worker",       # Built-in: worker, scout, planner, oracle, researcher, reviewer, delegate, context-builder
@@ -142,6 +157,7 @@ Agent({
 ```
 
 **Default agent types (built-in to pi-subagents):**
+
 - `worker` — Implementation agent for executing approved plans
 - `scout` — Fast codebase recon, returns compressed context
 - `planner` — Research and plan creation with read-only tools
@@ -152,6 +168,7 @@ Agent({
 - `context-builder` — Builds project context for other agents
 
 **Delegation triggers** (use Agent instead of doing it yourself):
+
 - Debugging: >3 suspected root causes OR >5 files involved → use `scout` + `worker`
 - Refactoring: architectural change OR >100 LOC affected → use `planner` + `worker`
 - Architecture: user asks for "options", "approaches", or "trade-offs" → use `oracle`
@@ -161,6 +178,7 @@ Agent({
 ## Todo Tracking (rpiv-todo)
 
 Use `todo()` to manage progress across sessions:
+
 ```
 todo({ action: "create", subject: "task description" })
 todo({ action: "update", id: 1, status: "in_progress" })
@@ -175,12 +193,13 @@ todo({ action: "list" })
 
 - `/plan` — Toggle read-only plan mode
 - `/plan:status` — Show current plan and progress
-- In plan mode: only read, grep, find, ls, and read-only bash available
+- In plan mode: only read, rg, fd, ls, and read-only bash available
 - Blocked in plan mode: write, edit, package installs, sudo, destructive git
 
 ## Clarification Questions (rpiv-ask-user-question)
 
 When requirements are ambiguous:
+
 ```
 ask_user_question({
   questions: [{
@@ -190,11 +209,13 @@ ask_user_question({
   }]
 })
 ```
+
 Use this BEFORE guessing. Prevents wasted work.
 
 ## Sound Notifications (pi-peon)
 
 pi-peon plays lifecycle sounds (Jarvis MK2 AI butler pack):
+
 - `/peon` — Open settings modal (volume, mute, per-event toggles)
 - `/peon status` — Print config
 - `/peon test` — Play a test sound
@@ -203,6 +224,7 @@ pi-peon plays lifecycle sounds (Jarvis MK2 AI butler pack):
 ## Session Management
 
 Pi uses tree-based session storage:
+
 - Sessions auto-save to `~/.pi/sessions/`
 - `pi -c` — Continue most recent session
 - `/tree` — Browse session history
@@ -213,18 +235,18 @@ Pi uses tree-based session storage:
 
 ## Keybindings & Commands
 
-| Action | Input |
-|--------|-------|
-| Shell command | `!command` (output sent to model) |
-| Silent shell | `!!command` (no output sent) |
-| Silent on success | `?command` (output only on failure) |
-| File reference | `@file` or `@path/to/file` |
-| Model selection | `/model` or Ctrl+L |
-| Cycle models | Ctrl+P / Shift+Ctrl+P |
-| Thinking level | Shift+Tab |
-| Session tree | Double Escape |
-| New line | Shift+Enter (Kitty protocol via WezTerm) |
-| External editor | Ctrl+G |
+| Action            | Input                                    |
+| ----------------- | ---------------------------------------- |
+| Shell command     | `!command` (output sent to model)        |
+| Silent shell      | `!!command` (no output sent)             |
+| Silent on success | `?command` (output only on failure)      |
+| File reference    | `@file` or `@path/to/file`               |
+| Model selection   | `/model` or Ctrl+L                       |
+| Cycle models      | Ctrl+P / Shift+Ctrl+P                    |
+| Thinking level    | Shift+Tab                                |
+| Session tree      | Double Escape                            |
+| New line          | Shift+Enter (Kitty protocol via WezTerm) |
+| External editor   | Ctrl+G                                   |
 
 ## Git Workflow
 
@@ -241,9 +263,41 @@ Pi loads AGENTS.md from `~/.pi/agent/AGENTS.md` (this file) plus project-level A
 
 Context-mode provides session continuity via SQLite — when the conversation compacts or you `/resume`, the previous working state is restored automatically.
 
+## Scratch Directory
+
+Use `/tmp/scratch.<foldername>.<sessionid>` as a safe scratch directory for ad-hoc script execution and quick tests. This keeps the project tree clean and avoids accidental writes to tracked files.
+
+### Setup
+
+At the start of the session (or when first needed), create the scratch directory:
+
+```bash
+foldername="$(basename "$(pwd)")"
+session_id="$(date +%s)_$$"; export __PI_SCRATCH="/tmp/scratch.${foldername}.${session_id}"
+mkdir -p "$__PI_SCRATCH"
+```
+
+Store the path in `__PI_SCRATCH` (or a similar variable) for easy reuse throughout the session.
+
+### Use cases
+
+- **Write & run throwaway scripts** — shell, Python, Ruby, etc. for ad-hoc testing
+- **Quick config validation** — validate TOML, YAML, JSON snippets before committing
+- **Capture command output** — redirect long-running or large-output commands to files in the scratch dir
+- **File experiments** — create, transform, and inspect temp files without polluting the project
+
+### Cleanup
+
+The scratch directory lives under `/tmp/` so it is automatically purged on reboot. Explicit cleanup is optional but encouraged:
+
+```bash
+rm -rf "$__PI_SCRATCH"
+```
+
 ## Done Criteria
 
 End your turn only when ALL are true:
+
 - User's request is fully implemented or answered
 - All tracked todos are completed
 - Tests pass (if applicable)
