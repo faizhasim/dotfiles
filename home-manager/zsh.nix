@@ -37,9 +37,10 @@
       ggpush = "git push";
 
       cat = "bat";
+      diff = "delta";
       top = "btop";
       htop = "btop";
-      diff = "delta";
+      obsidian = "/Applications/Obsidian.app/Contents/MacOS/obsidian-cli";
       ssh = "TERM=screen ssh";
       python = "python3";
       pip = "python3 -m pip";
