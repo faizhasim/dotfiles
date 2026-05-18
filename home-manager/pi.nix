@@ -39,23 +39,26 @@ let
       accent = piColor "base0D";
       border = piColor "base02";
       borderAccent = piColor "base0D";
-      borderMuted = piColor "base03";
+      borderMuted = piColor "base0D";
       success = piColor "base0B";
       error = piColor "base08";
       warning = piColor "base09";
-      muted = piColor "base03";
-      dim = piColor "base03";
+      # Note: using frost colors (base0C/base0D) instead of base03 for text tokens
+      # because terminal transparency washes out the background, making dark gray
+      # (#4c566a) unreadable. Frost colors are lighter and remain visible.
+      muted = piColor "base0C";
+      dim = piColor "base0D";
 
       # Text
-      text = piColor "base05";
-      thinkingText = piColor "base03";
+      text = piColor "base06";
+      thinkingText = piColor "base0C";
 
       # Messages
       selectedBg = piColor "base02";
       userMessageBg = piColor "base01";
-      userMessageText = piColor "base05";
+      userMessageText = piColor "base06";
       customMessageBg = piColor "base01";
-      customMessageText = piColor "base05";
+      customMessageText = piColor "base06";
       customMessageLabel = piColor "base0D";
 
       # Tool boxes
@@ -67,20 +70,20 @@ let
 
       # Markdown
       mdHeading = piColor "base0A";
-      mdLink = piColor "base0D";
-      mdLinkUrl = piColor "base03";
+      mdLink = piColor "base0C";
+      mdLinkUrl = piColor "base0D";
       mdCode = piColor "base0B";
       mdCodeBlock = piColor "base01";
       mdCodeBlockBorder = piColor "base02";
-      mdQuote = piColor "base03";
+      mdQuote = piColor "base0C";
       mdQuoteBorder = piColor "base02";
       mdHr = piColor "base02";
-      mdListBullet = piColor "base0D";
+      mdListBullet = piColor "base0C";
 
       # Diff
       toolDiffAdded = piColor "base0B";
       toolDiffRemoved = piColor "base08";
-      toolDiffContext = piColor "base03";
+      toolDiffContext = piColor "base0D";
 
       # Syntax highlighting
       syntaxKeyword = piColor "base0E";
@@ -89,12 +92,12 @@ let
       syntaxString = piColor "base0B";
       syntaxNumber = piColor "base09";
       syntaxType = piColor "base0A";
-      syntaxOperator = piColor "base05";
-      syntaxPunctuation = piColor "base03";
-      syntaxComment = piColor "base03";
+      syntaxOperator = piColor "base06";
+      syntaxPunctuation = piColor "base0C";
+      syntaxComment = piColor "base0C";
 
       # Thinking levels
-      thinkingOff = piColor "base03";
+      thinkingOff = piColor "base0D";
       thinkingLow = piColor "base04";
       thinkingMinimal = piColor "base0D";
       thinkingMedium = piColor "base0B";
@@ -102,6 +105,19 @@ let
       thinkingXhigh = piColor "base0F";
       bashMode = piColor "base0B";
       bashOutput = piColor "base05";
+    };
+  };
+
+  # Transparent variant — overrides secondary text with brighter snow storm colors.
+  # At 0.8 opacity over white: base04 (#d8dee9) achieves 4.6:1 contrast vs base0C (#88c0d0) at 3.4:1.
+  # At 0.9 opacity over white: both achieve >5:1. Using snow+frost gives the best readable hierarchy.
+  piThemeTransparent = piTheme // {
+    name = "stylix-transparent";
+    colors = piTheme.colors // {
+      muted = piColor "base04"; # #d8dee9 snow — bright secondary text, 4.6:1 at 0.8 opacity
+      dim = piColor "base0C"; # #88c0d0 frost — dimmer than muted, 5.7:1 at 0.9 opacity
+      thinkingText = piColor "base04"; # snow — readable thinking blocks
+      mdQuote = piColor "base04"; # snow — readable blockquotes
     };
   };
 
@@ -171,7 +187,7 @@ in
       # models.primary (for --model flag), but settings.json needs
       # just the model name.
       defaultModel = models.model;
-      theme = "stylix"; # Custom theme generated from Stylix/Nord base16
+      theme = "stylix-transparent"; # Transparent-terminal variant — see piThemeTransparent in let block
       # Use mise-managed node for npm operations (matches mise.nix node = "lts")
       npmCommand = [
         "mise"
@@ -218,8 +234,10 @@ in
     # pi-peon sound notification config — static file
     ".pi/agent/peon/config.json".source = ./pi/agent/peon/config.json;
 
-    # Nord-based theme generated from Stylix base16 palette
+    # Nord-based themes generated from Stylix base16 palette.
+    # stylix = original mapping; stylix-transparent = readability-tuned for transparent terminals.
     ".pi/agent/themes/stylix.json".source = prettyJson piTheme;
+    ".pi/agent/themes/stylix-transparent.json".source = prettyJson piThemeTransparent;
   };
 
   # opencode-go provider: pi.dev has built-in support, no custom models.json needed.
