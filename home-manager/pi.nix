@@ -1,8 +1,6 @@
 {
   config,
   pkgs,
-  lib,
-  inputs,
   aiHarnessModelProfile,
   ...
 }:
@@ -121,18 +119,11 @@ let
     };
   };
 
-  # Pi.dev packages (installed automatically on first startup via ResourceLoader)
-  # pi.dev reads settings.json → finds missing packages → runs npm install via npmCommand
-  packages = [
-    "npm:pi-mcp-adapter" # MCP server integration + Cursor config import
-    "npm:context-mode" # Context window protection (sandbox + session continuity)
-    "npm:@juicesharp/rpiv-todo" # Persistent todo overlay
-    "npm:@juicesharp/rpiv-ask-user-question" # Structured clarification dialogs
-    "npm:pi-plan" # Plan mode toggle (read-only guardrails)
-    "npm:pi-lens" # LSP, tree-sitter rules, formatting, secrets scan
-    "npm:pi-subagents" # Claude Code-style autonomous subagents
-    "npm:@wierdbytes/pi-peon" # Orc Peon sound notifications
-  ];
+  # Pi.dev extension packages are declared via the settings.json `packages` key
+  # and auto-installed by pi on startup. The pi binary and MCP tools
+  # (pi-mcp-adapter, context-mode) are installed via `npm install -g` in
+  # setup-post-nix.sh — they need to be on PATH.
+  # Config files below are the Nix-managed part.
 
   # MCP server configuration (read by pi-mcp-adapter)
   # Servers tagged lifecycle: "lazy" connect on first use; "eager" connect at session start
@@ -149,7 +140,7 @@ let
     context7 = {
       url = "https://mcp.context7.com/mcp";
       env = {
-        CONTEXT7_API_KEY = "!op read op://Private/context7/api keys/opencode";
+        CONTEXT7_API_KEY = "!op read op://Private/wqnec2ehppfchca6xpmbvp6xem/api keys/opencode";
       };
       directTools = true; # Register tools directly (no proxy needed)
     };
@@ -172,6 +163,7 @@ let
       command = "context-mode";
       lifecycle = "eager"; # Connect on session start for tool interception
     };
+
   };
 in
 {
@@ -205,18 +197,34 @@ in
         enabled = true;
         maxRetries = 3;
       };
-      inherit packages;
       enableInstallTelemetry = false;
+      # Pi extension packages — auto-installed by pi on startup to ~/.pi/agent/npm/
+      packages = [
+        "npm:pi-lens"
+        "npm:pi-subagents"
+        "npm:pi-plan"
+        "npm:context-mode"
+        "npm:pi-mcp-adapter"
+        "npm:@juicesharp/rpiv-todo"
+        "npm:@juicesharp/rpiv-ask-user-question"
+        "npm:@wierdbytes/pi-peon"
+      ];
     };
 
-    # MCP server configuration — standard format used by pi-mcp-adapter
-    ".pi/agent/mcp.json".source = prettyJson {
-      settings = {
-        toolPrefix = "server";
-        idleTimeout = 10;
-        directTools = false; # Global default; per-server overrides below
+    # MCP server configuration — standard format used by pi-mcp-adapter.
+    # Uses force = true because pi-mcp-adapter sometimes writes directly to
+    # this file (via /mcp setup), breaking the Nix store symlink and causing
+    # the "would be clobbered by backing up" error on the next rebuild.
+    ".pi/agent/mcp.json" = {
+      text = builtins.toJSON {
+        settings = {
+          toolPrefix = "server";
+          idleTimeout = 10;
+          directTools = false; # Global default; per-server overrides below
+        };
+        inherit mcpServers;
       };
-      inherit mcpServers;
+      force = true;
     };
 
     # auth.json is NOT managed by Nix — pi.dev writes auth tokens here during /login.
@@ -243,36 +251,4 @@ in
   # opencode-go provider: pi.dev has built-in support, no custom models.json needed.
   # Set OPENCODE_API_KEY in your environment to authenticate.
   # Without it, opencode-go models are listed but API calls fail.
-
-  # === Activation: Install pi.dev (npm-managed, not Homebrew) ===
-  # pi is installed via npm (not Homebrew) so `pi update --self` works.
-  # Extension packages are installed directly via mise's npm, not via `pi install`,
-  # because pi's `npmCommand` setting spawns `mise exec` which requires `mise`
-  # on PATH — but during activation, mise is only available at ${pkgs.mise}/bin/mise.
-  # Packages are already declared in settings.json, so pi's ResourceLoader finds them.
-  home.activation.piExtensions = lib.hm.dag.entryAfter [ "installPackages" ] ''
-    if [[ -z "''${DRY_RUN:-}" ]]; then
-      echo >&2 "  pi.dev: ensuring binary..."
-      ${pkgs.mise}/bin/mise exec --yes node@lts -- \
-        npm install -g @earendil-works/pi-coding-agent 2>&1 || true
-
-      # Remove stale Nix symlink — pi needs to write auth tokens here
-      [ -L "$HOME/.pi/agent/auth.json" ] && rm -f "$HOME/.pi/agent/auth.json"
-
-      echo >&2 "  pi.dev: ensuring extension packages..."
-      for pkg in \
-        pi-mcp-adapter \
-        context-mode \
-        @juicesharp/rpiv-todo \
-        @juicesharp/rpiv-ask-user-question \
-        pi-plan \
-        pi-lens \
-        pi-subagents \
-        @wierdbytes/pi-peon; do
-        ${pkgs.mise}/bin/mise exec --yes node@lts -- \
-          npm install -g "''${pkg}" 2>&1 || true
-      done
-      echo >&2 "  pi.dev: done."
-    fi
-  '';
 }

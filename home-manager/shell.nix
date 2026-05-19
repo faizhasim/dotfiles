@@ -11,6 +11,7 @@
     zoxide.enable = true; # autojump
     jq.enable = true; # json parser
     bat.enable = true; # pretty cat
+    nix-index.enable = true; # command-not-found integration (uses nix-index-database)
     yazi = {
       enable = true; # file browser
       enableZshIntegration = true;

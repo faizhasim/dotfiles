@@ -21,7 +21,7 @@ with pkgs;
   copilot-language-server # use by sidekick.nvim
   corepack # node wrappers
   coreutils-full # multiple tools
-  comma # run nix binaries on demand
+  # comma is provided by nix-index-database (programs.nix-index-database.comma.enable = true)
   curl
 
   # D

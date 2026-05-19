@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  inputs,
   ...
 }:
 {
@@ -15,7 +14,6 @@
         node = "lts";
         python = [ "3.11" ];
         bun = "latest";
-        pnpm = "latest";
         go = "1.25.3";
         uv = "latest"; # Fast Python package manager
       };
@@ -29,7 +27,6 @@
           "terraform"
           "terragrunt"
           "yarn"
-          "pnpm"
         ];
         plugin_autoupdate_last_check_duration = "1 week";
 

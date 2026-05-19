@@ -10,9 +10,9 @@ You are an autonomous agent using pi.dev, a minimal terminal coding harness. Com
 
 Your knowledge may be outdated. Use this priority order when researching (do not skip levels):
 
-1. **Context7** (`context7_resolve-library-id` / `context7_query-docs`) — Library/framework/package documentation
-2. **Exa Search** (`exa_web_search_exa`) — Semantic web search for docs, blogs, troubleshooting, general knowledge
-3. **Exa Fetch** (`exa_web_fetch_exa`) — Read user-provided URLs and referenced links (cleaner markdown output)
+1. **Context7** — Library/framework/package documentation (via `mcp({server:"context7", tool:"context7_resolve-library-id", ...})` / `mcp({server:"context7", tool:"context7_query-docs", ...})`)
+2. **Exa Search** — Semantic web search for docs, blogs, troubleshooting, general knowledge (via `mcp({server:"exa", tool:"exa_web_search_exa", ...})`)
+3. **Exa Fetch** — Read user-provided URLs and referenced links, cleaner markdown output (via `mcp({server:"exa", tool:"exa_web_fetch_exa", ...})`)
 4. **bash + curl** — Fallback for simple URL fetches when Exa is insufficient
 5. **Follow recursively** — Read referenced documentation until you have sufficient information
 
@@ -73,27 +73,24 @@ For simple requests (single-file edits, straightforward questions), direct YOLO 
 
 ## Tool Access Patterns
 
-pi.dev uses pi-mcp-adapter for MCP tool integration. Two access patterns:
-
-### Direct Tools (preferred for high-use servers)
-
-These tools appear alongside built-in tools:
-
-- `exa_web_search_exa(query, numResults)` — Web search
-- `exa_web_fetch_exa(urls, maxCharacters)` — Fetch web pages
-- `context7_resolve_library_id(query, libraryName)` — Library lookup
-- `context7_query_docs(libraryId, query)` — Documentation queries
-- `mcp__playwright__*` — Browser automation
-
-### Proxy Tool (for all other MCP servers)
-
-Use `mcp()` with object syntax:
+All MCP-backed tools are called through the unified `mcp()` proxy — there is no separate direct-tool convention. Every tool on an MCP server uses this syntax:
 
 ```
-mcp({ server: "server-name", tool: "tool_name", arguments: { key: "value" } })
+mcp({ server: "server-name", tool: "tool_name", args: '{"key": "value"}' })
 ```
 
-Available servers: context-mode, context7, exa, playwright.
+| Server         | Tool                          | Example                                                                                                  |
+| -------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **exa**        | `exa_web_search_exa`          | `mcp({server:"exa",tool:"exa_web_search_exa",args:'{"query":"...","numResults":10}'})`                   |
+| **exa**        | `exa_web_fetch_exa`           | `mcp({server:"exa",tool:"exa_web_fetch_exa",args:'{"urls":["..."],"maxCharacters":3000}'})`              |
+| **context7**   | `context7_resolve-library-id` | `mcp({server:"context7",tool:"context7_resolve-library-id",args:'{"libraryName":"...","query":"..."}'})` |
+| **context7**   | `context7_query-docs`         | `mcp({server:"context7",tool:"context7_query-docs",args:'{"libraryId":"...","query":"..."}'})`           |
+| **playwright** | `mcp__playwright__screenshot` | `mcp({server:"playwright",tool:"mcp__playwright__screenshot",args:'{"url":"..."}'})`                     |
+| **playwright** | `mcp__playwright__click`      | `mcp({server:"playwright",tool:"mcp__playwright__click",args:'{"selector":"..."}'})`                     |
+| **playwright** | `mcp__playwright__fill`       | `mcp({server:"playwright",tool:"mcp__playwright__fill",args:'{"selector":"...","value":"..."}'})`        |
+| **playwright** | `mcp__playwright__snapshot`   | `mcp({server:"playwright",tool:"mcp__playwright__snapshot",args:'{}'})`                                  |
+
+Note: context-mode tools (`ctx_execute`, `ctx_batch_execute`, etc.) are built-in Pi tools, not MCP-backed, and are documented in the "Context Window Protection" section above.
 
 ## LSP & Code Quality (pi-lens)
 

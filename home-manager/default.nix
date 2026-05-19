@@ -19,7 +19,8 @@
       in
       common ++ machineSpecific;
     sessionPath = [
-      "$HOME/.local/share/pnpm" # pnpm global binaries
+      "$HOME/.local/share/pnpm" # pnpm v10 global bins (legacy)
+      "$HOME/.local/share/pnpm/bin" # pnpm v11+ global bins
       "$HOME/.local/bin" # custom CLIs like `idea`
       # "$HOME/.proto/bin"
     ];
@@ -29,6 +30,7 @@
 
   imports = [
     inputs._1password-shell-plugins.hmModules.default
+    inputs.nix-index-database.homeModules.default
     inputs.krewfile.homeManagerModules.krewfile
     inputs.worktrunk.homeModules.default
     ./aerospace.nix

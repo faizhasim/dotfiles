@@ -94,12 +94,6 @@
           overlays = import ./overlays {
             inherit inputs;
           };
-          pkgs = import nixpkgs {
-            inherit system;
-            config = {
-              allowUnfree = true;
-            };
-          };
         in
         darwin.lib.darwinSystem {
           inherit system;

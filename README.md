@@ -38,6 +38,7 @@ Declarative macOS system configuration using Nix/Lix, nix-darwin, and home-manag
 ### Prerequisites
 
 **Required:**
+
 1. [Homebrew](https://brew.sh) - Package manager (manual install)
 2. [1Password](https://1password.com) - For secrets management (installed by this config)
 
@@ -75,7 +76,7 @@ curl -sSf -L https://install.lix.systems/lix | sh -s -- install
 
 ```shell
 # Use nix shell to temporarily get 1Password CLI (provided by this flake's input)
-nix shell 'github:1Password/shell-plugins#_1password' --command bash -c '
+NIXPKGS_ALLOW_UNFREE=1 nix shell nixpkgs#_1password-cli --impure --command bash -c '
   eval $(op signin)
   op document get "agenix-decryption-key" --vault Private > ~/.ssh/agenix-key
   chmod 600 ~/.ssh/agenix-key
