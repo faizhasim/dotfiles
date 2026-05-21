@@ -33,6 +33,7 @@
     inputs.nix-index-database.homeModules.default
     inputs.krewfile.homeManagerModules.krewfile
     inputs.worktrunk.homeModules.default
+    ./1password.nix
     ./aerospace.nix
     ./cargo.nix
     ./dircolors.nix

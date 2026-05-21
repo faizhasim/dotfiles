@@ -142,14 +142,12 @@ let
       env = {
         CONTEXT7_API_KEY = "!op read op://Private/wqnec2ehppfchca6xpmbvp6xem/api keys/opencode";
       };
-      directTools = true; # Register tools directly (no proxy needed)
     };
     exa = {
       url = "https://mcp.exa.ai/mcp";
       env = {
         EXA_API_KEY = "!op read op://Private/Exa/token";
       };
-      directTools = true;
     };
     playwright = {
       command = "npx";
