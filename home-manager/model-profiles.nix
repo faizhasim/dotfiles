@@ -43,8 +43,8 @@ let
       models = {
         primary = "deepseek-v4-flash";
         fast = "deepseek-v4-flash";
-        largeContext = "deepseek-v4-pro";
-        plan = "deepseek-v4-pro";
+        largeContext = "deepseek-v4-flash";
+        plan = "deepseek-v4-flash"; # previously deepseek-v4-pro
       };
     };
 
