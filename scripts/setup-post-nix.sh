@@ -57,6 +57,15 @@ run_pi() {
     ok "Removed stale Nix symlink: ~/.pi/agent/auth.json"
   fi
 
+  # Symlink pi into ~/.local/bin/ (always on PATH via hm-session-vars.sh)
+  # so it's available regardless of which mise-managed Node version is active.
+  # The lts symlink is maintained by mise and follows the current LTS release.
+  if [ -f "$HOME/.local/share/mise/installs/node/lts/bin/pi" ]; then
+    mkdir -p "$HOME/.local/bin"
+    ln -sf "$HOME/.local/share/mise/installs/node/lts/bin/pi" "$HOME/.local/bin/pi"
+    ok "Symlinked pi to ~/.local/bin/pi (stable, independent of active node version)"
+  fi
+
   ok "Pi binary tools installed (extensions auto-installed by pi on next launch)"
 }
 
@@ -96,6 +105,14 @@ run_mcp() {
   ok "Private MCP config written to ~/.config/mcp/mcp.json"
 }
 
+run_misc() {
+  info "Misc — global pnpm tools"
+
+  pnpm add -g \
+    @tobilu/qmd
+  ok "Misc global pnpm tools installed"
+}
+
 run_all() {
   info "Running all targets"
   echo ""
@@ -104,6 +121,8 @@ run_all() {
   run_nvim
   echo ""
   run_mcp
+  echo ""
+  run_misc
   echo ""
   ok "All targets complete"
 }
@@ -118,8 +137,9 @@ all) run_all "$@" ;;
 pi) run_pi "$@" ;;
 nvim) run_nvim "$@" ;;
 mcp) run_mcp "$@" ;;
+misc) run_misc "$@" ;;
 *)
-  echo "Usage: $0 [pi|nvim|mcp|all] [--upgrade]"
+  echo "Usage: $0 [pi|nvim|mcp|misc|all] [--upgrade]"
   exit 1
   ;;
 esac

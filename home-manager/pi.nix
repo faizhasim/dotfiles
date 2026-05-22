@@ -161,6 +161,10 @@ let
       command = "context-mode";
       lifecycle = "eager"; # Connect on session start for tool interception
     };
+    qmd = {
+      command = "qmd";
+      args = [ "mcp" ];
+    };
 
   };
 in

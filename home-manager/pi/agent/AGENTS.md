@@ -53,6 +53,8 @@ Use Context7 for:
 
 **Tool preference**: Use `fd` instead of `find` and `rg` instead of `grep` — they are faster, have saner defaults (respect `.gitignore`), and produce more readable output.
 
+> **PATH note for pi**: If these tools aren't found, use their full paths: `/etc/profiles/per-user/faizhasim/bin/rg` and `/etc/profiles/per-user/faizhasim/bin/fd`.
+
 ## Guardrails — Use Plan Mode
 
 **You MUST prefer plan mode for any operation that involves:**
@@ -190,7 +192,7 @@ todo({ action: "list" })
 
 - `/plan` — Toggle read-only plan mode
 - `/plan:status` — Show current plan and progress
-- In plan mode: only read, rg, fd, ls, and read-only bash available
+- In plan mode: only read, `/etc/profiles/per-user/faizhasim/bin/rg`, `/etc/profiles/per-user/faizhasim/bin/fd`, ls, and read-only bash available
 - Blocked in plan mode: write, edit, package installs, sudo, destructive git
 
 ## Clarification Questions (rpiv-ask-user-question)
