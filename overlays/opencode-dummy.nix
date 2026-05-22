@@ -1,6 +1,6 @@
 # Dummy opencode package for home-manager module compatibility
-# The real opencode binary comes from Homebrew, but home-manager's
-# opencode module requires a package with a version for its warnings logic.
+# The real opencode binary comes from bun (bun add -g opencode-ai), but
+# home-manager's opencode module requires a package for its version checks.
 _: final: prev: {
   opencode-dummy = prev.stdenvNoCC.mkDerivation {
     pname = "opencode";
@@ -9,12 +9,10 @@ _: final: prev: {
     dontBuild = true;
     installPhase = ''
             mkdir -p $out/bin
-            # Create a placeholder script that tells users to use homebrew
+            # Proxy to the bun-installed binary (~/.bun/bin/opencode)
             cat > $out/bin/opencode << 'EOF'
       #!/bin/sh
-      echo "Error: opencode should be installed via Homebrew, not Nix." >&2
-      echo "Run: brew install opencode" >&2
-      exit 1
+      exec "$HOME/.bun/bin/opencode" "$@"
       EOF
             chmod +x $out/bin/opencode
     '';

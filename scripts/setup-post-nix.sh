@@ -12,6 +12,7 @@
 #   setup-post-nix.sh pi --upgrade  # Force upgrade pi & MCP tools to latest
 #   setup-post-nix.sh nvim          # Neovim config (Stow) + tools + zsh extras
 #   setup-post-nix.sh mcp           # Private MCP config from 1Password
+#   setup-post-nix.sh opencode      # OpenCode AI coding agent (via bun global install)
 #
 # ============================================================================
 
@@ -105,6 +106,14 @@ run_mcp() {
   ok "Private MCP config written to ~/.config/mcp/mcp.json"
 }
 
+run_opencode() {
+  info "OpenCode — AI coding agent (via bun global install)"
+
+  bun add -g opencode-ai
+
+  ok "OpenCode installed (autoupdates handled by bun global)"
+}
+
 run_misc() {
   info "Misc — global pnpm tools"
 
@@ -122,6 +131,8 @@ run_all() {
   echo ""
   run_mcp
   echo ""
+  run_opencode
+  echo ""
   run_misc
   echo ""
   ok "All targets complete"
@@ -137,6 +148,7 @@ all) run_all "$@" ;;
 pi) run_pi "$@" ;;
 nvim) run_nvim "$@" ;;
 mcp) run_mcp "$@" ;;
+opencode) run_opencode "$@" ;;
 misc) run_misc "$@" ;;
 *)
   echo "Usage: $0 [pi|nvim|mcp|misc|all] [--upgrade]"

@@ -14,7 +14,6 @@ _: {
     "datadog-labs/pack/pup"
 
     # dev tools with native autoupdate
-    "opencode" # AI coding agent (official brew formula, autoupdate enabled)
   ];
   casks = [
     "1password"
@@ -70,7 +69,6 @@ _: {
   ];
   taps = [
     # "acrogenesis/macchanger"
-    "anomalyco/tap" # opencode
     "snyk/tap"
     "ankitpokhrel/jira-cli"
     "FelixKratz/formulae"

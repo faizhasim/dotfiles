@@ -54,9 +54,9 @@ in
   programs.opencode = {
     enable = true;
 
-    # Using dummy package because binary comes from Homebrew
-    # (Installed via darwin/homebrew/common.nix for reliable autoupdate)
-    # Dummy provides version for home-manager's versionAtLeast check
+    # Using dummy package because binary comes from bun global install
+    # (setup-post-nix.sh opencode: bun add -g opencode-ai)
+    # Dummy proxies to ~/.bun/bin/opencode and provides version for versionAtLeast checks
     package = pkgs.opencode-dummy;
 
     # Main opencode configuration (goes to opencode.json)
