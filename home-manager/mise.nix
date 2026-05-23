@@ -16,6 +16,7 @@
         bun = "latest";
         go = "1.25.3";
         uv = "latest"; # Fast Python package manager
+        "github:can1357/oh-my-pi" = "latest"; # OMP coding agent (replacing Pi)
       };
       settings = {
         idiomatic_version_file_enable_tools = [

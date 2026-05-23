@@ -50,6 +50,7 @@
     ./lazygit.nix
     ./mise.nix
     ./npmrc.nix
+    ./oh-my-pi.nix
     ./opencode.nix
     ./pi.nix
     ./presenterm.nix
@@ -66,7 +67,7 @@
 
   programs._1password-shell-plugins = {
     enable = true;
-    plugins = [ pkgs.gh ];
+    plugins = [ ]; # gh removed — using native OAuth + Keychain
   };
 
 }
