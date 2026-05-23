@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  security.pam.services.sudo_local.touchIdAuth = true;
-
   # Settings directly supported by nix-darwin
   system.defaults = {
     universalaccess = {
@@ -29,10 +27,15 @@
       # NSAppSleepDisabled = true;  # Disable App Nap (not recommended)
     };
 
+    # Include date and time in screenshot filenames; save to dedicated folder
+    screencapture = {
+      include-date = true;
+      location = "~/Pictures/screencapture/";
+    };
   };
 
   # For settings that need system-level permissions or aren't directly supported
-  system.activationScripts.otherSettings.text = ''
+  system.activationScripts.utilitiesSettings.text = ''
     # Menu bar icons configuration
     defaults -currentHost write dontAutoLoad -array \
       "/System/Library/CoreServices/Menu Extras/TimeMachine.menu" \
@@ -50,8 +53,15 @@
     # Reveal hostname info when clicking login window clock
     sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
-    # Camera connection action
+    # Hide connection duration and connecting status in VPN menu bar icon
+    defaults write com.apple.networkConnect VPNShowTime -bool false
+    defaults write com.apple.networkConnect VPNShowStatus -bool false
+
+    # Camera connection action (empty string = no action when camera connected)
     defaults -currentHost write com.apple.ImageCapture2 HotPlugActionPath -string ""
+
+    # Reset Launchpad layout database (forces rebuild from installed apps)
+    find "$HOME/Library/Application Support/Dock" -name "*-*.db" -maxdepth 1 -delete
 
     # Create symbolic links for hidden items
 

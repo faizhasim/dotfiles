@@ -26,12 +26,6 @@
     echo "$all_services" | grep -v "$connected_service" | \
       xargs -I {} sudo networksetup -setnetworkserviceenabled {} off
 
-    # Show Time Connected in VPN menubar item
-    defaults write com.apple.networkConnect VPNShowTime -bool false
-
-    # Show Status When Connecting in VPN menubar item
-    defaults write com.apple.networkConnect VPNShowStatus -bool false
-
     # Use Getflix then Google public DNS (uncomment if you want to override nix-darwin's dns settings)
     # sudo networksetup -setdnsservers "$connected_service" 103.241.150.100 54.251.190.247 8.8.8.8 8.8.4.4
   '';

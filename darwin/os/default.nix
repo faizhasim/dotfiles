@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
-    ./accessability.nix
+    ./accessibility.nix
     ./app-store.nix
     ./displays.nix
     ./dock.nix
@@ -9,19 +9,18 @@
     ./fonts.nix
     ./general.nix
     ./icloud.nix
-    ./keyboard.nix
+    ./input-devices.nix
     ./language-region.nix
-    ./mission-control.nix
+    ./loginwindow.nix
     ./network.nix
     ./notifications.nix
-    ./other.nix
     ./pbs.nix
     ./printer.nix
     ./security-privacy.nix
     ./siri.nix
     ./sound.nix
     ./spotlight.nix
-    ./trackpad.nix
+    ./utilities.nix
     ./users-group.nix
   ];
 }

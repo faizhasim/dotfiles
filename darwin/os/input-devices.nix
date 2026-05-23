@@ -1,32 +1,34 @@
 { config, pkgs, ... }:
 
 {
+  # ── Keyboard Settings ──────────────────────────────────────────
 
-  # Keyboard settings directly supported by nix-darwin
   system.defaults.NSGlobalDomain = {
     # Disable press-and-hold for keys in favor of key repeat
     ApplePressAndHoldEnabled = false;
 
-    # Set key repeat rate (minimum 1)
+    # Key repeat rate (1 = fastest; minimum 1)
     KeyRepeat = 1;
 
-    # Set delay until repeat (in milliseconds)
+    # Delay until repeat starts in ms (20 = shortest)
     InitialKeyRepeat = 20;
 
+    # Disable auto-correction globally
     NSAutomaticSpellingCorrectionEnabled = false;
     NSAutomaticCapitalizationEnabled = false;
     NSAutomaticPeriodSubstitutionEnabled = false;
     NSAutomaticDashSubstitutionEnabled = false;
     NSAutomaticQuoteSubstitutionEnabled = false;
 
-    # Optional settings (uncomment if needed)
-    AppleKeyboardUIMode = 3; # Full Keyboard Access - all controls
-    # "com.apple.keyboard.fnState" = false;  # Use F1, F2, etc. as standard function keys
+    # Full Keyboard Access — Tab can focus all controls, not just text boxes
+    AppleKeyboardUIMode = 3;
+
+    # Trackpad tracking speed (2.0 = moderately fast; range 0.0-3.0)
+    "com.apple.trackpad.scaling" = 2.0;
   };
 
-  # For settings that need system-level permissions or aren't directly supported
   system.activationScripts.keyboardSettings.text = ''
-    # Set Double and Single quotes - using simpler format to avoid quote escaping issues
+    # Set Double and Single quotes — using simpler format to avoid quote escaping issues
     defaults write NSGlobalDomain NSUserQuotesArray -array '\"' '\"' "'" "'"
 
     # Adjust keyboard brightness in low light
@@ -60,6 +62,43 @@
 
     # Notes
     defaults write com.apple.Notes NSAutomaticSpellingCorrectionEnabled -bool false
+  '';
 
+  # ── Trackpad Settings ──────────────────────────────────────────
+
+  system.defaults = {
+    trackpad = {
+      Clicking = true; # Tap-to-click
+      TrackpadThreeFingerDrag = true; # Three-finger drag
+      TrackpadRightClick = true; # Secondary click (right-click)
+    };
+    # Mouse tracking speed — not exposed as native nix-darwin option
+    CustomUserPreferences = {
+      NSGlobalDomain = {
+        "com.apple.mouse.scaling" = 4.0;
+      };
+    };
+  };
+
+  system.activationScripts.trackpadSettings.text = ''
+    # Tap to click (user + login screen)
+    defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+    defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+    defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+
+    # Force Click and haptic feedback
+    defaults write NSGlobalDomain com.apple.trackpad.forceClick -bool true
+    defaults write com.apple.AppleMultitouchTrackpad ForceSuppressed -bool false
+    defaults write com.apple.AppleMultitouchTrackpad ActuateDetents -bool true
+
+    # Silent clicking (0 = lightest haptic)
+    defaults write com.apple.AppleMultitouchTrackpad ActuationStrength -int 0
+
+    # Haptic feedback thresholds (0 = Light)
+    defaults write com.apple.AppleMultitouchTrackpad FirstClickThreshold -int 0
+    defaults write com.apple.AppleMultitouchTrackpad SecondClickThreshold -int 0
+
+    # Disable swipe between pages
+    defaults write AppleEnableSwipeNavigateWithScrolls -bool false
   '';
 }

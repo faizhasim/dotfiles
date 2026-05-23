@@ -10,11 +10,6 @@
       };
 
       spaces.spans-displays = true;
-
-      screencapture = {
-        include-date = true;
-        location = "~/Pictures/screencapture/";
-      };
     };
   };
 

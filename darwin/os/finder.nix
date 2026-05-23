@@ -2,12 +2,9 @@
 
 {
   # General settings directly supported by nix-darwin
+  # NOTE: AppleShowAllExtensions and AppleShowAllFiles are set via `finder` block below;
+  # the equivalent NSGlobalDomain keys would be redundant.
   system.defaults = {
-    NSGlobalDomain = {
-      AppleShowAllExtensions = true;
-      AppleShowAllFiles = true;
-    };
-
     finder = {
       AppleShowAllExtensions = true;
       AppleShowAllFiles = true;

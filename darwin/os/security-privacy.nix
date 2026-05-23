@@ -1,14 +1,13 @@
 { config, pkgs, ... }:
 
 {
-  # Security settings through activation script
-  system.activationScripts.securitySettings.text = ''
-    # Require password immediately after sleep or screen saver begins
-    defaults write com.apple.screensaver askForPassword -bool true
-    defaults write com.apple.screensaver askForPasswordDelay -int 0
+  # Enable Touch ID for sudo (via nix-darwin's PAM module)
+  security.pam.services.sudo_local.touchIdAuth = true;
 
-    # Disable automatic login
-    sudo defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser &> /dev/null
+  # Security settings through activation script (no native nix-darwin equivalent)
+  system.activationScripts.securitySettings.text = ''
+    # Never show password hint after failed login attempts (0 = no hint displayed)
+    defaults write NSGlobalDomain RetriesUntilHint -int 0
 
     # Allow applications downloaded from anywhere
     sudo spctl --master-disable
