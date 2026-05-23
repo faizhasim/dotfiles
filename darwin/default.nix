@@ -22,13 +22,17 @@
 
   # Enable zsh as the default shell, but let home-manager manage it in ./home-manager/zsh.nix
   # Use pre-built nix-index database (from nix-index-database flake) instead of building locally
-  programs.nix-index-database = {
-    comma.enable = true;
-  };
+  programs = {
+    nix-index-database = {
+      comma.enable = true;
+    };
 
-  programs.zsh.enable = true;
-  # Disable system-wide completion init so home-manager can handle it with caching
-  programs.zsh.enableCompletion = false;
+    zsh = {
+      enable = true;
+      # Disable system-wide completion init so home-manager can handle it with caching
+      enableCompletion = false;
+    };
+  };
 
   launchd.user.agents.aerospace = {
     command = "${pkgs.aerospace}/Applications/AeroSpace.app/Contents/MacOS/AeroSpace";
