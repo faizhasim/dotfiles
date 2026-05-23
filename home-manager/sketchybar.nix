@@ -7,8 +7,8 @@
 }:
 {
   programs.sketchybar = {
-    enable = false; # use ice-bar instead
-    service.enable = false; # use ice-bar instead
+    enable = false; # using thaw instead
+    service.enable = false; # using thaw instead
     config = {
       source = ./sketchybar;
       recursive = true;

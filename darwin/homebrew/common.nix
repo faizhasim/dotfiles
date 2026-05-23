@@ -65,6 +65,7 @@ _: {
     "jetbrains-toolbox" # manage jetbrains licenses
     "fantastical"
     "chrysalis"
+    "thaw"
     "microsoft-edge"
   ];
   taps = [
