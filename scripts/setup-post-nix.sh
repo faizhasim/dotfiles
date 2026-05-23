@@ -13,6 +13,7 @@
 #   setup-post-nix.sh nvim          # Neovim config (Stow) + tools + zsh extras
 #   setup-post-nix.sh mcp           # Private MCP config from 1Password
 #   setup-post-nix.sh opencode      # OpenCode AI coding agent (via bun global install)
+#   setup-post-nix.sh skills        # AI agent skills for Pi and OpenCode
 #
 # ============================================================================
 
@@ -114,6 +115,66 @@ run_opencode() {
   ok "OpenCode installed (autoupdates handled by bun global)"
 }
 
+run_skills() {
+  info "Skills — AI agent skills for Pi and OpenCode"
+
+  # Skills install to the canonical ~/.agents/skills/ dir, which Pi, OpenCode,
+  # and all universal agents read from automatically. No --agent flag needed.
+
+  # ── Go + Testing ──
+  pnpm dlx skills add jeffallan/claude-skills -s golang-pro -g -y
+  pnpm dlx skills add antfu/skills -s vitest -g -y
+  pnpm dlx skills add wshobson/agents -s go-concurrency-patterns -g -y
+  pnpm dlx skills add anthropics/skills -s webapp-testing -g -y
+  pnpm dlx skills add wshobson/agents -s e2e-testing-patterns javascript-testing-patterns -g -y
+
+  # ── Infra: Terraform, K8s, Docker, DevOps ──
+  pnpm dlx skills add wshobson/agents -s terraform-module-library -g -y
+  pnpm dlx skills add hashicorp/agent-skills -s terraform-test terraform-stacks terraform-search-import -g -y
+  pnpm dlx skills add jeffallan/claude-skills -s terraform-engineer kubernetes-specialist devops-engineer -g -y
+  pnpm dlx skills add sickn33/antigravity-awesome-skills -s docker-expert -g -y
+  pnpm dlx skills add github/awesome-copilot -s multi-stage-dockerfile -g -y
+
+  # ── Python + Rust ──
+  pnpm dlx skills add wshobson/agents -s python-performance-optimization python-testing-patterns python-design-patterns -g -y
+  pnpm dlx skills add wshobson/agents -s rust-async-patterns -g -y
+  pnpm dlx skills add apollographql/skills -s rust-best-practices -g -y
+
+  # ── Git, GitHub & Documentation ──
+  pnpm dlx skills add xixu-me/skills -s github-actions-docs -g -y
+  pnpm dlx skills add github/awesome-copilot -s git-commit gh-cli documentation-writer -g -y
+  # (api-documentation, security-best-practices from supercent-io/skills-template skipped — private repo)
+
+  # ── Security ──
+  pnpm dlx skills add wshobson/agents -s security-requirement-extraction -g -y
+
+  # ── AWS & AI/LLM ──
+  pnpm dlx skills add aws/agent-toolkit-for-aws -s aws-iam -g -y
+  pnpm dlx skills add refoundai/lenny-skills -s building-with-llms -g -y
+  pnpm dlx skills add huggingface/skills -s huggingface-llm-trainer -g -y
+
+  # ── Document & Media Processing ──
+  pnpm dlx skills add tobi/qmd -g -y
+  pnpm dlx skills add anthropics/skills -s pdf pptx -g -y
+  pnpm dlx skills add softaworks/agent-toolkit -s mermaid-diagrams -g -y
+
+  # ── Agent Tools & DX ──
+  pnpm dlx skills add vercel-labs/agent-browser -g -y
+  pnpm dlx skills add vercel-labs/skills -s find-skills -g -y
+  pnpm dlx skills add anthropics/skills -s skill-creator -g -y
+  pnpm dlx skills add obra/superpowers -s dispatching-parallel-agents -g -y
+  pnpm dlx skills add antfu/skills -s pnpm -g -y
+  pnpm dlx skills add softaworks/agent-toolkit -s agent-md-refactor -g -y
+  pnpm dlx skills add daymade/claude-code-skills -s markdown-tools -g -y ||
+    warn "markdown-tools not found in daymade/claude-code-skills (repo restructured)"
+
+  # ── General Development ──
+  pnpm dlx skills add wshobson/agents -s typescript-advanced-types architecture-patterns code-review-excellence debugging-strategies architecture-decision-records -g -y
+  pnpm dlx skills add softaworks/agent-toolkit -s meme-factory difficult-workplace-conversations -g -y
+
+  ok "Skills installed for Pi and OpenCode agents"
+}
+
 run_misc() {
   info "Misc — global pnpm tools"
 
@@ -133,8 +194,11 @@ run_all() {
   echo ""
   run_opencode
   echo ""
+  run_skills
+  echo ""
   run_misc
   echo ""
+
   ok "All targets complete"
 }
 
@@ -149,9 +213,10 @@ pi) run_pi "$@" ;;
 nvim) run_nvim "$@" ;;
 mcp) run_mcp "$@" ;;
 opencode) run_opencode "$@" ;;
+skills) run_skills "$@" ;;
 misc) run_misc "$@" ;;
 *)
-  echo "Usage: $0 [pi|nvim|mcp|misc|all] [--upgrade]"
+  echo "Usage: $0 [pi|nvim|mcp|opencode|skills|misc|all] [--upgrade]"
   exit 1
   ;;
 esac
