@@ -2,132 +2,69 @@
 
 with pkgs;
 [
-  # A
-  aerospace
-  age # Encryption tool for secrets (used by agenix)
-  aspell # Spell checker
-  aspellDicts.en # English dictionary for aspell
-  ast-grep # code searching and refactoring tool
-  awscli2
-
-  # B
-  bat # Cat clone with syntax highlighting
-  bats # Bash automated testing system
-  betterdisplay
-  bind # nettools
-  btop # System monitor and process viewer
-
-  # C
-  copilot-language-server # use by sidekick.nvim
-  corepack # node wrappers
-  coreutils-full # multiple tools
-  # comma is provided by nix-index-database (programs.nix-index-database.comma.enable = true)
-  curl
-
-  # D
-  delta # git diff viewer
-  diffutils
+  # ──────────────────────────────────────────────
+  # 📟 Terminal & Shell
+  # ──────────────────────────────────────────────
+  zsh
+  wezterm # Terminal emulator
+  zellij # terminal multiplexer
+  tmux # Terminal multiplexer
   direnv # Environment variable management per directory
-  difftastic # Structural diff tool
-  dive # analyse docker images
-  dnsmasq # DNS forwarder and DHCP server
-  dockutil # Manage icons in the dock
-  drawio # Draw.io diagram editor
-  duf # disk usage
-  dust # disk usage analyzer
+  stow
+  ncurses # Terminal control library with terminfo database
 
-  # F
-  fastfetch # System information tool
-  fd # Fast find alternative
-  fblog # json log viewer
-  ffmpeg # video editing and cutting
+  # ──────────────────────────────────────────────
+  # ⚙️ Core CLI Utilities
+  # ──────────────────────────────────────────────
+  coreutils-full # multiple tools
+  diffutils
   findutils
-  fswatch # File change monitor
-  fzf # Fuzzy finder
-
-  # G
-  gnupg # GNU Privacy Guard
   gnugrep
   gnumake
   gnused
   gnutar
-  golangci-lint
-  gomplate # Template engine for generating text files
-  gping # ping with a graph
-  gzip
   gawk
-  gh # GitHub CLI
-  git
-  git-lfs
-  github-copilot-cli # required by nvim sidekick
-  ghostscriptX
-  glow # Markdown renderer for terminal
-  gopls # Go language server
-  graph-easy # draw graphs in the terminal
-  grc # colored log output
-  gcc # GNU Compiler Collection
-  gum # Interactive prompts for shell scripts
-
-  # H
-  htop # Interactive process viewer
-  httpie # awesome alternative to curl
-  # hunspell # Spell checker
-
-  # I
-  iftop # Network bandwidth monitor
-  iina
-  inetutils # net tools like ping, traceroute, etc.
-  imagemagick # Image manipulation toolkit
-
-  # J
-  jpegoptim # JPEG optimizer
-  jq # JSON processor
-
-  # K
-  k3d
-  k6 # load testing tool
-  keycastr
-  # kind # k8s in docker
+  gzip
   killall # Kill processes by name
-  krew # kubectl plugins
-  kubectl
-  kubernetes-helm # deploy applications
-  kubie # fzf kubeconfig browser
-
-  # L
-  lnav # Log file navigator
-  loopwm # Tiling window manager, unfree
-  # libfido2 # FIDO2 library
-  lua
-
-  # M
-  mas
-  mermaid-cli # generate diagrams and flowcharts from text
-  mise
-
-  # N
-  ncurses # Terminal control library with terminfo database
-  neovim
-  neohtop # nice htop GUI alternative
-  nil # nix language server
-  nixd # nix language server
-  nmap # net tools
-  ngrok # Secure tunneling service, unfree
-  prettier
-  nixfmt
-
-  # O
-  # obs-studio # Stream / recording software
-  ocrmypdf # OCR engine wrapper producing searchable PDF/A output
+  tree # Directory tree viewer
+  curl
+  wget
   openssh # SSH client and server
-  openai-whisper
+  unrar # RAR archive extractor
+  unzip # ZIP archive extractor
+  zip # ZIP archive creator
+  the-unarchiver
 
-  # P
-  pandoc # Document converter
-  pngpaste # paste PNG image from clipboard
-  postgresql # Database server
-  presenterm # presentation tool
-  proto # used by moonrepo
+  # ──────────────────────────────────────────────
+  # 🔍 Search & Text Processing
+  # ──────────────────────────────────────────────
+  ripgrep # fast searching
+  fd # Fast find alternative
+  bat # Cat clone with syntax highlighting
+  fzf # Fuzzy finder
+  glow # Markdown renderer for terminal
+  gum # Interactive prompts for shell scripts
+  grc # colored log output
+  tealdeer # community driven man pages
+  difftastic # Structural diff tool
+  vale
+  sqlfluff # sql linter and auto-formatter
+  fblog # json log viewer
+
+  # ──────────────────────────────────────────────
+  # ✏️ Editors
+  # ──────────────────────────────────────────────
+  neovim
+  vscode # Visual Studio Code, unfree
+
+  # ──────────────────────────────────────────────
+  # 🦀 Development — Languages & Runtimes
+  # ──────────────────────────────────────────────
+  gcc # GNU Compiler Collection
+  lua
+  rustup # rust
+  mise
+  corepack # node wrappers
   (python3.withPackages (
     ps: with ps; [
       pdfplumber
@@ -138,65 +75,144 @@ with pkgs;
       pandas
     ]
   ))
-  poppler-utils # provides pdftotext, pdfimages
-  pdftk # PDF toolkit for merging, splitting, rotating
-
-  # Q
-  qpdf # PDF manipulation CLI
-
-  # R
-  raycast
-  rclone # sync files
-  ripgrep # fast searching
-  rubyPackages.htmlbeautifier
-  rustup # rust
-
-  # S
-  saml2aws # SAML to AWS CLI authentication tool
-  slack # unfree, use brew cask instead
-  slides
-  sniffnet # monitor network traffic
-  sqlfluff # sql linter and auto-formatter
-  sshfs # mount folders via ssh
-  ssh-to-age # Convert SSH keys to age format (used by agenix)
-  statix
-  stow
-
-  # T
-  tealdeer # community driven man pages
-  tectonic # pdf latex
-  termdown # terminal countdown
-  tesseract # OCR engine
-  terraform # Infrastructure as code tool
-  terraform-docs
-  # terraform-ls # Terraform language server
-  tflint # Terraform linter
-  the-unarchiver
-  tilt # k8s dev tool
-  tmux # Terminal multiplexer
-  tree # Directory tree viewer
-  tree-sitter # incremental parsing system (used by neovim)
-
-  # U
-  utm # Virtual machines
-  unrar # RAR archive extractor
-  unzip # ZIP archive extractor
   # uv # Python package installer
 
-  # W
-  wezterm # Terminal emulator
-  wget
+  # ──────────────────────────────────────────────
+  # 🔧 Development — LSPs, Linters & Formatters
+  # ──────────────────────────────────────────────
+  nil # nix language server
+  nixd # nix language server
+  nixfmt
+  statix
+  prettier
+  ast-grep # code searching and refactoring tool
+  tree-sitter # incremental parsing system (used by neovim)
+  gopls # Go language server
+  golangci-lint
+  copilot-language-server # use by sidekick.nvim
+  rubyPackages.htmlbeautifier
+  proto # used by moonrepo
+  # comma is provided by nix-index-database (programs.nix-index-database.comma.enable = true)
 
-  # V
-  vale
-  vscode # Visual Studio Code, unfree
+  # ──────────────────────────────────────────────
+  # 📦 Git & Version Control
+  # ──────────────────────────────────────────────
+  git
+  git-lfs
+  gh # GitHub CLI
+  github-copilot-cli # required by nvim sidekick
+  delta # git diff viewer
 
-  # Y
+  # ──────────────────────────────────────────────
+  # ☸️ Kubernetes & Containers
+  # ──────────────────────────────────────────────
+  kubectl
+  kubie # fzf kubeconfig browser
+  krew # kubectl plugins
+  kubernetes-helm # deploy applications
+  k3d
+  tilt # k8s dev tool
+  dive # analyse docker images
+  # kind # k8s in docker
+
+  # ──────────────────────────────────────────────
+  # ☁️ Cloud & IaC
+  # ──────────────────────────────────────────────
+  awscli2
+  terraform # Infrastructure as code tool
+  terraform-docs
+  tflint # Terraform linter
+  # terraform-ls # Terraform language server
+  saml2aws # SAML to AWS CLI authentication tool
+  rclone # sync files
+  ngrok # Secure tunneling service, unfree
+  age # Encryption tool for secrets (used by agenix)
+  ssh-to-age # Convert SSH keys to age format (used by agenix)
+
+  # ──────────────────────────────────────────────
+  # 🗃️ Data & Databases
+  # ──────────────────────────────────────────────
+  jq # JSON processor
   yq-go
-  yt-dlp
+  gomplate # Template engine for generating text files
+  graph-easy # draw graphs in the terminal
+  postgresql # Database server
+  bats # Bash automated testing system
+  k6 # load testing tool
 
-  # Z
-  zellij # terminal multiplexer
-  zip # ZIP archive creator
-  zsh
+  # ──────────────────────────────────────────────
+  # 📡 Networking & Security
+  # ──────────────────────────────────────────────
+  nmap # net tools
+  bind # nettools
+  inetutils # net tools like ping, traceroute, etc.
+  iftop # Network bandwidth monitor
+  gping # ping with a graph
+  dnsmasq # DNS forwarder and DHCP server
+  gnupg # GNU Privacy Guard
+  sshfs # mount folders via ssh
+  httpie # awesome alternative to curl
+  # libfido2 # FIDO2 library
+
+  # ──────────────────────────────────────────────
+  # 📄 PDF & Document Processing
+  # ──────────────────────────────────────────────
+  pandoc # Document converter
+  tectonic # pdf latex
+  pdftk # PDF toolkit for merging, splitting, rotating
+  qpdf # PDF manipulation CLI
+  poppler-utils # provides pdftotext, pdfimages
+  ocrmypdf # OCR engine wrapper producing searchable PDF/A output
+  tesseract # OCR engine
+  ghostscriptX
+
+  # ──────────────────────────────────────────────
+  # 🎨 Media & Graphics
+  # ──────────────────────────────────────────────
+  ffmpeg # video editing and cutting
+  iina
+  yt-dlp
+  openai-whisper
+  mermaid-cli # generate diagrams and flowcharts from text
+  imagemagick # Image manipulation toolkit
+  jpegoptim # JPEG optimizer
+  pngpaste # paste PNG image from clipboard
+  drawio # Draw.io diagram editor
+  slides
+  presenterm # presentation tool
+  slack # unfree, use brew cask instead
+  # obs-studio # Stream / recording software
+
+  # ──────────────────────────────────────────────
+  # 💻 macOS Desktop
+  # ──────────────────────────────────────────────
+  aerospace
+  betterdisplay
+  dockutil # Manage icons in the dock
+  loopwm # Tiling window manager, unfree
+  raycast
+  keycastr
+  mas
+  sniffnet # monitor network traffic
+  utm # Virtual machines
+
+  # ──────────────────────────────────────────────
+  # 📊 System Monitoring
+  # ──────────────────────────────────────────────
+  htop # Interactive process viewer
+  btop # System monitor and process viewer
+  neohtop # nice htop GUI alternative
+  duf # disk usage
+  dust # disk usage analyzer
+  fastfetch # System information tool
+  fswatch # File change monitor
+  lnav # Log file navigator
+  termdown # terminal countdown
+
+  # ──────────────────────────────────────────────
+  # 🔤 Spelling & Writing
+  # ──────────────────────────────────────────────
+  aspell # Spell checker
+  aspellDicts.en # English dictionary for aspell
+  # hunspell # Spell checker
 ]
