@@ -78,6 +78,16 @@
 
       [ -f ~/.env/env.sh ] && source ~/.env/env.sh
 
+      # Re-source hm-session-vars when __HM_SESS_VARS_SOURCED is inherited
+      # from parent process (e.g., zellij server). Without this, new zellij
+      # panes never pick up changes to home.sessionVariables because the
+      # guard prevents hm-session-vars.sh from running.
+      # Fixes: QMD_FORCE_CPU, OP_ACCOUNT, and all home.sessionVariables
+      if [[ -n "$__HM_SESS_VARS_SOURCED" && -f "$HOME/.zshenv" ]]; then
+        unset __HM_SESS_VARS_SOURCED
+        . "$HOME/.zshenv"
+      fi
+
       # used for homebrew
       export XDG_DATA_DIRS=$XDG_DATA_DIRS:/opt/homebrew/share
 

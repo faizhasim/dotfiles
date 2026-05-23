@@ -53,6 +53,7 @@
     ./opencode.nix
     ./pi.nix
     ./presenterm.nix
+    ./qmd.nix
     ./shell.nix
     ./sketchybar.nix
     ./starship.nix
