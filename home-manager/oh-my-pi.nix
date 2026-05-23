@@ -227,7 +227,9 @@ in
         modelRoles = {
           default = models.primary;
           inherit (models) fast plan;
+          slow = models.plan;
           smol = models.fast;
+          task = models.fast;
           commit = models.fast;
         };
       };
@@ -238,5 +240,38 @@ in
     # Rules activate on violation only — no permanent context tax.
     ".omp/agent/rules/guardrails.md".source = ./oh-my-pi/rules/guardrails.md;
     ".omp/agent/rules/pkg-mgr-auth.md".source = ./oh-my-pi/rules/pkg-mgr-auth.md;
+
+    # ── OMP-native MCP servers: ~/.omp/agent/mcp.json ────────────────
+    # MCP servers configured elsewhere (Claude, Cursor, etc.) are auto-discovered
+    # by omp — no config needed here. This file only contains omp-native additions.
+    #
+    # Schema: packages/coding-agent/src/config/mcp-schema.json
+    # Values starting with ! are resolved as shell commands at runtime.
+    #
+    ".omp/agent/mcp.json" = {
+      text = builtins.toJSON {
+        mcpServers = {
+          docker-mcp = {
+            command = "docker";
+            args = [
+              "mcp"
+              "gateway"
+              "run"
+            ];
+          };
+          context7 = {
+            url = "https://mcp.context7.com/mcp";
+            env = {
+              CONTEXT7_API_KEY = "!op read op://Private/wqnec2ehppfchca6xpmbvp6xem/api\ keys/opencode";
+            };
+          };
+          qmd = {
+            command = "qmd";
+            args = [ "mcp" ];
+          };
+        };
+      };
+      force = true;
+    };
   };
 }

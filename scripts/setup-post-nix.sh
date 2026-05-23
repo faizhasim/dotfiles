@@ -13,6 +13,7 @@
 #   setup-post-nix.sh nvim          # Neovim config (Stow) + tools + zsh extras
 #   setup-post-nix.sh mcp           # Private MCP config from 1Password
 #   setup-post-nix.sh opencode      # OpenCode AI coding agent (via bun global install)
+#   setup-post-nix.sh omp           # OMP plugins & post-install (binary managed by mise.nix)
 #   setup-post-nix.sh skills        # AI agent skills for Pi and OpenCode
 #
 # ============================================================================
@@ -115,6 +116,16 @@ run_opencode() {
   ok "OpenCode installed (autoupdates handled by bun global)"
 }
 
+run_omp() {
+  info "OMP — plugin setup (binary managed by home-manager/mise.nix)"
+
+  # Ensure omp is installed (idempotent — mise.nix manages the version)
+  mise install 2>/dev/null || true
+
+  omp plugin install context-mode
+  ok "OMP context-mode plugin installed"
+}
+
 run_skills() {
   info "Skills — AI agent skills for Pi and OpenCode"
 
@@ -194,9 +205,11 @@ run_all() {
   echo ""
   run_opencode
   echo ""
-  run_skills
+  run_omp
   echo ""
   run_misc
+  echo ""
+  run_skills
   echo ""
 
   ok "All targets complete"
@@ -213,10 +226,11 @@ pi) run_pi "$@" ;;
 nvim) run_nvim "$@" ;;
 mcp) run_mcp "$@" ;;
 opencode) run_opencode "$@" ;;
+omp) run_omp "$@" ;;
 skills) run_skills "$@" ;;
 misc) run_misc "$@" ;;
 *)
-  echo "Usage: $0 [pi|nvim|mcp|opencode|skills|misc|all] [--upgrade]"
+  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|skills|misc|all] [--upgrade]"
   exit 1
   ;;
 esac
