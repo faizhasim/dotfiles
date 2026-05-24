@@ -168,6 +168,8 @@ run_skills() {
   pnpm dlx skills add tobi/qmd -g -y
   pnpm dlx skills add anthropics/skills -s pdf pptx -g -y
   pnpm dlx skills add softaworks/agent-toolkit -s mermaid-diagrams -g -y
+  pnpm dlx skills add open-pencil/skills@open-pencil -g -y || \
+    warn "open-pencil skill not found (repo may be private or name changed)"
 
   # ── Agent Tools & DX ──
   pnpm dlx skills add vercel-labs/agent-browser -g -y
@@ -191,6 +193,9 @@ run_misc() {
 
   pnpm add -g \
     @tobilu/qmd
+  # OpenPencil MCP server — bun managed declaratively via home-manager/mise.nix
+  bun add -g @open-pencil/mcp
+  ok "OpenPencil MCP server installed"
   ok "Misc global pnpm tools installed"
 }
 

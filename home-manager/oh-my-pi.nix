@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   aiHarnessModelProfile,
   ...
@@ -268,6 +269,12 @@ in
           qmd = {
             command = "qmd";
             args = [ "mcp" ];
+          };
+          open-pencil = {
+            command = "bun";
+            args = [
+              "${config.home.homeDirectory}/.bun/bin/openpencil-mcp"
+            ];
           };
         };
       };

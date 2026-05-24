@@ -45,6 +45,7 @@ _: {
     # ✏️ Development — Editors
     # ──────────────────────────────────────────────
     "zed" # vim like editor
+    "open-pencil/tap/open-pencil" # design editor compatible with Figma
     "jetbrains-toolbox" # manage jetbrains licenses
     # "visual-studio-code" # code editor
 
@@ -125,6 +126,7 @@ _: {
     "FelixKratz/formulae"
     # Datadog pack (internal tooling)
     "datadog-labs/pack"
+    "open-pencil/tap"
 
     # --- Commented / Disabled taps ---
     # "acrogenesis/macchanger"

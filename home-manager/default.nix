@@ -22,6 +22,7 @@
       "$HOME/.local/share/pnpm" # pnpm v10 global bins (legacy)
       "$HOME/.local/share/pnpm/bin" # pnpm v11+ global bins
       "$HOME/.local/bin" # custom CLIs like `idea`
+      "$HOME/.bun/bin" # bun global installs (opencode, openpencil, etc.)
       # "$HOME/.proto/bin"
     ];
 
