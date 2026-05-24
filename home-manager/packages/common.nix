@@ -102,6 +102,7 @@ with pkgs;
   gh # GitHub CLI
   github-copilot-cli # required by nvim sidekick
   delta # git diff viewer
+  goreleaser # Go release automation
 
   # ──────────────────────────────────────────────
   # ☸️ Kubernetes & Containers
