@@ -53,7 +53,6 @@
     ./npmrc.nix
     ./oh-my-pi.nix
     ./opencode.nix
-    ./pi.nix
     ./presenterm.nix
     ./qmd.nix
     ./shell.nix

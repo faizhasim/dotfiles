@@ -251,8 +251,6 @@ run_misc() {
 run_all() {
   info "Running all targets"
   echo ""
-  run_pi
-  echo ""
   run_nvim
   echo ""
   run_mcp

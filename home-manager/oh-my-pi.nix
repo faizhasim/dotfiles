@@ -242,6 +242,12 @@ in
     ".omp/agent/rules/guardrails.md".source = ./oh-my-pi/rules/guardrails.md;
     ".omp/agent/rules/pkg-mgr-auth.md".source = ./oh-my-pi/rules/pkg-mgr-auth.md;
 
+    ".omp/agent/rules/research-protocol.md".source = ./oh-my-pi/rules/research-protocol.md;
+
+    # ── Extensions ──────────────────────────────────────────────────
+    # Custom omp extensions for lifecycle hooks.
+    ".omp/agent/extensions/peon.ts".source = ./oh-my-pi/extensions/peon.ts;
+
     # ═══════════════════════════════════════════════════════════════════
     # ~/.omp/agent/mcp.json  (seed reference managed by Nix)
     # ═══════════════════════════════════════════════════════════════════
