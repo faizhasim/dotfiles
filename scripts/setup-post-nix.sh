@@ -13,8 +13,7 @@
 #   setup-post-nix.sh nvim          # Neovim config (Stow) + tools + zsh extras
 #   setup-post-nix.sh mcp           # Private MCP config from 1Password
 #   setup-post-nix.sh opencode      # OpenCode AI coding agent (via bun global install)
-#   setup-post-nix.sh omp           # OMP plugins & post-install (binary managed by mise.nix)
-#   setup-post-nix.sh omp-oauth     # Resolve !op read secrets in mcp.json (avoids 1Password prompts)
+#   setup-post-nix.sh omp           # OMP plugins + MCP config + verify (binary managed by mise.nix)
 #
 # ============================================================================
 
@@ -125,11 +124,14 @@ run_omp() {
 
   omp plugin install context-mode
   ok "OMP context-mode plugin installed"
-}
 
-run_omp_oauth() {
-  info "OMP MCP — seeding mcp.json from reference + resolving secrets"
+  omp plugin list
+  ok "OMP plugins listed"
 
+  omp plugin doctor
+  ok "OMP plugin health check complete"
+
+  # ── MCP config seeding ──
   local REF="$HOME/.omp/agent/mcp.json.reference"
   local CUR="$HOME/.omp/agent/mcp.json"
 
@@ -176,6 +178,7 @@ run_omp_oauth() {
 
   ok "OMP mcp.json seeded and secrets resolved"
 }
+
 
 run_skills() {
   info "Skills — AI agent skills for Pi and OpenCode"
@@ -255,7 +258,6 @@ run_all() {
   run_mcp
   echo ""
   run_opencode
-  run_omp_oauth
   echo ""
   run_omp
   echo ""
@@ -278,11 +280,10 @@ nvim) run_nvim "$@" ;;
 mcp) run_mcp "$@" ;;
 opencode) run_opencode "$@" ;;
 omp) run_omp "$@" ;;
-omp-oauth) run_omp_oauth "$@" ;;
 skills) run_skills "$@" ;;
 misc) run_misc "$@" ;;
 *)
-  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|omp-oauth|skills|misc|all] [--upgrade]"
+  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|skills|misc|all] [--upgrade]"
   exit 1
   ;;
 esac
