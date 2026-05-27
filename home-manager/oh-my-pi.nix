@@ -1,6 +1,7 @@
-{
+ {
   config,
   pkgs,
+  lib,
   aiHarnessModelProfile,
   ...
 }:
@@ -12,6 +13,9 @@ let
   # Model profiles — shared with pi.nix, opencode.nix
   # Change aiHarnessModelProfile in flake.nix → all harnesses update.
   models = import ./model-profiles.nix { profileName = aiHarnessModelProfile; };
+
+  # Peon extension (lifecycle sounds via ~/.openpeon/ sound packs)
+  enablePeonExtension = false;
 
 in
 {
@@ -246,7 +250,9 @@ in
 
     # ── Extensions ──────────────────────────────────────────────────
     # Custom omp extensions for lifecycle hooks.
-    ".omp/agent/extensions/peon.ts".source = ./oh-my-pi/extensions/peon.ts;
+    ".omp/agent/extensions/peon.ts" = lib.mkIf enablePeonExtension {
+      source = ./oh-my-pi/extensions/peon.ts;
+    };
 
     # ═══════════════════════════════════════════════════════════════════
     # ~/.omp/agent/mcp.json  (seed reference managed by Nix)
