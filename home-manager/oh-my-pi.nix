@@ -242,14 +242,16 @@ in
     ".omp/agent/rules/guardrails.md".source = ./oh-my-pi/rules/guardrails.md;
     ".omp/agent/rules/pkg-mgr-auth.md".source = ./oh-my-pi/rules/pkg-mgr-auth.md;
 
-    # ── OMP-native MCP servers: ~/.omp/agent/mcp.json ────────────────
-    # MCP servers configured elsewhere (Claude, Cursor, etc.) are auto-discovered
-    # by omp — no config needed here. This file only contains omp-native additions.
+    # ═══════════════════════════════════════════════════════════════════
+    # ~/.omp/agent/mcp.json  (seed reference managed by Nix)
+    # ═══════════════════════════════════════════════════════════════════
     #
-    # Schema: packages/coding-agent/src/config/mcp-schema.json
-    # Values starting with ! are resolved as shell commands at runtime.
+    # Nix writes the reference file with base server entries. The post-nix
+    # script (setup-post-nix.sh omp-oauth) merges it into the writable
+    # mcp.json, resolves !op read secrets, and OMP's /mcp reauth adds
+    # auth/oauth configs that survive future rebuilds.
     #
-    ".omp/agent/mcp.json" = {
+    ".omp/agent/mcp.json.reference" = {
       text = builtins.toJSON {
         mcpServers = {
           docker-mcp = {
@@ -261,20 +263,51 @@ in
             ];
           };
           context7 = {
+            type = "http";
             url = "https://mcp.context7.com/mcp";
             env = {
-              CONTEXT7_API_KEY = "!op read op://Private/wqnec2ehppfchca6xpmbvp6xem/api\ keys/opencode";
+              CONTEXT7_API_KEY = "!op read op://Private/context7/api-keys/opencode";
             };
           };
           qmd = {
             command = "qmd";
             args = [ "mcp" ];
           };
-          open-pencil = {
-            command = "bun";
-            args = [
-              "${config.home.homeDirectory}/.bun/bin/openpencil-mcp"
-            ];
+          Atlassian = {
+            type = "http";
+            url = "!op read op://Private/mcp-info/mcp-atlassian-url";
+          };
+          Backstage = {
+            type = "http";
+            url = "!op read op://Private/mcp-info/mcp-backstage-url";
+          };
+          Buildkite = {
+            type = "http";
+            url = "!op read op://Private/mcp-info/buildkite-mcp-url";
+            headers = {
+              X-Buildkite-Toolsets = "!op read op://Private/mcp-info/buildkite-mcp-toolsets";
+            };
+          };
+          GitHub = {
+            type = "http";
+            url = "!op read op://Private/mcp-info/mcp-github-url";
+          };
+          Glean = {
+            type = "http";
+            url = "!op read op://Private/mcp-info/mcp-glean-url";
+          };
+          Figma = {
+            type = "http";
+            url = "!op read op://Private/mcp-info/mcp-figma-url";
+          };
+          Datadog = {
+            type = "http";
+            url = "!op read op://Private/mcp-info/datadog-mcp-url";
+            headers = {
+              DD-SITE = "!op read op://Private/mcp-info/datadog-mcp-site";
+              DD-API-KEY = "!op read op://Private/mcp-info/datadog-mcp-dd-api-key";
+              DD-APPLICATION-KEY = "!op read op://Private/mcp-info/datadog-mcp-dd-application-key";
+            };
           };
         };
       };

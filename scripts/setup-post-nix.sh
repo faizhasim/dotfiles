@@ -14,7 +14,7 @@
 #   setup-post-nix.sh mcp           # Private MCP config from 1Password
 #   setup-post-nix.sh opencode      # OpenCode AI coding agent (via bun global install)
 #   setup-post-nix.sh omp           # OMP plugins & post-install (binary managed by mise.nix)
-#   setup-post-nix.sh skills        # AI agent skills for Pi and OpenCode
+#   setup-post-nix.sh omp-oauth     # Resolve !op read secrets in mcp.json (avoids 1Password prompts)
 #
 # ============================================================================
 
@@ -116,6 +116,7 @@ run_opencode() {
   ok "OpenCode installed (autoupdates handled by bun global)"
 }
 
+
 run_omp() {
   info "OMP — plugin setup (binary managed by home-manager/mise.nix)"
 
@@ -124,6 +125,56 @@ run_omp() {
 
   omp plugin install context-mode
   ok "OMP context-mode plugin installed"
+}
+
+run_omp_oauth() {
+  info "OMP MCP — seeding mcp.json from reference + resolving secrets"
+
+  local REF="$HOME/.omp/agent/mcp.json.reference"
+  local CUR="$HOME/.omp/agent/mcp.json"
+
+  # If mcp.json.reference exists, merge into writable mcp.json:
+  #   - Servers in reference → added/updated with ref values
+  #   - Servers in current but not reference → preserved
+  #   - auth/oauth fields from current → preserved
+  if [ -f "$REF" ]; then
+    if [ ! -f "$CUR" ]; then
+      cp --no-preserve=mode "$REF" "$CUR"
+    else
+      local TMP; TMP=$(mktemp)
+      jq -s --argjson empty '{}' '
+        .[0] as $ref | .[1] as $curr |
+        $ref | .mcpServers = (
+          (($ref.mcpServers // $empty) * ($curr.mcpServers // $empty | with_entries(
+            select(.key | in($ref.mcpServers // $empty) | not)
+          )))
+          | with_entries(
+            if $curr.mcpServers[.key] then
+              .value = (
+                ($ref.mcpServers[.key] // $empty) +
+                (if $curr.mcpServers[.key].auth then {auth: $curr.mcpServers[.key].auth} else $empty end) +
+                (if $curr.mcpServers[.key].oauth then {oauth: $curr.mcpServers[.key].oauth} else $empty end)
+              )
+            else .
+            end
+          )
+        )
+      ' "$REF" "$CUR" > "$TMP" && mv "$TMP" "$CUR"
+    fi
+  fi
+
+  # Resolve !op read secrets in the writable file
+  if [ -f "$CUR" ]; then
+    jq -r '[.. | strings | select(startswith("!op read ")) | sub("^!op read "; "")] | unique[]' "$CUR" |
+    while IFS= read -r ref; do
+      local val; val=$(op read "$ref" 2>/dev/null) || continue
+      jq --arg old "!op read $ref" --arg new "$val" '
+        walk(if type == "string" and . == $old then $new else . end)
+      ' "$CUR" > "$CUR.tmp" && mv "$CUR.tmp" "$CUR"
+    done
+  fi
+
+  ok "OMP mcp.json seeded and secrets resolved"
 }
 
 run_skills() {
@@ -168,8 +219,6 @@ run_skills() {
   pnpm dlx skills add tobi/qmd -g -y
   pnpm dlx skills add anthropics/skills -s pdf pptx -g -y
   pnpm dlx skills add softaworks/agent-toolkit -s mermaid-diagrams -g -y
-  pnpm dlx skills add open-pencil/skills@open-pencil -g -y || \
-    warn "open-pencil skill not found (repo may be private or name changed)"
 
   # ── Agent Tools & DX ──
   pnpm dlx skills add vercel-labs/agent-browser -g -y
@@ -193,9 +242,6 @@ run_misc() {
 
   pnpm add -g \
     @tobilu/qmd
-  # OpenPencil MCP server — bun managed declaratively via home-manager/mise.nix
-  bun add -g @open-pencil/mcp
-  ok "OpenPencil MCP server installed"
   ok "Misc global pnpm tools installed"
 }
 
@@ -209,6 +255,7 @@ run_all() {
   run_mcp
   echo ""
   run_opencode
+  run_omp_oauth
   echo ""
   run_omp
   echo ""
@@ -224,7 +271,6 @@ run_all() {
 
 target="${1:-all}"
 shift 2>/dev/null || true
-
 case "$target" in
 all) run_all "$@" ;;
 pi) run_pi "$@" ;;
@@ -232,10 +278,11 @@ nvim) run_nvim "$@" ;;
 mcp) run_mcp "$@" ;;
 opencode) run_opencode "$@" ;;
 omp) run_omp "$@" ;;
+omp-oauth) run_omp_oauth "$@" ;;
 skills) run_skills "$@" ;;
 misc) run_misc "$@" ;;
 *)
-  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|skills|misc|all] [--upgrade]"
+  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|omp-oauth|skills|misc|all] [--upgrade]"
   exit 1
   ;;
 esac
