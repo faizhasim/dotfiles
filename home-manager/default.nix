@@ -42,6 +42,7 @@
     ./dnsmasq.nix
     ./gh-dash.nix
     ./gh.nix
+    ./hindsight.nix
     ./git.nix
     ./idea.nix
     ./jankyborders.nix

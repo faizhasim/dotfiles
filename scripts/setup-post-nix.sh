@@ -131,6 +131,31 @@ run_omp() {
   omp plugin doctor
   ok "OMP plugin health check complete"
 
+  # ── Hindsight memory backend ──
+  # hindsight-local-mcp (managed via launchd) provides the memory server OMP
+  # needs for recall/reflect/retain. The server reads the API key on startup
+  # from ~/.hindsight/api-key. This step writes it (one-time, no 1Password
+  # popup during normal OMP sessions).
+
+  if [[ ! -f "$HOME/.hindsight/api-key" ]]; then
+    info "Hindsight memory — writing API key (one-time setup)"
+
+    mkdir -p "$HOME/.hindsight"
+    local HS_KEY
+    HS_KEY=$(op read op://Private/opencode.ai/api-keys/hindsight 2>/dev/null || true)
+
+    if [[ -n "$HS_KEY" ]]; then
+      echo -n "$HS_KEY" > "$HOME/.hindsight/api-key"
+      chmod 0600 "$HOME/.hindsight/api-key"
+      ok "Hindsight API key written to ~/.hindsight/api-key"
+    else
+      warn "Could not read opencode-go API key from 1Password."
+      warn "Run this manually: op read op://Private/opencode.ai/api-keys/hindsight > ~/.hindsight/api-key"
+    fi
+  else
+    ok "Hindsight API key already present"
+  fi
+
   # ── MCP config seeding ──
   local REF="$HOME/.omp/agent/mcp.json.reference"
   local CUR="$HOME/.omp/agent/mcp.json"

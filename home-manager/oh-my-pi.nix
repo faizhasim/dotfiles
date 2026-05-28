@@ -161,6 +161,7 @@ in
           autoRecall = true;
           autoRetain = true;
           retainMode = "full-session";
+          bankMission = "A staff engineer using Oh My Pi (omp) for software development, architecture, design, code review, debugging, devops, document management, and general productivity tasks.";
         };
         branchSummary = {
           enabled = false;
