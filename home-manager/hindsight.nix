@@ -13,7 +13,10 @@ let
   # This wrapper uses pkgs.uv (from nix store) to ensure uvx is found.
   hsServer = pkgs.writeShellApplication {
     name = "hindsight-server";
-    runtimeInputs = with pkgs; [ uv coreutils ];
+    runtimeInputs = with pkgs; [
+      uv
+      coreutils
+    ];
     text = ''
       set -euo pipefail
 
@@ -31,7 +34,8 @@ let
       exec uvx --quiet --from hindsight-api hindsight-local-mcp
     '';
   };
-in {
+in
+{
   # ── LaunchAgent: hindsight memory server ──
   # Runs hindsight-local-mcp on port 8888 on login.
   # launchd manages the lifecycle; use KeepAlive so it stays up.
@@ -68,7 +72,7 @@ in {
 
   # Activation block: reload plist on rebuild so launchd picks up the
   # new nix-store path (which changes on every flake rebuild).
-  home.activation.startHindsight = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.startHindsight = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     PLIST="$HOME/Library/LaunchAgents/io.vectorize.hindsight.plist"
     if [[ -f "$PLIST" ]]; then
       launchctl bootout "gui/$(id -u)/io.vectorize.hindsight" 2>/dev/null || true

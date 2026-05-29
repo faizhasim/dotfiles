@@ -25,6 +25,7 @@
       }
     ];
     settings = {
+      core.hooksPath = ".githooks";
       init.defaultBranch = "main";
       pull = {
         ff = false;

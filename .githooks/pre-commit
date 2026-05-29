@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Collect staged .nix files (added, copied, modified, renamed)
+files=()
+while IFS= read -r -d '' file; do
+    files+=("$file")
+done < <(git diff --cached --name-only -z --diff-filter=ACMR -- '*.nix')
+
+# Exit silently if no .nix files are staged
+[ ${#files[@]} -eq 0 ] && exit 0
+
+# Format each staged .nix file and re-stage
+for f in "${files[@]}"; do
+    nixfmt "$f"
+    git add "$f"
+done
+
+# Lint staged .nix files
+statix check "${files[@]}"

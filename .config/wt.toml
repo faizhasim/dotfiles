@@ -1,3 +1,0 @@
-[pre-commit]
-fmt = "fd '\\.nix$' -X nixfmt"
-lint = "statix check"
