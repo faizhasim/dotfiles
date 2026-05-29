@@ -17,4 +17,6 @@ for f in "${files[@]}"; do
 done
 
 # Lint staged .nix files
-statix check "${files[@]}"
+for f in "${files[@]}"; do
+    statix check "$f"
+done
