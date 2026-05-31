@@ -1,0 +1,8 @@
+{
+  "description": "Apps intentionally maintained outside Nix/homebrew management (MDM, manual, etc.)",
+  "updated": null,
+  "brews": [],
+  "casks": [],
+  "mas": [],
+  "taps": []
+}

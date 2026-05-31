@@ -16,7 +16,7 @@ in
     # };
     onActivation = {
       # "uninstall" removes brews/casks not in Brewfile; use "zap" to also remove config files
-      cleanup = "uninstall";
+      cleanup = "none";
       # cleanup = "none";
       autoUpdate = true;
       upgrade = true;
@@ -26,9 +26,11 @@ in
     casks = common.casks ++ machineSpecific.casks;
     taps = common.taps ++ machineSpecific.taps;
     masApps = {
+      "1Password for Safari" = 1569813296;
       "Brother iPrint&Scan" = 1193539993;
       "Marked 2" = 890031187;
       Magnet = 441258766;
+      Vimari = 1480933944;
       #      Notability = 360593530; # unsure why homebrew kept installing this
       #      Whatsapp = 310633997; # unsure why homebrew kept installing this
     };
