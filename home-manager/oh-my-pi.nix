@@ -145,7 +145,7 @@ in
         colorBlindMode = false;
         statusLine = {
           preset = "nerd";
-          separator = "powerline";
+          separator = "powerline-thin";
           sessionAccent = true;
           showHookStatus = true;
         };
@@ -167,9 +167,12 @@ in
           mode = "prompt";
         };
         treeFilterMode = "default";
+        # NOTE: run `omp setup stt` after rebuild to download Whisper model files
         stt = {
-          enabled = false;
+          enabled = true;
+          modelName = "base.en";
         };
+        collapseChangelog = true;
 
         # ── startup ─────────────────────────────────────────────────
         startup = {
@@ -194,6 +197,11 @@ in
         readHashLines = true;
         read = {
           defaultLimit = 300;
+        };
+
+        # ── bash interceptor ─────────────────────────────────────
+        bashInterceptor = {
+          enabled = true;
         };
 
         # ── lsp ─────────────────────────────────────────────────────
@@ -250,6 +258,16 @@ in
         };
         browser = {
           enabled = true;
+        };
+        checkpoint = {
+          enabled = true;
+        };
+        vault = {
+          enabled = true;
+        };
+        async = {
+          enabled = true;
+          pollWaitDuration = "30s";
         };
 
         # ── mcp ─────────────────────────────────────────────────────
@@ -352,6 +370,19 @@ in
             ;
         };
       };
+      force = true;
+    };
+
+    # ── Keybindings ──────────────────────────────────────────────
+    # STT toggle moved off Alt+H (taken by AeroSpace for focus left).
+    # Alt+S is unused by both AeroSpace and OMP defaults.
+    # NOTE: Uses JSON format (not YAML) — OMP 15.7.2 binary only reads keybindings.json.
+    ".omp/agent/keybindings.json" = {
+      source = pkgs.writeText "omp-keybindings.json" (
+        builtins.toJSON {
+          "app.stt.toggle" = "Alt+S";
+        }
+      );
       force = true;
     };
 
