@@ -171,6 +171,12 @@ in
           enabled = false;
         };
 
+        # ── startup ─────────────────────────────────────────────────
+        startup = {
+          setupWizard = false;
+        };
+        setupVersion = 1;
+
         # ── model ───────────────────────────────────────────────────
         defaultThinkingLevel = "high";
         hideThinkingBlock = false;
