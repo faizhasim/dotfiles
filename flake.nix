@@ -74,12 +74,11 @@
         age = "age1qry8eztm55zgxek5npyu22v4j7akzdfapn249gmfhpg5gkwcasasqhdygq";
       };
 
-      # OpenCode model profile: "github-premium" | "opencode-go" | "opencode-go-deepseek" | "github-standard"
-      # - github-premium: Full premium access (Claude Sonnet 4.6, Gemini 3 Pro, etc.)
-      # - opencode-go: Fallback to opencode-go models (Kimi, GLM)
-      # - opencode-go-deepseek: opencode-go base with DeepSeek V4 (flash build, pro plan, both variant high)
-      # - github-standard: Emergency fallback to GitHub's free tier models
-      aiHarnessModelProfile = "opencode-go-deepseek";
+      # AI harness model profile: "github-premium" | "opencode-go" | "github-standard"
+      # - github-premium: GitHub Copilot premium for reasoning/vision, OpenCode Go DeepSeek for daily tasks
+      # - opencode-go: Pure OpenCode Go provider. DeepSeek V4 Flash daily driver, Kimi K2.6 for vision/design
+      # - github-standard: Emergency fallback to GitHub free tier (GPT-5 mini only)
+      aiHarnessModelProfile = "opencode-go";
 
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"

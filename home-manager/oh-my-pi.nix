@@ -333,12 +333,17 @@ in
 
         # ── model roles ─────────────────────────────────────────────
         modelRoles = {
-          default = models.primary;
-          inherit (models) fast plan;
-          slow = models.plan;
-          smol = models.fast;
-          task = models.fast;
-          commit = models.fast;
+          inherit (models.omp) default;
+          inherit (models.omp)
+            fast
+            plan
+            slow
+            smol
+            task
+            commit
+            vision
+            designer
+            ;
         };
       };
       force = true;

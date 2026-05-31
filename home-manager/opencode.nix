@@ -8,7 +8,7 @@
 }:
 let
   # Model profiles — resolved from flake variable with fallback
-  # Returns { provider, primary, fast, largeContext, plan } with provider/ prefix
+  # Returns { omp: { default, fast, plan, ... }, opencode: { primary, fast, largeContext, plan } } with provider/ prefix
   models = import ./model-profiles.nix { profileName = aiHarnessModelProfile; };
 
   # Agent file paths
@@ -22,7 +22,7 @@ let
       substituted =
         builtins.replaceStrings
           [ "@PRIMARY_MODEL@" "@FAST_MODEL@" "@LARGE_CONTEXT_MODEL@" ]
-          [ models.primary models.fast models.largeContext ]
+          [ models.opencode.primary models.opencode.fast models.opencode.largeContext ]
           content;
     in
     builtins.toFile (baseNameOf file) substituted;
@@ -107,7 +107,7 @@ in
         build = {
           description = "Primary dev agent with full tool access";
           mode = "primary";
-          model = models.primary;
+          model = models.opencode.primary;
           temperature = 0.1;
           prompt = "{file:${./opencode/prompts/menatey-rima-mode-1.0.md}}";
           permission = {
@@ -119,7 +119,7 @@ in
         plan = {
           description = "Analysis & planning without direct changes";
           mode = "primary";
-          model = models.plan or models.primary;
+          model = models.opencode.plan or models.opencode.primary;
           temperature = 0.3;
           prompt = "{file:${./opencode/prompts/menatey-rima-mode-1.0.md}}";
           permission = {

@@ -1,79 +1,84 @@
 # Model profile definitions — single source of truth for all AI harnesses.
 #
 # Usage: import ./model-profiles.nix { profileName = aiHarnessModelProfile; }
-# Returns: { provider, primary, fast, largeContext, plan }
+# Returns: { omp: { default, fast, plan, slow, smol, task, commit, vision, designer },
+#            opencode: { primary, fast, largeContext, plan } }
 #          Model IDs include provider/ prefix (e.g. "github-copilot/claude-sonnet-4.6")
 #
 # Note: There is NO fallback. An invalid profileName causes a predictable eval error.
-#
-# To verify model IDs at runtime:
-#   opencode: use /model inside opencode
-#   pi.dev:   run `pi --list-models` and match against these IDs
 {
   profileName,
 }:
 
 let
   profiles = {
-    # Full premium access (Claude Sonnet 4.6, Gemini 2.5 Pro, etc.)
+    # Full premium access (Claude Sonnet 4.6, Gemini 3.1 Pro, DeepSeek V4 Flash)
+    # Uses GitHub Copilot premium for reasoning/vision roles,
+    # OpenCode Go DeepSeek for daily tasks to conserve Copilot tokens.
     github-premium = {
-      provider = "github-copilot";
-      models = {
-        primary = "claude-sonnet-4.6";
-        fast = "claude-haiku-4.5";
-        largeContext = "gemini-2.5-pro";
-        plan = "claude-sonnet-4.6";
+      omp = {
+        default = "opencode-go/deepseek-v4-flash";
+        fast = "opencode-go/deepseek-v4-flash";
+        plan = "github-copilot/claude-sonnet-4.6";
+        slow = "github-copilot/claude-sonnet-4.6";
+        smol = "opencode-go/deepseek-v4-flash";
+        task = "opencode-go/deepseek-v4-flash";
+        commit = "opencode-go/deepseek-v4-flash";
+        vision = "github-copilot/gemini-3.1-pro-preview";
+        designer = "github-copilot/gemini-3.1-pro-preview";
+      };
+      opencode = {
+        primary = "opencode-go/deepseek-v4-flash";
+        fast = "opencode-go/deepseek-v4-flash";
+        largeContext = "opencode-go/deepseek-v4-flash";
+        plan = "opencode-go/deepseek-v4-flash";
       };
     };
 
-    # opencode-go models via OPENCODE_API_KEY (Kimi K2.6, GLM 5.1)
+    # Pure OpenCode Go provider.
+    # DeepSeek V4 Flash daily driver, Kimi K2.6 for vision/design.
+    # Replaces both old opencode-go and opencode-go-deepseek profiles.
     opencode-go = {
-      provider = "opencode-go";
-      models = {
-        primary = "kimi-k2.6";
-        fast = "kimi-k2.6";
-        largeContext = "glm-5.1";
-        plan = "kimi-k2.6";
+      omp = {
+        default = "opencode-go/deepseek-v4-flash";
+        fast = "opencode-go/deepseek-v4-flash";
+        plan = "opencode-go/deepseek-v4-flash";
+        slow = "opencode-go/deepseek-v4-flash";
+        smol = "opencode-go/deepseek-v4-flash";
+        task = "opencode-go/deepseek-v4-flash";
+        commit = "opencode-go/deepseek-v4-flash";
+        vision = "opencode-go/kimi-k2.6";
+        designer = "opencode-go/kimi-k2.6";
+      };
+      opencode = {
+        primary = "opencode-go/deepseek-v4-flash";
+        fast = "opencode-go/deepseek-v4-flash";
+        largeContext = "opencode-go/deepseek-v4-flash";
+        plan = "opencode-go/deepseek-v4-flash";
       };
     };
 
-    # opencode-go with DeepSeek V4 models (flash build, pro plan)
-    opencode-go-deepseek = {
-      provider = "opencode-go";
-      models = {
-        primary = "deepseek-v4-flash";
-        fast = "deepseek-v4-flash";
-        largeContext = "deepseek-v4-flash";
-        plan = "deepseek-v4-flash"; # previously deepseek-v4-pro
-      };
-    };
-
-    # Emergency fallback to GitHub's free tier models
+    # Emergency fallback to GitHub's free tier (GPT-5 mini only).
+    # GPT-4.1 deprecated June 2026 — not included.
     github-standard = {
-      provider = "github-copilot";
-      models = {
-        primary = "gpt-4.1";
-        fast = "gpt-5-mini";
-        largeContext = "gpt-4o";
-        plan = "gpt-4.1";
+      omp = {
+        default = "github-copilot/gpt-5-mini";
+        fast = "github-copilot/gpt-5-mini";
+        plan = "github-copilot/gpt-5-mini";
+        slow = "github-copilot/gpt-5-mini";
+        smol = "github-copilot/gpt-5-mini";
+        task = "github-copilot/gpt-5-mini";
+        commit = "github-copilot/gpt-5-mini";
+        vision = "github-copilot/gpt-5-mini";
+        designer = "github-copilot/gpt-5-mini";
+      };
+      opencode = {
+        primary = "github-copilot/gpt-5-mini";
+        fast = "github-copilot/gpt-5-mini";
+        largeContext = "github-copilot/gpt-5-mini";
+        plan = "github-copilot/gpt-5-mini";
       };
     };
   };
-
-  # No fallback — crash predictably if profileName doesn't match a key
-  profile = builtins.getAttr profileName profiles;
-
-  # Add provider/ prefix to a model ID
-  prefixed = model: "${profile.provider}/${model}";
 in
-{
-  inherit (profile) provider;
-  # Full model IDs with provider/ prefix — for --model flags, opencode, etc.
-  primary = prefixed profile.models.primary;
-  fast = prefixed profile.models.fast;
-  largeContext = prefixed profile.models.largeContext;
-  plan = prefixed profile.models.plan;
-  # Unprefixed primary model name — for pi settings.json defaultModel
-  # Pi expects just "deepseek-v4-flash" when defaultProvider is "opencode-go"
-  model = profile.models.primary;
-}
+builtins.getAttr profileName profiles
