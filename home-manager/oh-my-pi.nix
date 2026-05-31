@@ -17,6 +17,108 @@ let
   # Peon extension (lifecycle sounds via ~/.openpeon/ sound packs)
   enablePeonExtension = false;
 
+  # ── dark-nord-enhanced theme ────────────────────────────────────────
+  # Fixes nord3 (#4c566a) on nord0 (#2e3440) — only ~1.5:1 contrast.
+  # _muted/dim are brighter polar-night variants that clear WCAG AA.
+  _c = config.lib.stylix.colors.withHashtag;
+  _muted = "#9fb6cc"; # 4.84:1 contrast on #2e3440
+  _dim = "#7a92a8"; # 3.15:1 contrast on #2e3440
+
+  nordEnhancedTheme = builtins.toJSON {
+    name = "dark-nord-enhanced";
+    vars = {
+      nord0 = "#2e3440";
+      nord1 = "#3b4252";
+      nord2 = "#434c5e";
+      nord3 = "#4c566a";
+      nord4 = "#d8dee9";
+      nord5 = "#e5e9f0";
+      nord6 = "#eceff4";
+      nord7 = "#8fbcbb";
+      nord8 = "#88c0d0";
+      nord9 = "#81a1c1";
+      nord10 = "#5e81ac";
+      nord11 = "#bf616a";
+      nord12 = "#d08770";
+      nord13 = "#ebcb8b";
+      nord14 = "#a3be8c";
+      nord15 = "#b48ead";
+    };
+    colors = {
+      accent = "nord8";
+      border = "nord10";
+      borderAccent = "nord8";
+      borderMuted = "nord2";
+      success = "nord14";
+      error = "nord11";
+      warning = "nord13";
+      muted = _muted;
+      dim = _dim;
+      text = "";
+      thinkingText = _muted;
+      selectedBg = "nord1";
+      userMessageBg = "nord1";
+      userMessageText = "";
+      customMessageBg = "#3c384f";
+      customMessageText = "";
+      customMessageLabel = "nord15";
+      toolPendingBg = "nord1";
+      toolSuccessBg = "nord0";
+      toolErrorBg = "#3b2f31";
+      toolTitle = "nord8";
+      toolOutput = _muted;
+      mdHeading = "nord8";
+      mdLink = "nord8";
+      mdLinkUrl = _dim;
+      mdCode = "nord7";
+      mdCodeBlock = "nord4";
+      mdCodeBlockBorder = "nord2";
+      mdQuote = "nord4";
+      mdQuoteBorder = _dim;
+      mdHr = "nord2";
+      mdListBullet = "nord9";
+      toolDiffAdded = "nord14";
+      toolDiffRemoved = "nord11";
+      toolDiffContext = _dim;
+      syntaxComment = _dim;
+      syntaxKeyword = "nord9";
+      syntaxFunction = "nord8";
+      syntaxVariable = "nord4";
+      syntaxString = "nord14";
+      syntaxNumber = "nord15";
+      syntaxType = "nord7";
+      syntaxOperator = "nord9";
+      syntaxPunctuation = "nord6";
+      thinkingOff = "nord2";
+      thinkingMinimal = _dim;
+      thinkingLow = "nord10";
+      thinkingMedium = "nord9";
+      thinkingHigh = "nord15";
+      thinkingXhigh = "nord7";
+      bashMode = "nord8";
+      pythonMode = "#f0c040";
+      statusLineBg = "nord0";
+      statusLineSep = "nord3";
+      statusLineModel = "nord15";
+      statusLinePath = "nord7";
+      statusLineGitClean = "nord14";
+      statusLineGitDirty = "nord13";
+      statusLineContext = "nord9";
+      statusLineSpend = "nord8";
+      statusLineStaged = "nord14";
+      statusLineDirty = "nord13";
+      statusLineUntracked = "nord8";
+      statusLineOutput = "nord12";
+      statusLineCost = "nord12";
+      statusLineSubagents = "nord8";
+    };
+    export = {
+      pageBg = "nord0";
+      cardBg = "nord1";
+      infoBg = "nord2";
+    };
+  };
+
 in
 {
   home.file = {
@@ -36,7 +138,7 @@ in
 
         # ── appearance ──────────────────────────────────────────────
         theme = {
-          dark = "dark-nord";
+          dark = "dark-nord-enhanced";
           light = "light-tokyo-night";
         };
         symbolPreset = "nerd";
@@ -328,6 +430,13 @@ in
         };
       };
       force = true;
+    };
+
+    # ── Custom OMP theme ─────────────────────────────────────────────
+    # dark-nord-enhanced: nord palette with readable muted/dim/toolOutput.
+    # nord3 (#4c566a) on nord0 (#2e3440) is ~1.5:1 — fixed to ≥4.84:1.
+    ".omp/agent/themes/dark-nord-enhanced.json" = {
+      text = nordEnhancedTheme;
     };
   };
 }
