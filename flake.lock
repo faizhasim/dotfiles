@@ -409,16 +409,16 @@
     "og-packs": {
       "flake": false,
       "locked": {
-        "lastModified": 1770932817,
-        "narHash": "sha256-spao/GTIhH4c5HOmVc0umMvrwOaMRa4s5Pem1AWyUOw=",
+        "lastModified": 1772667473,
+        "narHash": "sha256-hwQCdGmpL+fIQG18wglIzfiugrHhBjeP1xHspjTS7qs=",
         "owner": "PeonPing",
         "repo": "og-packs",
-        "rev": "6970d159571aebbfc7457cb6a6cf2b764c8467e6",
+        "rev": "18c8e349bd9c3bf9e1a34f816f8186d6ca04e69b",
         "type": "github"
       },
       "original": {
         "owner": "PeonPing",
-        "ref": "v1.1.0",
+        "ref": "v1.4.0",
         "repo": "og-packs",
         "type": "github"
       }
