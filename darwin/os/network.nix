@@ -8,10 +8,11 @@
       "Thunderbolt Bridge"
     ];
     dns = [
-      "9.9.9.9"
-      "149.112.112.112"
       "1.1.1.1"
       "1.0.0.1"
+      # depriotise quad9 due to perceived unstabilities
+      "9.9.9.9"
+      "149.112.112.112"
     ];
   };
 
