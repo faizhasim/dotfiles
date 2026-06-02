@@ -235,6 +235,7 @@ run_skills() {
   # ── Git, GitHub & Documentation ──
   pnpm dlx skills add xixu-me/skills -s github-actions-docs -g -y
   pnpm dlx skills add github/awesome-copilot -s git-commit gh-cli documentation-writer -g -y
+  pnpm dlx skills add https://github.com/max-sixty/worktrunk --skill worktrunk
   # (api-documentation, security-best-practices from supercent-io/skills-template skipped — private repo)
 
   # ── Security ──
