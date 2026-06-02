@@ -45,9 +45,12 @@ jobs:
   build-darwin:
     if: github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'
     runs-on: [self-hosted, mac-mini, macmini01, aarch64-darwin]
+    strategy:
+      matrix:
+        target: [M3419, macmini01]
     steps:
       - uses: actions/checkout@v4
-      - name: Build system closure
+      - name: Build ${{ matrix.target }} system closure
         run: |
           export PATH="/run/current-system/sw/bin:$PATH"
-          nix build .#darwinConfigurations.M3419.config.system.build.toplevel --no-link
+          nix build .#darwinConfigurations.${{ matrix.target }}.config.system.build.toplevel --no-link

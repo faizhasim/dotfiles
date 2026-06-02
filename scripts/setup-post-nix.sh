@@ -7,14 +7,14 @@
 # shouldn't run inside Nix (npm installs, Stow, 1Password secrets injection).
 #
 # Usage:
-#   setup-post-nix.sh               # Run all targets
-#   setup-post-nix.sh pi            # Pi binary + MCP tools (extensions via Nix settings → pi auto-installs)
-#   setup-post-nix.sh pi --upgrade  # Force upgrade pi & MCP tools to latest
-#   setup-post-nix.sh nvim          # Neovim config (Stow) + tools + zsh extras
-#   setup-post-nix.sh mcp           # Private MCP config from 1Password
-#   setup-post-nix.sh opencode      # OpenCode AI coding agent (via bun global install)
-#   setup-post-nix.sh omp           # OMP plugins + MCP config + verify (binary managed by mise.nix)
-#   setup-post-nix.sh runner       # Install/verify GitHub self-hosted runner (macmini01 only)
+#   setup-post-nix.sh                  # Run all targets
+#   setup-post-nix.sh pi               # Pi binary + MCP tools (extensions via Nix settings → pi auto-installs)
+#   setup-post-nix.sh pi --upgrade     # Force upgrade pi & MCP tools to latest
+#   setup-post-nix.sh nvim             # Neovim config (Stow) + tools + zsh extras
+#   setup-post-nix.sh mcp              # Private MCP config from 1Password
+#   setup-post-nix.sh opencode         # OpenCode AI coding agent (via bun global install)
+#   setup-post-nix.sh omp              # OMP plugins + MCP config + verify (binary managed by mise.nix)
+#   setup-post-nix.sh runner           # Install/verify GitHub self-hosted runner (macmini01 only)
 #   setup-post-nix.sh runner --remove  # Unregister runner and clean up
 #
 # ============================================================================
@@ -117,7 +117,6 @@ run_opencode() {
   ok "OpenCode installed (autoupdates handled by bun global)"
 }
 
-
 run_omp() {
   info "OMP — plugin setup (binary managed by home-manager/mise.nix)"
 
@@ -147,7 +146,7 @@ run_omp() {
     HS_KEY=$(op read op://Private/opencode.ai/api-keys/hindsight 2>/dev/null || true)
 
     if [[ -n "$HS_KEY" ]]; then
-      echo -n "$HS_KEY" > "$HOME/.hindsight/api-key"
+      echo -n "$HS_KEY" >"$HOME/.hindsight/api-key"
       chmod 0600 "$HOME/.hindsight/api-key"
       ok "Hindsight API key written to ~/.hindsight/api-key"
     else
@@ -170,7 +169,8 @@ run_omp() {
     if [ ! -f "$CUR" ]; then
       cp --no-preserve=mode "$REF" "$CUR"
     else
-      local TMP; TMP=$(mktemp)
+      local TMP
+      TMP=$(mktemp)
       jq -s --argjson empty '{}' '
         .[0] as $ref | .[1] as $curr |
         $ref | .mcpServers = (
@@ -188,24 +188,24 @@ run_omp() {
             end
           )
         )
-      ' "$REF" "$CUR" > "$TMP" && mv "$TMP" "$CUR"
+      ' "$REF" "$CUR" >"$TMP" && mv "$TMP" "$CUR"
     fi
   fi
 
   # Resolve !op read secrets in the writable file
   if [ -f "$CUR" ]; then
     jq -r '[.. | strings | select(startswith("!op read ")) | sub("^!op read "; "")] | unique[]' "$CUR" |
-    while IFS= read -r ref; do
-      local val; val=$(op read "$ref" 2>/dev/null) || continue
-      jq --arg old "!op read $ref" --arg new "$val" '
+      while IFS= read -r ref; do
+        local val
+        val=$(op read "$ref" 2>/dev/null) || continue
+        jq --arg old "!op read $ref" --arg new "$val" '
         walk(if type == "string" and . == $old then $new else . end)
-      ' "$CUR" > "$CUR.tmp" && mv "$CUR.tmp" "$CUR"
-    done
+      ' "$CUR" >"$CUR.tmp" && mv "$CUR.tmp" "$CUR"
+      done
   fi
 
   ok "OMP mcp.json seeded and secrets resolved"
 }
-
 
 run_skills() {
   info "Skills — AI agent skills for Pi and OpenCode"
@@ -296,8 +296,8 @@ run_runner() {
       local token
       token="$(gh api --method POST /repos/faizhasim/dotfiles/actions/runners/registration-token --jq .token 2>/dev/null || echo "")"
       if [ -n "$token" ]; then
-      cd "$HOME/actions-runner" && ./config.sh remove --token "$token" 2>/dev/null || true
-      cd "$OLDPWD"
+        cd "$HOME/actions-runner" && ./config.sh remove --token "$token" 2>/dev/null || true
+        cd "$OLDPWD"
       fi
     fi
     rm -rf "$HOME/actions-runner"
