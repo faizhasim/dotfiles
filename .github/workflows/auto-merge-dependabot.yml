@@ -1,16 +1,16 @@
- # Auto-merge Dependabot and Renovate PRs once the full Nix Check pipeline passes.
- #
- # Dependency graph:
- #   Nix Check (formatting, flake check, statix lint, darwin builds)
- #     → this workflow (extract PR, enable auto-merge)
- #     → GitHub merges once branch protections are satisfied
- #
- # Two bot pathways:
- #   Dependabot — does not natively support platform auto-merge, so this
- #     workflow is the sole mechanism for Dependabot PRs.
- #   Renovate  — also configured with `platformAutomerge: true` as a
- #     primary mechanism; this workflow acts as a secondary fallback.
- name: Auto-merge dependency PRs
+# Auto-merge Dependabot and Renovate PRs once the full Nix Check pipeline passes.
+#
+# Dependency graph:
+#   Nix Check (formatting, flake check, statix lint, darwin builds)
+#     → this workflow (extract PR, enable auto-merge)
+#     → GitHub merges once branch protections are satisfied
+#
+# Two bot pathways:
+#   Dependabot — does not natively support platform auto-merge, so this
+#     workflow is the sole mechanism for Dependabot PRs.
+#   Renovate  — also configured with `platformAutomerge: true` as a
+#     primary mechanism; this workflow acts as a secondary fallback.
+name: Auto-merge dependency PRs
 
 on:
   workflow_run:
