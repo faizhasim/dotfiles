@@ -14,6 +14,8 @@
 #   setup-post-nix.sh mcp           # Private MCP config from 1Password
 #   setup-post-nix.sh opencode      # OpenCode AI coding agent (via bun global install)
 #   setup-post-nix.sh omp           # OMP plugins + MCP config + verify (binary managed by mise.nix)
+#   setup-post-nix.sh runner       # Install/verify GitHub self-hosted runner (macmini01 only)
+#   setup-post-nix.sh runner --remove  # Unregister runner and clean up
 #
 # ============================================================================
 
@@ -273,6 +275,84 @@ run_misc() {
   ok "Misc global pnpm tools installed"
 }
 
+run_runner() {
+  local hostname
+  hostname="$(hostname -s)"
+
+  if [ "$hostname" != "macmini01" ] && [ "${1:-}" != "--force" ]; then
+    warn "Runner setup is only for macmini01 (this host: $hostname). Use --force to override."
+    exit 1
+  fi
+
+  if [ "${1:-}" = "--remove" ]; then
+    info "Removing GitHub Actions runner..."
+    if [ -f "$HOME/actions-runner/svc.sh" ]; then
+      sudo "$HOME/actions-runner/svc.sh" stop 2>/dev/null || true
+      sudo "$HOME/actions-runner/svc.sh" uninstall 2>/dev/null || true
+    fi
+    if [ -f "$HOME/actions-runner/config.sh" ]; then
+      local token
+      token="$(gh api --method POST /repos/faizhasim/dotfiles/actions/runners/registration-token --jq .token 2>/dev/null || echo "")"
+      if [ -n "$token" ]; then
+        "$HOME/actions-runner/config.sh" remove --token "$token" 2>/dev/null || true
+      fi
+    fi
+    rm -rf "$HOME/actions-runner"
+    ok "Runner removed"
+    exit 0
+  fi
+
+  # Already configured?
+  if [ -f "$HOME/actions-runner/.runner" ]; then
+    if pgrep -f "actions.runner" >/dev/null 2>&1; then
+      ok "Runner already configured and running"
+      exit 0
+    else
+      warn "Runner configured but not running — starting service"
+      sudo "$HOME/actions-runner/svc.sh" start
+      exit 0
+    fi
+  fi
+
+  # Prerequisites
+  if ! command -v gh &>/dev/null; then
+    warn "gh CLI is required. Install via Nix: gh is already in common.nix"
+    exit 1
+  fi
+
+  # Get registration token
+  info "Obtaining runner registration token..."
+  local token
+  token="$(gh api --method POST /repos/faizhasim/dotfiles/actions/runners/registration-token --jq .token)" || {
+    warn "Failed to get registration token. Ensure gh is authenticated."
+    exit 1
+  }
+
+  # Download and configure
+  info "Downloading GitHub Actions runner..."
+  mkdir -p "$HOME/actions-runner"
+  gh release download --repo actions/runner \
+    --pattern 'actions-runner-osx-arm64-*.tar.gz' \
+    --dir "$HOME/actions-runner"
+  tar xzf "$HOME/actions-runner"/actions-runner-osx-arm64-*.tar.gz -C "$HOME/actions-runner"
+  rm -f "$HOME/actions-runner"/actions-runner-osx-arm64-*.tar.gz
+
+  info "Configuring runner..."
+  "$HOME/actions-runner/config.sh" \
+    --url "https://github.com/faizhasim/dotfiles" \
+    --token "$token" \
+    --name "macmini01" \
+    --labels "self-hosted,macmini01,aarch64-darwin" \
+    --unattended \
+    --replace
+
+  info "Installing and starting runner service..."
+  sudo "$HOME/actions-runner/svc.sh" install
+  sudo "$HOME/actions-runner/svc.sh" start
+
+  ok "GitHub Actions runner installed and running"
+}
+
 run_all() {
   info "Running all targets"
   echo ""
@@ -304,9 +384,10 @@ mcp) run_mcp "$@" ;;
 opencode) run_opencode "$@" ;;
 omp) run_omp "$@" ;;
 skills) run_skills "$@" ;;
+runner) run_runner "$@" ;;
 misc) run_misc "$@" ;;
 *)
-  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|skills|misc|all] [--upgrade]"
+  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|skills|runner|misc|all] [--upgrade] [--force] [--remove]"
   exit 1
   ;;
 esac
