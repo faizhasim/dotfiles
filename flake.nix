@@ -49,7 +49,7 @@
       flake = false;
     };
     peon-ping = {
-      url = "github:PeonPing/peon-ping/v2.8.1";
+      url = "github:PeonPing/peon-ping/v2.29.0";
       flake = false;
     };
   };
