@@ -287,14 +287,17 @@ run_runner() {
   if [ "${1:-}" = "--remove" ]; then
     info "Removing GitHub Actions runner..."
     if [ -f "$HOME/actions-runner/svc.sh" ]; then
-      sudo "$HOME/actions-runner/svc.sh" stop 2>/dev/null || true
-      sudo "$HOME/actions-runner/svc.sh" uninstall 2>/dev/null || true
+      cd "$HOME/actions-runner"
+      ./svc.sh stop 2>/dev/null || true
+      ./svc.sh uninstall 2>/dev/null || true
+      cd "$OLDPWD"
     fi
     if [ -f "$HOME/actions-runner/config.sh" ]; then
       local token
       token="$(gh api --method POST /repos/faizhasim/dotfiles/actions/runners/registration-token --jq .token 2>/dev/null || echo "")"
       if [ -n "$token" ]; then
-        "$HOME/actions-runner/config.sh" remove --token "$token" 2>/dev/null || true
+      cd "$HOME/actions-runner" && ./config.sh remove --token "$token" 2>/dev/null || true
+      cd "$OLDPWD"
       fi
     fi
     rm -rf "$HOME/actions-runner"
@@ -302,16 +305,23 @@ run_runner() {
     exit 0
   fi
 
-  # Already configured?
-  if [ -f "$HOME/actions-runner/.runner" ]; then
+  # Already configured and running?
+  if [ -f "$HOME/actions-runner/.runner" ] && [ -f "$HOME/actions-runner/.service" ]; then
     if pgrep -f "actions.runner" >/dev/null 2>&1; then
       ok "Runner already configured and running"
       exit 0
-    else
       warn "Runner configured but not running — starting service"
-      sudo "$HOME/actions-runner/svc.sh" start
+      cd "$HOME/actions-runner"
+      ./svc.sh start
+      cd "$OLDPWD"
       exit 0
     fi
+  fi
+
+  # Stale registration without service installed — clean up for fresh install
+  if [ -f "$HOME/actions-runner/.runner" ]; then
+    warn "Found stale runner configuration (no service installed) — reconfiguring"
+    rm -f "$HOME/actions-runner/.runner" "$HOME/actions-runner/.credentials" "$HOME/actions-runner/.credentials_rsaparams"
   fi
 
   # Prerequisites
@@ -342,14 +352,15 @@ run_runner() {
     --url "https://github.com/faizhasim/dotfiles" \
     --token "$token" \
     --name "macmini01" \
-    --labels "self-hosted,macmini01,aarch64-darwin" \
+    --labels "self-hosted,mac-mini,macmini01,aarch64-darwin" \
     --unattended \
     --replace
 
   info "Installing and starting runner service..."
-  sudo "$HOME/actions-runner/svc.sh" install
-  sudo "$HOME/actions-runner/svc.sh" start
-
+  cd "$HOME/actions-runner"
+  ./svc.sh install
+  ./svc.sh start
+  cd "$OLDPWD"
   ok "GitHub Actions runner installed and running"
 }
 
