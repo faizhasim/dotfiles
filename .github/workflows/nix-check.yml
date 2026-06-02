@@ -43,7 +43,7 @@ jobs:
         run: statix check
 
   build-darwin:
-    if: github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'
+    if: (github.actor == 'dependabot[bot]' || github.actor == 'renovate[bot]') && github.event_name == 'pull_request'
     runs-on: [self-hosted, mac-mini, macmini01, aarch64-darwin]
     strategy:
       matrix:

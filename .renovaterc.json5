@@ -45,9 +45,11 @@
   // Limit PR noise
   prConcurrentLimit: 5,
   prHourlyLimit: 2,
-
-  // No auto-merge until CI trust is established
-  automerge: false,
+  // Auto-merge once CI (build-darwin on mac mini) passes.
+  // Uses GitHub's built-in auto-merge for transparency.
+  automerge: true,
+  platformAutomerge: true,
+  automergeType: "pr",
 
   // Label all dependency PRs
   labels: ["dependencies"],

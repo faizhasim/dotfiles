@@ -1,0 +1,58 @@
+ # Auto-merge Dependabot and Renovate PRs once the full Nix Check pipeline passes.
+ #
+ # Dependency graph:
+ #   Nix Check (formatting, flake check, statix lint, darwin builds)
+ #     → this workflow (extract PR, enable auto-merge)
+ #     → GitHub merges once branch protections are satisfied
+ #
+ # Two bot pathways:
+ #   Dependabot — does not natively support platform auto-merge, so this
+ #     workflow is the sole mechanism for Dependabot PRs.
+ #   Renovate  — also configured with `platformAutomerge: true` as a
+ #     primary mechanism; this workflow acts as a secondary fallback.
+ name: Auto-merge dependency PRs
+
+on:
+  workflow_run:
+    workflows:
+      - Nix Check
+    types:
+      - completed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.conclusion == 'success'
+      && (github.event.workflow_run.actor.login == 'dependabot[bot]' || github.event.workflow_run.actor.login == 'renovate[bot]')
+      && github.repository == 'faizhasim/dotfiles'
+    outputs:
+      pr_url: ${{ steps.pr-info.outputs.pr_url }}
+    steps:
+      - name: Extract PR URL from triggering workflow run
+        id: pr-info
+        run: |
+          PR_URL="$(gh run view "${{ github.event.workflow_run.id }}" \
+            --json pullRequests \
+            --jq '.pullRequests[0].url // empty')"
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  enable:
+    needs:
+      - check
+    if: needs.check.outputs.pr_url != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable auto-merge
+        run: |
+          gh pr merge --auto --squash "$PR_URL" \
+            || echo "auto-merge already enabled or failed"
+        env:
+          PR_URL: ${{ needs.check.outputs.pr_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
