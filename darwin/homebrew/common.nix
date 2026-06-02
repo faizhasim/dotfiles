@@ -141,4 +141,14 @@ _: {
     # "freelensapp/tap" # freelens
     # "mediosz/tap"
   ];
+  mas = [
+    # ──────────────────────────────────────────────
+    # 🛍️ Mac App Store
+    # ──────────────────────────────────────────────
+    1569813296 # 1Password for Safari — password autofill
+    1193539993 # Brother iPrint&Scan — scanner driver
+    441258766 # Magnet — window manager
+    890031187 # Marked 2 — markdown preview
+    1480933944 # Vimari — safari vim keys
+  ];
 }
