@@ -45,7 +45,7 @@
       };
     };
     og-packs = {
-      url = "github:PeonPing/og-packs/v1.1.0";
+      url = "github:PeonPing/og-packs/v1.4.0";
       flake = false;
     };
     peon-ping = {
