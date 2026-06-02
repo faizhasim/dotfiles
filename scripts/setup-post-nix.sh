@@ -7,13 +7,15 @@
 # shouldn't run inside Nix (npm installs, Stow, 1Password secrets injection).
 #
 # Usage:
-#   setup-post-nix.sh               # Run all targets
-#   setup-post-nix.sh pi            # Pi binary + MCP tools (extensions via Nix settings → pi auto-installs)
-#   setup-post-nix.sh pi --upgrade  # Force upgrade pi & MCP tools to latest
-#   setup-post-nix.sh nvim          # Neovim config (Stow) + tools + zsh extras
-#   setup-post-nix.sh mcp           # Private MCP config from 1Password
-#   setup-post-nix.sh opencode      # OpenCode AI coding agent (via bun global install)
-#   setup-post-nix.sh omp           # OMP plugins + MCP config + verify (binary managed by mise.nix)
+#   setup-post-nix.sh                  # Run all targets
+#   setup-post-nix.sh pi               # Pi binary + MCP tools (extensions via Nix settings → pi auto-installs)
+#   setup-post-nix.sh pi --upgrade     # Force upgrade pi & MCP tools to latest
+#   setup-post-nix.sh nvim             # Neovim config (Stow) + tools + zsh extras
+#   setup-post-nix.sh mcp              # Private MCP config from 1Password
+#   setup-post-nix.sh opencode         # OpenCode AI coding agent (via bun global install)
+#   setup-post-nix.sh omp              # OMP plugins + MCP config + verify (binary managed by mise.nix)
+#   setup-post-nix.sh runner           # Install/verify GitHub self-hosted runner (macmini01 only)
+#   setup-post-nix.sh runner --remove  # Unregister runner and clean up
 #
 # ============================================================================
 
@@ -115,7 +117,6 @@ run_opencode() {
   ok "OpenCode installed (autoupdates handled by bun global)"
 }
 
-
 run_omp() {
   info "OMP — plugin setup (binary managed by home-manager/mise.nix)"
 
@@ -145,7 +146,7 @@ run_omp() {
     HS_KEY=$(op read op://Private/opencode.ai/api-keys/hindsight 2>/dev/null || true)
 
     if [[ -n "$HS_KEY" ]]; then
-      echo -n "$HS_KEY" > "$HOME/.hindsight/api-key"
+      echo -n "$HS_KEY" >"$HOME/.hindsight/api-key"
       chmod 0600 "$HOME/.hindsight/api-key"
       ok "Hindsight API key written to ~/.hindsight/api-key"
     else
@@ -168,7 +169,8 @@ run_omp() {
     if [ ! -f "$CUR" ]; then
       cp --no-preserve=mode "$REF" "$CUR"
     else
-      local TMP; TMP=$(mktemp)
+      local TMP
+      TMP=$(mktemp)
       jq -s --argjson empty '{}' '
         .[0] as $ref | .[1] as $curr |
         $ref | .mcpServers = (
@@ -186,24 +188,24 @@ run_omp() {
             end
           )
         )
-      ' "$REF" "$CUR" > "$TMP" && mv "$TMP" "$CUR"
+      ' "$REF" "$CUR" >"$TMP" && mv "$TMP" "$CUR"
     fi
   fi
 
   # Resolve !op read secrets in the writable file
   if [ -f "$CUR" ]; then
     jq -r '[.. | strings | select(startswith("!op read ")) | sub("^!op read "; "")] | unique[]' "$CUR" |
-    while IFS= read -r ref; do
-      local val; val=$(op read "$ref" 2>/dev/null) || continue
-      jq --arg old "!op read $ref" --arg new "$val" '
+      while IFS= read -r ref; do
+        local val
+        val=$(op read "$ref" 2>/dev/null) || continue
+        jq --arg old "!op read $ref" --arg new "$val" '
         walk(if type == "string" and . == $old then $new else . end)
-      ' "$CUR" > "$CUR.tmp" && mv "$CUR.tmp" "$CUR"
-    done
+      ' "$CUR" >"$CUR.tmp" && mv "$CUR.tmp" "$CUR"
+      done
   fi
 
   ok "OMP mcp.json seeded and secrets resolved"
 }
-
 
 run_skills() {
   info "Skills — AI agent skills for Pi and OpenCode"
@@ -273,6 +275,95 @@ run_misc() {
   ok "Misc global pnpm tools installed"
 }
 
+run_runner() {
+  local hostname
+  hostname="$(hostname -s)"
+
+  if [ "$hostname" != "macmini01" ] && [ "${1:-}" != "--force" ]; then
+    warn "Runner setup is only for macmini01 (this host: $hostname). Use --force to override."
+    exit 1
+  fi
+
+  if [ "${1:-}" = "--remove" ]; then
+    info "Removing GitHub Actions runner..."
+    if [ -f "$HOME/actions-runner/svc.sh" ]; then
+      cd "$HOME/actions-runner"
+      ./svc.sh stop 2>/dev/null || true
+      ./svc.sh uninstall 2>/dev/null || true
+      cd "$OLDPWD"
+    fi
+    if [ -f "$HOME/actions-runner/config.sh" ]; then
+      local token
+      token="$(gh api --method POST /repos/faizhasim/dotfiles/actions/runners/registration-token --jq .token 2>/dev/null || echo "")"
+      if [ -n "$token" ]; then
+        cd "$HOME/actions-runner" && ./config.sh remove --token "$token" 2>/dev/null || true
+        cd "$OLDPWD"
+      fi
+    fi
+    rm -rf "$HOME/actions-runner"
+    ok "Runner removed"
+    exit 0
+  fi
+
+  # Already configured and running?
+  if [ -f "$HOME/actions-runner/.runner" ] && [ -f "$HOME/actions-runner/.service" ]; then
+    if pgrep -f "actions.runner" >/dev/null 2>&1; then
+      ok "Runner already configured and running"
+      exit 0
+      warn "Runner configured but not running — starting service"
+      cd "$HOME/actions-runner"
+      ./svc.sh start
+      cd "$OLDPWD"
+      exit 0
+    fi
+  fi
+
+  # Stale registration without service installed — clean up for fresh install
+  if [ -f "$HOME/actions-runner/.runner" ]; then
+    warn "Found stale runner configuration (no service installed) — reconfiguring"
+    rm -f "$HOME/actions-runner/.runner" "$HOME/actions-runner/.credentials" "$HOME/actions-runner/.credentials_rsaparams"
+  fi
+
+  # Prerequisites
+  if ! command -v gh &>/dev/null; then
+    warn "gh CLI is required. Install via Nix: gh is already in common.nix"
+    exit 1
+  fi
+
+  # Get registration token
+  info "Obtaining runner registration token..."
+  local token
+  token="$(gh api --method POST /repos/faizhasim/dotfiles/actions/runners/registration-token --jq .token)" || {
+    warn "Failed to get registration token. Ensure gh is authenticated."
+    exit 1
+  }
+
+  # Download and configure
+  info "Downloading GitHub Actions runner..."
+  mkdir -p "$HOME/actions-runner"
+  gh release download --repo actions/runner \
+    --pattern 'actions-runner-osx-arm64-*.tar.gz' \
+    --dir "$HOME/actions-runner"
+  tar xzf "$HOME/actions-runner"/actions-runner-osx-arm64-*.tar.gz -C "$HOME/actions-runner"
+  rm -f "$HOME/actions-runner"/actions-runner-osx-arm64-*.tar.gz
+
+  info "Configuring runner..."
+  "$HOME/actions-runner/config.sh" \
+    --url "https://github.com/faizhasim/dotfiles" \
+    --token "$token" \
+    --name "macmini01" \
+    --labels "self-hosted,mac-mini,macmini01,aarch64-darwin" \
+    --unattended \
+    --replace
+
+  info "Installing and starting runner service..."
+  cd "$HOME/actions-runner"
+  ./svc.sh install
+  ./svc.sh start
+  cd "$OLDPWD"
+  ok "GitHub Actions runner installed and running"
+}
+
 run_all() {
   info "Running all targets"
   echo ""
@@ -304,9 +395,10 @@ mcp) run_mcp "$@" ;;
 opencode) run_opencode "$@" ;;
 omp) run_omp "$@" ;;
 skills) run_skills "$@" ;;
+runner) run_runner "$@" ;;
 misc) run_misc "$@" ;;
 *)
-  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|skills|misc|all] [--upgrade]"
+  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|skills|runner|misc|all] [--upgrade] [--force] [--remove]"
   exit 1
   ;;
 esac

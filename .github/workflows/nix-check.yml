@@ -22,6 +22,10 @@ jobs:
       - name: Check flake metadata
         run: nix flake metadata
 
+      - name: Check Nix evaluation
+        run: nix flake check
+        continue-on-error: true
+
       - name: Check formatting
         run: |
           # Find all .nix files and format them
@@ -37,3 +41,16 @@ jobs:
 
       - name: Run statix lint
         run: statix check
+
+  build-darwin:
+    if: github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'
+    runs-on: [self-hosted, mac-mini, macmini01, aarch64-darwin]
+    strategy:
+      matrix:
+        target: [M3419, macmini01]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ${{ matrix.target }} system closure
+        run: |
+          export PATH="/run/current-system/sw/bin:$PATH"
+          nix build .#darwinConfigurations.${{ matrix.target }}.config.system.build.toplevel --no-link
