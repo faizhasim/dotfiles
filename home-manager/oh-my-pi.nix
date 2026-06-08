@@ -153,6 +153,7 @@ in
           shimmer = "kitt";
           showTokenUsage = true;
           tabWidth = 3;
+          smoothStreaming = false;
         };
         showHardwareCursor = true;
         clearOnShrink = false;
