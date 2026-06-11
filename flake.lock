@@ -427,7 +427,7 @@
       "flake": false,
       "locked": {
         "lastModified": 1780075346,
-        "narHash": "sha256-tdSuq5WE1JxD5xc0S5DjSQrjutTVpLSp4LsAw11xOss=",
+        "narHash": "sha256-wR1Leg87cNsidP5gQ5aDcgyB58P7wYU1pe92/k1fnag=",
         "owner": "PeonPing",
         "repo": "peon-ping",
         "rev": "7aaa44bcf512ea463d36bec0120a088cdc006956",
