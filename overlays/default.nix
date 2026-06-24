@@ -4,4 +4,5 @@
   (import ./shellcheck-fix.nix { })
   (import ./nushell-fix.nix { })
   (import ./opencode-dummy.nix { })
+  (import ./kubernetes-helm-fix.nix { })
 ]
