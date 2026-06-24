@@ -12,26 +12,26 @@
 
 let
   profiles = {
-    # Full premium access (Claude Sonnet 4.6, Gemini 3.1 Pro, DeepSeek V4 Flash)
-    # Uses GitHub Copilot premium for reasoning/vision roles,
-    # OpenCode Go DeepSeek for daily tasks to conserve Copilot tokens.
+    # Full premium access — GitHub Copilot for all roles.
+    # Sonnet 4.6 for primary/slow/plan/task; Haiku 4.5 for fast/commit;
+    # Gemini 3.1 Pro for vision/design.
     github-premium = {
       omp = {
-        default = "opencode-go/deepseek-v4-flash";
-        fast = "opencode-go/deepseek-v4-flash";
+        default = "github-copilot/claude-sonnet-4.6";
+        fast = "github-copilot/claude-haiku-4.5";
         plan = "github-copilot/claude-sonnet-4.6";
         slow = "github-copilot/claude-sonnet-4.6";
-        smol = "opencode-go/deepseek-v4-flash";
-        task = "opencode-go/deepseek-v4-flash";
-        commit = "opencode-go/deepseek-v4-flash";
+        smol = "github-copilot/claude-sonnet-4.6";
+        task = "github-copilot/claude-sonnet-4.6";
+        commit = "github-copilot/claude-haiku-4.5";
         vision = "github-copilot/gemini-3.1-pro-preview";
         designer = "github-copilot/gemini-3.1-pro-preview";
       };
       opencode = {
-        primary = "opencode-go/deepseek-v4-flash";
-        fast = "opencode-go/deepseek-v4-flash";
-        largeContext = "opencode-go/deepseek-v4-flash";
-        plan = "opencode-go/deepseek-v4-flash";
+        primary = "github-copilot/claude-sonnet-4.6";
+        fast = "github-copilot/claude-haiku-4.5";
+        largeContext = "github-copilot/claude-sonnet-4.6";
+        plan = "github-copilot/claude-sonnet-4.6";
       };
     };
 

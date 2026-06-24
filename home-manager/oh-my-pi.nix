@@ -467,9 +467,6 @@ in
               DD-APPLICATION-KEY = "!op read op://Private/mcp-info/datadog-mcp-dd-application-key";
             };
           };
-          context-mode = {
-            command = "context-mode";
-          };
         };
       };
       force = true;

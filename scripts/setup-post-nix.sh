@@ -210,60 +210,63 @@ run_omp() {
 run_skills() {
   info "Skills — AI agent skills for Pi and OpenCode"
 
-  # Skills install to the canonical ~/.agents/skills/ dir, which Pi, OpenCode,
-  # and all universal agents read from automatically. No --agent flag needed.
+  # Workaround for vercel-labs/skills#1352: skills CLI includes PromptScript in
+  # its universal-agent fanout, which fails on global installs. Passing explicit
+  # --agent bypasses that path and limits installation to the three agents in use.
+  local AGENTS="--agent opencode pi"
 
   # ── Go + Testing ──
-  pnpm dlx skills add jeffallan/claude-skills -s golang-pro -g -y
-  pnpm dlx skills add antfu/skills -s vitest -g -y
-  pnpm dlx skills add wshobson/agents -s go-concurrency-patterns -g -y
-  pnpm dlx skills add anthropics/skills -s webapp-testing -g -y
-  pnpm dlx skills add wshobson/agents -s e2e-testing-patterns javascript-testing-patterns -g -y
+  pnpm dlx skills add jeffallan/claude-skills -s golang-pro -g -y $AGENTS
+  pnpm dlx skills add antfu/skills -s vitest -g -y $AGENTS
+  pnpm dlx skills add wshobson/agents -s go-concurrency-patterns -g -y $AGENTS
+  pnpm dlx skills add anthropics/skills -s webapp-testing -g -y $AGENTS
+  pnpm dlx skills add wshobson/agents -s e2e-testing-patterns javascript-testing-patterns -g -y $AGENTS
 
   # ── Infra: Terraform, K8s, Docker, DevOps ──
-  pnpm dlx skills add wshobson/agents -s terraform-module-library -g -y
-  pnpm dlx skills add hashicorp/agent-skills -s terraform-test terraform-stacks terraform-search-import -g -y
-  pnpm dlx skills add jeffallan/claude-skills -s terraform-engineer kubernetes-specialist devops-engineer -g -y
-  pnpm dlx skills add sickn33/antigravity-awesome-skills -s docker-expert -g -y
-  pnpm dlx skills add github/awesome-copilot -s multi-stage-dockerfile -g -y
+  pnpm dlx skills add wshobson/agents -s terraform-module-library -g -y $AGENTS
+  pnpm dlx skills add hashicorp/agent-skills -s terraform-test terraform-stacks terraform-search-import -g -y $AGENTS
+  pnpm dlx skills add jeffallan/claude-skills -s terraform-engineer kubernetes-specialist devops-engineer -g -y $AGENTS
+  pnpm dlx skills add sickn33/antigravity-awesome-skills -s docker-expert -g -y $AGENTS
+  pnpm dlx skills add github/awesome-copilot -s multi-stage-dockerfile -g -y $AGENTS
 
   # ── Python + Rust ──
-  pnpm dlx skills add wshobson/agents -s python-performance-optimization python-testing-patterns python-design-patterns -g -y
-  pnpm dlx skills add wshobson/agents -s rust-async-patterns -g -y
-  pnpm dlx skills add apollographql/skills -s rust-best-practices -g -y
+  pnpm dlx skills add wshobson/agents -s python-performance-optimization python-testing-patterns python-design-patterns -g -y $AGENTS
+  pnpm dlx skills add wshobson/agents -s rust-async-patterns -g -y $AGENTS
+  pnpm dlx skills add apollographql/skills -s rust-best-practices -g -y $AGENTS
 
   # ── Git, GitHub & Documentation ──
-  pnpm dlx skills add xixu-me/skills -s github-actions-docs -g -y
-  pnpm dlx skills add github/awesome-copilot -s git-commit gh-cli documentation-writer -g -y
+  pnpm dlx skills add xixu-me/skills -s github-actions-docs -g -y $AGENTS
+  pnpm dlx skills add github/awesome-copilot -s git-commit gh-cli documentation-writer -g -y $AGENTS
   pnpm dlx skills add https://github.com/max-sixty/worktrunk --skill worktrunk
   # (api-documentation, security-best-practices from supercent-io/skills-template skipped — private repo)
 
   # ── Security ──
-  pnpm dlx skills add wshobson/agents -s security-requirement-extraction -g -y
+  pnpm dlx skills add wshobson/agents -s security-requirement-extraction -g -y $AGENTS
 
   # ── AWS & AI/LLM ──
-  pnpm dlx skills add aws/agent-toolkit-for-aws -s aws-iam -g -y
-  pnpm dlx skills add refoundai/lenny-skills -s building-with-llms -g -y
-  pnpm dlx skills add huggingface/skills -s huggingface-llm-trainer -g -y
+  pnpm dlx skills add aws/agent-toolkit-for-aws -s aws-iam -g -y $AGENTS
+  pnpm dlx skills add refoundai/lenny-skills -s building-with-llms -g -y $AGENTS
+  pnpm dlx skills add huggingface/skills -s huggingface-llm-trainer -g -y $AGENTS
 
   # ── Document & Media Processing ──
-  pnpm dlx skills add tobi/qmd -g -y
-  pnpm dlx skills add anthropics/skills -s pdf pptx -g -y
-  pnpm dlx skills add softaworks/agent-toolkit -s mermaid-diagrams -g -y
+  pnpm dlx skills add tobi/qmd -g -y $AGENTS
+  pnpm dlx skills add anthropics/skills -s pdf pptx -g -y $AGENTS
+  pnpm dlx skills add softaworks/agent-toolkit -s mermaid-diagrams -g -y $AGENTS
 
   # ── Agent Tools & DX ──
-  pnpm dlx skills add vercel-labs/agent-browser -g -y
-  pnpm dlx skills add vercel-labs/skills -s find-skills -g -y
-  pnpm dlx skills add anthropics/skills -s skill-creator -g -y
-  pnpm dlx skills add obra/superpowers -s dispatching-parallel-agents -g -y
-  pnpm dlx skills add antfu/skills -s pnpm -g -y
-  pnpm dlx skills add softaworks/agent-toolkit -s agent-md-refactor -g -y
-  pnpm dlx skills add daymade/claude-code-skills -s markdown-tools -g -y ||
+  pnpm dlx skills add vercel-labs/agent-browser -g -y $AGENTS
+  pnpm dlx skills add vercel-labs/skills -s find-skills -g -y $AGENTS
+  pnpm dlx skills add anthropics/skills -s skill-creator -g -y $AGENTS
+  pnpm dlx skills add obra/superpowers -s dispatching-parallel-agents -g -y $AGENTS
+  pnpm dlx skills add antfu/skills -s pnpm -g -y $AGENTS
+  pnpm dlx skills add softaworks/agent-toolkit -s agent-md-refactor -g -y $AGENTS
+  pnpm dlx skills add daymade/claude-code-skills -s markdown-tools -g -y $AGENTS ||
     warn "markdown-tools not found in daymade/claude-code-skills (repo restructured)"
 
   # ── General Development ──
-  pnpm dlx skills add wshobson/agents -s typescript-advanced-types architecture-patterns code-review-excellence debugging-strategies architecture-decision-records -g -y
-  pnpm dlx skills add softaworks/agent-toolkit -s meme-factory difficult-workplace-conversations -g -y
+  pnpm dlx skills add wshobson/agents -s typescript-advanced-types architecture-patterns code-review-excellence debugging-strategies architecture-decision-records -g -y $AGENTS
+  pnpm dlx skills add mattpocock/skills -s grill-with-docs grill-me -g -y $AGENTS
+  pnpm dlx skills add softaworks/agent-toolkit -s meme-factory difficult-workplace-conversations -g -y $AGENTS
 
   ok "Skills installed for Pi and OpenCode agents"
 }

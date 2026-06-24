@@ -138,44 +138,44 @@ in
         template = "{file:${./opencode/commands/github-pr.md}}";
       };
 
-      mcp = {
-        docker-mcp = {
-          type = "local";
-          command = [
-            "docker"
-            "mcp"
-            "gateway"
-            "run"
-          ];
-          enabled = true;
-        };
-        context7 = {
-          type = "remote";
-          url = "https://mcp.context7.com/mcp";
-          headers = {
-            CONTEXT7_API_KEY = "{env:OPENCODE_CONTEXT7_API}";
-          };
-        };
-        exa = {
-          type = "remote";
-          url = "https://mcp.exa.ai/mcp";
-          enabled = true;
-        };
-        playwright = {
-          type = "local";
-          command = [
-            "pnpx"
-            "@playwright/mcp@latest"
-          ];
-          enabled = true;
-        };
-        context-mode = {
-          type = "local";
-          command = [ "context-mode" ];
-          enabled = true;
-        };
-      };
-
+      # mcp = {
+      #   docker-mcp = {
+      #     type = "local";
+      #     command = [
+      #       "docker"
+      #       "mcp"
+      #       "gateway"
+      #       "run"
+      #     ];
+      #     enabled = true;
+      #   };
+      #   context7 = {
+      #     type = "remote";
+      #     url = "https://mcp.context7.com/mcp";
+      #     headers = {
+      #       CONTEXT7_API_KEY = "{env:OPENCODE_CONTEXT7_API}";
+      #     };
+      #   };
+      #   exa = {
+      #     type = "remote";
+      #     url = "https://mcp.exa.ai/mcp";
+      #     enabled = true;
+      #   };
+      #   playwright = {
+      #     type = "local";
+      #     command = [
+      #       "pnpx"
+      #       "@playwright/mcp@latest"
+      #     ];
+      #     enabled = true;
+      #   };
+      #   context-mode = {
+      #     type = "local";
+      #     command = [ "context-mode" ];
+      #     enabled = true;
+      #   };
+      # };
+      #
       # context-mode plugin for lifecycle hooks (sandbox routing, session continuity)
       plugin = [ "context-mode" ];
     };
