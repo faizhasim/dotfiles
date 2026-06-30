@@ -26,12 +26,33 @@ let
         echo "hindsight: no api key at $KEY_FILE — run 'setup-post-nix.sh omp' first" >&2
         exit 1
       fi
+      # ── hindsight-api config env vars ─────────────────────────────
+      # These limit blast radius when LLM provider returns
+      # finish_reason=length (which is incorrectly retryable in
+      # hindsight-api <=0.8.3 — each retry re-sends the full conversation
+      # memory, causing unbounded heap growth under concurrent stuck tasks).
+      #
+      # Per-bank max_retries env vars (RETAIN/REFLECT/CONSOLIDATION) exist
+      # in the config schema but are NOT wired to OpenAICompatibleLLM.call();
+      # the actual retry count is hardcoded at 10.  Set them here anyway so
+      # they take effect once upstream wires the plumbing.
+      # See https://github.com/vectorized-io/hindsight-api/issues/…
+      export HINDSIGHT_API_LLM_TIMEOUT=30
+      export HINDSIGHT_API_LLM_MAX_RETRIES=1
+      export HINDSIGHT_API_RETAIN_LLM_MAX_RETRIES=1
+      export HINDSIGHT_API_REFLECT_LLM_MAX_RETRIES=1
+      export HINDSIGHT_API_CONSOLIDATION_LLM_MAX_RETRIES=1
+
+      # ── worker / concurrency caps ──────────────────────────────────
+      export HINDSIGHT_API_WORKER_MAX_SLOTS=4
+      export HINDSIGHT_API_WORKER_MAX_RETRIES=1
+      export HINDSIGHT_API_MENTAL_MODEL_REFRESH_CONCURRENCY=2
 
       export HINDSIGHT_API_LLM_PROVIDER=opencode-go
       export HINDSIGHT_API_LLM_API_KEY
       HINDSIGHT_API_LLM_API_KEY=$(cat "$KEY_FILE")
 
-      exec uvx --quiet --from hindsight-api hindsight-local-mcp
+      exec uvx --quiet --refresh --from hindsight-api hindsight-local-mcp
     '';
   };
 in
