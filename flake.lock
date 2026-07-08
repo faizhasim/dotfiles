@@ -426,16 +426,16 @@
     "peon-ping": {
       "flake": false,
       "locked": {
-        "lastModified": 1780931011,
-        "narHash": "sha256-dAUSsQ0dZN60QZ2H9s9N75UW1dTaEly7dzkAfVXYRZw=",
+        "lastModified": 1783449900,
+        "narHash": "sha256-XfO3oDFcJbp+kjPDTAuiaPGAYpGtrgyDaMyw2ERbSv4=",
         "owner": "PeonPing",
         "repo": "peon-ping",
-        "rev": "dacbbafc332484ffa3c17568323eb91ecbbadde9",
+        "rev": "23b79e8049429d296d3ddc55bbdf5c0abb02f98a",
         "type": "github"
       },
       "original": {
         "owner": "PeonPing",
-        "ref": "v2.30.0",
+        "ref": "v2.34.0",
         "repo": "peon-ping",
         "type": "github"
       }
