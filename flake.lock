@@ -153,11 +153,11 @@
     "direnv-1password": {
       "flake": false,
       "locked": {
-        "lastModified": 1764185864,
-        "narHash": "sha256-jeDp6/jb2sFyZqw7C3JayquOOJ1ZQjDuyx3nZl2kt+I=",
+        "lastModified": 1783961077,
+        "narHash": "sha256-ZmAaFqmmm1Og3K4Tn8ODaBrX0XkVzxlVetVEdaJBTm0=",
         "owner": "tmatilai",
         "repo": "direnv-1password",
-        "rev": "183607aee5907965b0d576216b0ee74a42656c2d",
+        "rev": "15413219de8f8eae21a74593ae236928f0b4b1aa",
         "type": "github"
       },
       "original": {
