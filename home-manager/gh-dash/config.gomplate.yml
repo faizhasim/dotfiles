@@ -42,6 +42,19 @@ keybindings:
           cd "$NEW_PATH" && ${EDITOR:-nvim} .;
         fi
 
+    - key: n
+      name: open in herdr
+      command: >
+        REPO_NAME="{{ "{{" }} .RepoName {{ "}}" }}";
+        PR_NUMBER="{{ "{{" }} .PrNumber {{ "}}" }}";
+        REPO_PATH="{{ "{{" }} .RepoPath {{ "}}" }}";
+        NEW_PATH=$(wt-ensure-repo "$REPO_NAME" "$PR_NUMBER" "$REPO_PATH") || { echo "ERROR: Failed to get worktree path"; exit 1; };
+        if [ -n "$HERDR_ENV" ]; then
+          herdr tab create --label "PR $PR_NUMBER" --cwd "$NEW_PATH" --focus;
+        else
+          cd "$NEW_PATH" && ${EDITOR:-nvim} .;
+        fi
+
 defaults:
   prApproveComment: '<img width="815" height="808" alt="Image" src="https://github.com/user-attachments/assets/4cfd4325-1bfe-4cfe-8ae1-2151dc7f3662" />'
 
