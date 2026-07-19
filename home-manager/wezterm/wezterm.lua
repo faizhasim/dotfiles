@@ -62,6 +62,7 @@ config.prefer_egl = true
 -- Enable kitty keyboard protocol for proper modifier key handling (Shift+Enter, etc.)
 -- Zellij supports this protocol and passes it through to applications like OpenCode
 config.enable_kitty_keyboard = true
+config.enable_kitty_graphics = true
 
 config.window_frame = {
   inactive_titlebar_bg = '#2E3440',            -- polar night (base)

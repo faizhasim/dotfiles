@@ -1,7 +1,14 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, lib, ... }:
+
+let
+  # Extract nix store hash for mise cache keying.
+  # Store files have mtime=0, so -nt can't detect rebuilds; keying on hash avoids staleness.
+  miseStorePath = "${pkgs.mise}";
+  miseHash = builtins.elemAt (builtins.match "/nix/store/([a-z0-9]+)-.*" miseStorePath) 0;
+  # Same approach for starship init caching
+  starshipStorePath = "${pkgs.starship}";
+  starshipHash = builtins.elemAt (builtins.match "/nix/store/([a-z0-9]+)-.*" starshipStorePath) 0;
+in
 {
   programs.zsh = {
     enable = true;
@@ -50,7 +57,13 @@
     };
 
     profileExtra = ''
-      eval $(/opt/homebrew/bin/brew shellenv)
+      # Cache homebrew env — brew shellenv is a subprocess call (~60ms)
+      local brew_cache="$HOME/.cache/homebrew/shellenv.zsh"
+      if [[ ! -f "$brew_cache" || "/opt/homebrew/bin/brew" -nt "$brew_cache" ]]; then
+        mkdir -p "$(dirname "$brew_cache")"
+        /opt/homebrew/bin/brew shellenv > "$brew_cache"
+      fi
+      source "$brew_cache"
 
       # Zellij socket dir - macOS TMPDIR is too long for session names >22 chars
       # Max socket path is 103 bytes, macOS TMPDIR can be ~50+ bytes
@@ -66,6 +79,10 @@
     initContent = ''
       # Uncomment next two lines to profile startup: zmodload zsh/zprof ... zprof
       # zmodload zsh/zprof
+
+      # Skip compaudit — Nix store files are trusted (owned by root:nixbld).
+      # compaudit stats every file in fpath checking ownership, costing ~233ms.
+      export ZSH_DISABLE_COMPFIX=true
 
       # Cache completions; only regenerate if .zcompdump is older than 24h
       autoload -Uz compinit
@@ -95,7 +112,24 @@
       # bindkey '^ ' autosuggest-accept
       # bindkey '^p' history-search-backward
       # bindkey '^n' history-search-forward
-      bindkey '^f' fzf-file-widget
+
+      # Lazy fzf — loads key bindings on first ^f press
+      _lazy_fzf() {
+        unfunction _lazy_fzf
+        source <(${pkgs.fzf}/bin/fzf --zsh) 2>/dev/null
+        zle fzf-file-widget
+      }
+      zle -N _lazy_fzf
+      bindkey '^f' _lazy_fzf
+
+      # Lazy atuin — loads shell integration on first Ctrl-R
+      _lazy_atuin() {
+        unfunction _lazy_atuin
+        eval "$(${pkgs.atuin}/bin/atuin init zsh --disable-up-arrow)" 2>/dev/null
+        zle atuin-search
+      }
+      zle -N _lazy_atuin
+      bindkey '^r' _lazy_atuin
 
       # Zellij session picker widget (Ctrl-b s)
       zellij-session-picker() {
@@ -163,16 +197,44 @@
       [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
       [ -f ~/.config/zsh/extras.sh ] && source ~/.config/zsh/extras.sh
 
-      # Cache mise activation (saves ~100ms per shell start)
-      # Invalidated when .zshenv home-manager symlink changes (i.e., any rebuild)
-      local mise_cache="$HOME/.cache/mise/mise-activate.zsh"
+      # Cache mise activation per store path (keyed by nix hash, not mtime).
+      # Nix store files all have mtime=0, so -nt comparison can't detect rebuilds.
+      # The hash in the filename changes when mise updates, avoiding staleness.
       local mise_bin="${pkgs.mise}/bin/mise"
-      local zshenv="$HOME/.zshenv"
-      if [[ ! -f "$mise_cache" || "$zshenv" -nt "$mise_cache" || "$mise_bin" -nt "$mise_cache" ]]; then
+      local mise_cache="$HOME/.cache/mise/mise-activate-${miseHash}.zsh"
+      if [[ ! -f "$mise_cache" ]]; then
         mkdir -p "$(dirname "$mise_cache")"
         "$mise_bin" activate zsh > "$mise_cache"
       fi
       source "$mise_cache"
+
+      # Cache starship prompt init — subprocess call is ~85ms
+      if [[ $TERM != "dumb" ]]; then
+        local starship_cache="$HOME/.cache/starship/init-${starshipHash}.zsh"
+        if [[ ! -f "$starship_cache" ]]; then
+          mkdir -p "$(dirname "$starship_cache")"
+          "${pkgs.starship}/bin/starship" init zsh > "$starship_cache"
+        fi
+        source "$starship_cache"
+      fi
+
+      # Override mise precmd hook to skip hook-env calls when directory unchanged.
+      # mise hook-env is ~160ms and runs on every other prompt by default.
+      # After first setup in a directory, env is stable until cd — skip the binary call.
+      _mise_hook_precmd() {
+        if [[ "$__MISE_ZSH_CHPWD_RAN" == "1" ]]; then
+          export __MISE_ZSH_CHPWD_RAN=0
+          return
+        fi
+        if [[ "$PWD" == "$__MISE_LAST_PWD" ]]; then
+          return
+        fi
+        __MISE_LAST_PWD="$PWD"
+        eval "$("$mise_bin" hook-env -s zsh --reason precmd)"
+      }
+      # Initialise PWD tracker so first prompt also skips mise hook-env
+      # when starting in the same directory (common case: shells open in ~).
+      export __MISE_LAST_PWD="$PWD"
 
       # Tell pnpm where to store global packages.
       # On macOS the default is ~/Library/pnpm, but our existing global binaries

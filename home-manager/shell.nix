@@ -21,13 +21,13 @@
     broot.enable = true; # browser big folders
     carapace = {
       enable = true; # autocompletion
-      enableZshIntegration = true;
+      enableZshIntegration = false; # Lazy-loaded in zsh.nix
     };
 
     # sqlite browser history
     atuin = {
       enable = true;
-      enableZshIntegration = true;
+      enableZshIntegration = false; # Lazy-loaded in zsh.nix
       flags = [ "--disable-up-arrow" ];
       settings = {
         inline_height = 20;
@@ -56,7 +56,7 @@
 
     fzf = {
       enable = true;
-      enableZshIntegration = true;
+      enableZshIntegration = false; # Lazy-loaded in zsh.nix
       defaultCommand = "fd --type f --hidden --follow --exclude .git --exclude .idea --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
       defaultOptions = [
         "--border sharp"

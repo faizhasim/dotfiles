@@ -11,7 +11,7 @@
   programs.starship = {
     enable = true;
     enableNushellIntegration = true;
-    enableZshIntegration = true;
+    enableZshIntegration = false; # Cached init in zsh.nix
     settings = {
       add_newline = true;
 
