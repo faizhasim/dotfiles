@@ -1,13 +1,13 @@
 return {
   -- using snacks.image
-  -- {
-  --   "3rd/image.nvim",
-  --   build = false,
-  --   opts = {
-  --     -- backend = "sixel", -- because zellij didn't support kitty protocol (and hacky-ish tmux too)
-  --     processor = "magick_cli",
-  --   },
-  -- },
+  {
+    "3rd/image.nvim",
+    build = false,
+    opts = {
+      -- backend = "sixel", -- because zellij didn't support kitty protocol (and hacky-ish tmux too)
+      processor = "magick_cli",
+    },
+  },
   {
     "HakonHarnes/img-clip.nvim",
     event = "VeryLazy",
