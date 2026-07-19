@@ -131,6 +131,14 @@ in
       zle -N _lazy_atuin
       bindkey '^r' _lazy_atuin
 
+      # Lazy herdr completions — registers on first `herdr<TAB>`
+      _herdr() {
+        unfunction _herdr
+        source <(herdr completion zsh) 2>/dev/null
+        _herdr "$@"
+      }
+      compdef _herdr herdr
+
       # Zellij session picker widget (Ctrl-b s)
       zellij-session-picker() {
         local session
@@ -166,7 +174,11 @@ in
         esac
       }
       zle -N tmux-prefix
-      bindkey '^b' tmux-prefix
+      # Only bind Ctrl-b prefix outside Herdr (for Zellij sessions).
+      # Inside Herdr, Ctrl-b is the Herdr multiplexer prefix.
+      if [[ -z "$HERDR_ENV" ]]; then
+        bindkey '^b' tmux-prefix
+      fi
 
       cd() {
         builtin cd "$@"

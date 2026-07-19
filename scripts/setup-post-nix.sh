@@ -13,8 +13,8 @@
 #   setup-post-nix.sh nvim             # Neovim config (Stow) + tools + zsh extras
 #   setup-post-nix.sh mcp              # Private MCP config from 1Password
 #   setup-post-nix.sh opencode         # OpenCode AI coding agent (via bun global install)
-#   setup-post-nix.sh omp              # OMP plugins + MCP config + verify (binary managed by mise.nix)
-#   setup-post-nix.sh runner           # Install/verify GitHub self-hosted runner (macmini01 only)
+  #   setup-post-nix.sh herdr           # Install Herdr plugins (worktrunk, floax)
+  #   setup-post-nix.sh runner           # Install/verify GitHub self-hosted runner (macmini01 only)
 #   setup-post-nix.sh runner --remove  # Unregister runner and clean up
 #
 # ============================================================================
@@ -271,6 +271,47 @@ run_skills() {
   ok "Skills installed for Pi and OpenCode agents"
 }
 
+run_herdr() {
+  info "Herdr — plugin setup (binary managed by home-manager/mise.nix)"
+
+  # Ensure herdr is installed (idempotent — mise.nix manages the version)
+  mise install 2>/dev/null || true
+
+  # Find the herdr binary (mise installs under $HOME/.local/share/mise)
+  local herdr_bin
+  herdr_bin=$(ls -t "$HOME/.local/share/mise/installs/herdr/"*/herdr 2>/dev/null | head -1)
+
+  if [ -z "$herdr_bin" ] || [ ! -x "$herdr_bin" ]; then
+    warn "herdr binary not found — skipping plugin install"
+    warn "Run: mise use -g herdr, then retry"
+    return
+  fi
+
+  # ── worktrunk plugin ──
+  if "$herdr_bin" plugin list 2>/dev/null | grep -qF "worktrunk"; then
+    ok "herdr-worktrunk plugin already installed"
+  else
+    info "Installing herdr-worktrunk..."
+    "$herdr_bin" plugin install devashish2203/herdr-worktrunk --yes 2>&1 || warn "herdr-worktrunk install failed (non-fatal)"
+  fi
+
+  # ── floax plugin (needs Rust) ──
+  if "$herdr_bin" plugin list 2>/dev/null | grep -qF "herdr-floax"; then
+    ok "herdr-floax plugin already installed"
+  else
+    if command -v cargo &>/dev/null; then
+      info "Installing herdr-floax..."
+      "$herdr_bin" plugin install Tyru5/herdr-floax --yes 2>&1 || warn "herdr-floax install failed (non-fatal)"
+    else
+      warn "  Install Rust toolchain: rustup install stable, then run: setup-post-nix.sh herdr"
+    fi
+  fi
+
+  # ── Verify ──
+  "$herdr_bin" plugin list
+  ok "Herdr plugins listed"
+}
+
 run_misc() {
   info "Misc — global pnpm tools"
 
@@ -383,6 +424,8 @@ run_all() {
   echo ""
   run_skills
   echo ""
+  run_herdr
+  echo ""
 
   ok "All targets complete"
 }
@@ -397,12 +440,13 @@ pi) run_pi "$@" ;;
 nvim) run_nvim "$@" ;;
 mcp) run_mcp "$@" ;;
 opencode) run_opencode "$@" ;;
+herdr) run_herdr "$@" ;;
 omp) run_omp "$@" ;;
 skills) run_skills "$@" ;;
 runner) run_runner "$@" ;;
 misc) run_misc "$@" ;;
 *)
-  echo "Usage: $0 [pi|nvim|mcp|opencode|omp|skills|runner|misc|all] [--upgrade] [--force] [--remove]"
+  echo "Usage: $0 [pi|nvim|mcp|opencode|herdr|omp|skills|runner|misc|all] [--upgrade] [--force] [--remove]"
   exit 1
   ;;
 esac
