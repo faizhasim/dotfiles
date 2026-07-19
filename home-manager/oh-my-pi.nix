@@ -14,9 +14,6 @@ let
   # Change aiHarnessModelProfile in flake.nix → all harnesses update.
   models = import ./model-profiles.nix { profileName = aiHarnessModelProfile; };
 
-  # Peon extension (lifecycle sounds via ~/.openpeon/ sound packs)
-  enablePeonExtension = false;
-
   # ── dark-nord-enhanced theme ────────────────────────────────────────
   # Fixes nord3 (#4c566a) on nord0 (#2e3440) — only ~1.5:1 contrast.
   # _muted/dim are brighter polar-night variants that clear WCAG AA.
@@ -391,14 +388,6 @@ in
     # Rules activate on violation only — no permanent context tax.
     ".omp/agent/rules/guardrails.md".source = ./oh-my-pi/rules/guardrails.md;
     ".omp/agent/rules/pkg-mgr-auth.md".source = ./oh-my-pi/rules/pkg-mgr-auth.md;
-
-    ".omp/agent/rules/research-protocol.md".source = ./oh-my-pi/rules/research-protocol.md;
-
-    # ── Extensions ──────────────────────────────────────────────────
-    # Custom omp extensions for lifecycle hooks.
-    ".omp/agent/extensions/peon.ts" = lib.mkIf enablePeonExtension {
-      source = ./oh-my-pi/extensions/peon.ts;
-    };
 
     # ═══════════════════════════════════════════════════════════════════
     # ~/.omp/agent/mcp.json  (seed reference managed by Nix)

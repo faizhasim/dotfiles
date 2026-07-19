@@ -15,9 +15,6 @@ _: {
     # 💻 macOS Enhancement
     # ──────────────────────────────────────────────
     "felixkratz/formulae/borders" # borders
-
-    # peon-ping sound pack manager (CLI for ~/.openpeon/ pack management)
-    "PeonPing/tap/peon-ping"
   ];
   casks = [
     # ──────────────────────────────────────────────
@@ -129,10 +126,6 @@ _: {
     "FelixKratz/formulae"
     # Datadog pack (internal tooling)
     "datadog-labs/pack"
-    "open-pencil/tap"
-
-    # peon-ping sound notifications for omp
-    "PeonPing/tap"
     # --- Commented / Disabled taps ---
     # "acrogenesis/macchanger"
     # "databricks/tap" # databricks

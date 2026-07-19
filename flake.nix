@@ -44,14 +44,6 @@
         home-manager.follows = "home-manager";
       };
     };
-    og-packs = {
-      url = "github:PeonPing/og-packs/v1.4.0";
-      flake = false;
-    };
-    peon-ping = {
-      url = "github:PeonPing/peon-ping/v2.30.0";
-      flake = false;
-    };
   };
 
   outputs =

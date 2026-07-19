@@ -75,7 +75,7 @@ run_pi() {
 
 # ── Pi extension packages (managed declaratively via Nix settings.json `packages` key) ──
 # pi-lens, pi-subagents, pi-plan, context-mode, pi-mcp-adapter,
-# @juicesharp/rpiv-todo, @juicesharp/rpiv-ask-user-question, @wierdbytes/pi-peon
+# @juicesharp/rpiv-todo, @juicesharp/rpiv-ask-user-question
 # See home-manager/pi.nix for the authoritative list.
 
 run_nvim() {

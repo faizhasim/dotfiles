@@ -21,12 +21,6 @@ let
         wt config shell init zsh > $out
       '';
 
-  # Wrapper that injects GH_TOKEN from 1Password before execing the real wt.
-  # Worktrunk's shell function uses WORKTRUNK_BIN to decide what binary to run,
-  # so setting this env var means every subprocess gets GH_TOKEN automatically.
-  wtAuthWrapper = pkgs.writeShellScript "wt-auth-wrapper" ''
-    GH_TOKEN=$(op read "op://Private/Github/Section_gy45mtjzrek6pbvq4hket7qtfq/token" 2>/dev/null) exec "${pkgs.worktrunk}/bin/wt" "$@"
-  '';
 in
 {
   # Link external TOML config to XDG config directory
@@ -38,9 +32,8 @@ in
   home.packages = [ pkgs.worktrunk ];
 
   # Worktrunk shell function + WORKTRUNK_BIN injected into zsh initContent.
-  # We use mkAfter to ensure this runs after the main initContent from zsh.nix.
   programs.zsh.initContent = lib.mkAfter ''
     source ${worktrunkShellInit}
-    export WORKTRUNK_BIN="${wtAuthWrapper}"
+    export WORKTRUNK_BIN="${pkgs.worktrunk}/bin/wt"
   '';
 }
