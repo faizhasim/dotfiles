@@ -31,7 +31,7 @@ return {
       },
       -- Keybindings for picker window (works in insert and normal mode)
       -- NOTE: Default <a-h>/<a-i>/<a-r> conflict with AeroSpace
-      -- NOTE: Kitty protocol enabled in Zellij allows <c-h>/<c-i> to work in Neovim
+      -- NOTE: Kitty protocol enabled in Herdr allows <c-h>/<c-i> to work in Neovim
       win = {
         input = {
           keys = {

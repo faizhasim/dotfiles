@@ -6,8 +6,8 @@
 # Why these settings?
 # -------------------
 # - image_protocol: auto (default)
-#   Let presenterm auto-detect the best protocol. Works well outside Zellij.
-#   Inside Zellij, mermaid rendering may not work - use presenterm outside Zellij instead.
+#   Let presenterm auto-detect the best protocol. Works well outside Herdr.
+#   Inside Herdr, mermaid rendering may not work - use presenterm outside Herdr instead.
 #
 # - mermaid.scale: 3
 #   Scaling factor for mermaid diagrams. Higher values = larger, sharper images.

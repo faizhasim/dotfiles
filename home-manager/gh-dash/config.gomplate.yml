@@ -26,21 +26,6 @@ keybindings:
         --body "$(gum input --prompt='What needs changing: ')"
         {{ "{{" }} .PrNumber {{ "}}" }}
 
-    - key: z
-      name: open in zellij
-      command: >
-        REPO_NAME="{{ "{{" }} .RepoName {{ "}}" }}";
-        PR_NUMBER="{{ "{{" }} .PrNumber {{ "}}" }}";
-        REPO_PATH="{{ "{{" }} .RepoPath {{ "}}" }}";
-        NEW_PATH=$(wt-ensure-repo "$REPO_NAME" "$PR_NUMBER" "$REPO_PATH") || { echo "ERROR: Failed to get worktree path"; exit 1; };
-        if [ -n "$ZELLIJ" ]; then
-          zellij action new-tab --cwd "$NEW_PATH" --name "PR $PR_NUMBER" || exit 1;
-          sleep 0.2;
-          zellij action write-chars "cd \"$NEW_PATH\" && clear && pwd && \${EDITOR:-nvim} .";
-          zellij action write 13;
-        else
-          cd "$NEW_PATH" && ${EDITOR:-nvim} .;
-        fi
 
     - key: n
       name: open in herdr

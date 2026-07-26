@@ -27,7 +27,7 @@ in
     };
 
     # Use the 1Password Shell Plugins
-    #    shellPlugins = inputs._1password-shell-plugins.packages.${pkgs.system}.zshPlugins;
+    #    shellPlugins = inputs._1password-shell-plugins.packages.${pkgs.stdenv.hostPlatform.system}.zshPlugins;
 
     shellAliases = {
       l = "ls -lA";
@@ -65,10 +65,6 @@ in
       fi
       source "$brew_cache"
 
-      # Zellij socket dir - macOS TMPDIR is too long for session names >22 chars
-      # Max socket path is 103 bytes, macOS TMPDIR can be ~50+ bytes
-      export ZELLIJ_SOCKET_DIR="$HOME/.cache/zellij/sockets"
-      mkdir -p "$ZELLIJ_SOCKET_DIR"
 
       # Per-project opencode overrides (merged on top of global config)
       # Place private/company-specific MCPs here, outside the dotfiles repo
@@ -96,7 +92,7 @@ in
       [ -f ~/.env/env.sh ] && source ~/.env/env.sh
 
       # Re-source hm-session-vars when __HM_SESS_VARS_SOURCED is inherited
-      # from parent process (e.g., zellij server). Without this, new zellij
+      # from parent process (e.g., a herdr workspace). Without this, new herdr
       # panes never pick up changes to home.sessionVariables because the
       # guard prevents hm-session-vars.sh from running.
       # Fixes: QMD_FORCE_CPU, OP_ACCOUNT, and all home.sessionVariables
@@ -139,46 +135,6 @@ in
       }
       compdef _herdr herdr
 
-      # Zellij session picker widget (Ctrl-b s)
-      zellij-session-picker() {
-        local session
-        session=$(zellij list-sessions -s 2>/dev/null | fzf --height=40% --reverse --prompt="Select Zellij session: ")
-        if [[ -n "$session" ]]; then
-          BUFFER="zellij attach \"$session\""
-          zle accept-line
-        fi
-        zle reset-prompt
-      }
-      zle -N zellij-session-picker
-
-      # Zellij session from zoxide (Ctrl-b g)
-      zellij-session-from-zoxide() {
-        local dir session_name
-        dir=$(zoxide query --list 2>/dev/null | fzf --height=40% --reverse --prompt="Select directory: ")
-        if [[ -n "$dir" ]]; then
-          session_name=$(basename "$dir")
-          BUFFER="cd \"$dir\" && zellij attach --create \"$session_name\""
-          zle accept-line
-        fi
-        zle reset-prompt
-      }
-      zle -N zellij-session-from-zoxide
-
-      # Prefix key handler for Ctrl-b
-      tmux-prefix() {
-        local key
-        read -sk key
-        case "$key" in
-          s) zle zellij-session-picker ;;
-          g) zle zellij-session-from-zoxide ;;
-        esac
-      }
-      zle -N tmux-prefix
-      # Only bind Ctrl-b prefix outside Herdr (for Zellij sessions).
-      # Inside Herdr, Ctrl-b is the Herdr multiplexer prefix.
-      if [[ -z "$HERDR_ENV" ]]; then
-        bindkey '^b' tmux-prefix
-      fi
 
       cd() {
         builtin cd "$@"

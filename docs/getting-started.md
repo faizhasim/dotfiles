@@ -5,6 +5,7 @@ This guide will walk you through setting up this Nix-based macOS configuration f
 ## Prerequisites
 
 Before you begin, ensure you have:
+
 - A Mac running macOS (Intel or Apple Silicon)
 - Administrative access to your machine
 - Internet connection
@@ -98,10 +99,11 @@ This script pulls credentials from 1Password and configures saml2aws.
 The Neovim configuration is managed separately using GNU Stow:
 
 ```shell
-./scripts/setup-nvim.sh
+./scripts/setup-post-nix.sh nvim
 ```
 
 This script will:
+
 - Symlink the nvim configuration to `~/.config/nvim`
 - Install mise-managed tools
 - Enable corepack for Node.js
@@ -109,7 +111,15 @@ This script will:
 
 After running this, launch `nvim` and let LazyVim download and configure all plugins automatically.
 
-### 6.4 Verify Services
+### 6.4 Complete Manual Steps
+
+Run the full post-install setup after Neovim:
+
+```shell
+./scripts/setup-post-nix.sh all
+```
+
+### 6.5 Verify Services
 
 Check that key services are running:
 
@@ -129,6 +139,7 @@ dig @127.0.0.1 -p 53535 localhost
 
 > [!TIP]
 > If services aren't running, reboot or manually start them:
+>
 > ```bash
 > launchctl kickstart -k gui/$(id -u)/org.nixos.dnsmasq
 > launchctl kickstart -k gui/$(id -u)/org.nixos.aerospace
@@ -148,7 +159,7 @@ nix --version
 which aerospace
 which wezterm
 which nvim
-which zellij
+which herdr
 which gh
 
 # Check shell configuration
@@ -157,8 +168,8 @@ echo $EDITOR  # Should show: nvim
 # Check dnsmasq service
 launchctl list | grep dnsmasq
 
-# Test Zellij
-zellij --version
+# Test Herdr
+herdr --version
 ```
 
 ### Understanding darwin-rebuild

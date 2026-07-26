@@ -12,4 +12,7 @@ result-*
 # gh-dash private repos (unencrypted, local only)
 # The encrypted version (*.age) is committed in secrets/
 home-manager/gh-dash/repos.toml
-home-manager/zellij/config.kdl
+
+# OS / local env
+.DS_Store
+.env*

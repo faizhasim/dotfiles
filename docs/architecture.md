@@ -6,7 +6,7 @@ This document explains how the dotfiles system is structured and how different c
 
 The configuration uses a **layered architecture** where each layer has specific responsibilities:
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │         flake.nix (Entry Point)         │
 │  - Defines inputs & outputs             │
@@ -27,7 +27,7 @@ The configuration uses a **layered architecture** where each layer has specific 
 
 ## Directory Structure
 
-```
+```text
 dotfiles/
 ├── flake.nix                # Entry point, defines all inputs/outputs
 ├── flake.lock              # Locked dependency versions
@@ -63,10 +63,10 @@ dotfiles/
 │       └── plugins/
 │
 ├── overlays/              # Package modifications
-│   ├── ice-bar.nix       # Menu bar item hiding
+│   # (overlays consolidated; no ice-bar.nix — replaced by thaw)
 │
 ├── scripts/               # Setup and utility scripts
-│   ├── setup-nvim.sh
+│   ├── setup-post-nix.sh
 │   └── saml2aws-configure.sh
 │
 └── docs/                  # Documentation
@@ -170,7 +170,7 @@ Individual tool configurations:
 - **zsh.nix** - Shell setup, aliases, functions, plugins
 - **git.nix** - Git config, aliases, 1Password signing
 - **wezterm.nix** - Terminal emulator settings
-- **zellij.nix** - Terminal multiplexer with sessionizer
+- **herdr.nix** - Terminal multiplexer with worktrunk/floax plugin integration
 - **aerospace.nix** - Window manager configuration
 - **mise.nix** - Runtime version manager (node, python, go, etc.)
 - **direnv.nix** - Per-directory environment management
@@ -207,21 +207,10 @@ The configuration includes:
 
 ### 5. Overlays (overlays/)
 
-Package modifications and custom versions:
-
-```nix
-# overlays/ice-bar.nix
-final: prev: {
-  ice-bar = prev.ice-bar.overrideAttrs (old: {
-    version = "0.11.13-dev.2";
-    src = final.fetchurl { ... };
-  });
-}
-```
+Package modifications and custom versions are applied via the `overlays/` directory.
 
 Active overlays:
-
-- **ice-bar** - Menu bar item hiding (any alternative like HiddenBar would work too)
+<!-- overlays list currently empty after thaw migration; see darwin/homebrew for thaw setup -->
 
 ## Configuration Flow
 
@@ -275,7 +264,7 @@ launchd.user.agents.aerospace = {
 
 - **AeroSpace** - Window tiling manager
 - **borders** - Window border highlighting (via Homebrew)
-- **ice-bar** - Menu bar item hiding (alternatives: HiddenBar, Bartender, etc.)
+- **thaw** - Menu bar item hiding
 - **dnsmasq** - Local DNS server for development (port 53535)
 
 ## Package Management Strategy
@@ -336,7 +325,7 @@ programs.mise = {
 
 The system deeply integrates with 1Password:
 
-```
+```text
 ┌──────────────┐
 │  1Password   │
 │  (Secrets)   │
@@ -418,13 +407,9 @@ brew update && brew upgrade
 - Learn about testing in Neovim in [neotest.md](./neotest.md)
 - Configure local DNS development in [dnsmasq.md](./dnsmasq.md)
 
-## Terminal Workflow
+### WezTerm + Herdr
 
-The system provides a modern terminal-based development workflow:
-
-### WezTerm + Zellij
-
-```
+```text
 ┌─────────────────────────────────┐
 │  WezTerm (Terminal Emulator)    │
 │  ├─ Nord theme via Stylix       │
@@ -434,27 +419,13 @@ The system provides a modern terminal-based development workflow:
              │
              ▼
 ┌─────────────────────────────────┐
-│  Zellij (Terminal Multiplexer)  │
-│  ├─ Session management          │
-│  ├─ Sessionizer (Ctrl+o w)      │
-│  └─ Project-based workflows     │
+│  Herdr (Terminal Multiplexer)   │
+│  ├─ Workspace management        │
+│  ├─ Worktrunk plugin            │
+│  ├─ Floax plugin                │
+│  └─ Ctrl-b prefix               │
 └────────────┬────────────────────┘
              │
              ▼
 ┌─────────────────────────────────┐
 │  Shell (Zsh)                    │
-│  ├─ Oh-My-Zsh plugins           │
-│  ├─ Starship prompt             │
-│  ├─ direnv integration          │
-│  ├─ mise runtime management     │
-│  └─ 1Password shell plugins     │
-└─────────────────────────────────┘
-```
-
-### Development Tools Integration
-
-- **gh-dash**: Manage GitHub PRs without leaving terminal
-- **lazydocker**: Visual Docker management in terminal
-- **lazygit**: Git UI integrated with gh-dash
-- **neotest**: Run tests directly in Neovim
-- **dnsmasq**: Local DNS for domain-based development

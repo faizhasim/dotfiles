@@ -378,45 +378,42 @@ config.keys = {
 }
 ```
 
-## Customizing Terminal Multiplexer (Zellij)
+## Customizing Terminal Multiplexer (Herdr)
 
-Zellij config is in `home-manager/zellij/config.kdl` and `home-manager/zellij.nix`.
+Herdr config lives at `~/.config/herdr/config.toml` (raw TOML, not Nix-generated). The Nix module `home-manager/herdr.nix` wires the mise-managed binary and sets environment variables. Plugins are installed via `scripts/setup-post-nix.sh herdr`.
 
 ### Built-in Features
 
-- **Sessionizer** - Quick project switcher (Ctrl+o + w)
-- **Session tree** - Visual session browser (Ctrl+o + e)
-- **zjstatus** - Custom status bar
-- **Session management** - Replicated in Zsh for quick access
+- **Worktrunk plugin** - Seamless worktree management from within Herdr
+- **Floax plugin** - Floating windows within herdr panes
+- **Ctrl-b prefix** - Multiplexer keybindings inside Herdr panes
+- **Workspace/tab management** - via `herdr` CLI
 
-### Changing Keybindings
+### Changing Configuration
 
-Edit `home-manager/zellij/config.kdl`:
+Edit `~/.config/herdr/config.toml`:
 
-```kdl
-keybinds {
-    normal {
-        bind "Alt h" { MoveFocus "Left"; }
-        bind "Alt l" { MoveFocus "Right"; }
-        bind "Alt j" { MoveFocus "Down"; }
-        bind "Alt k" { MoveFocus "Up"; }
-    }
-}
+```toml
+[general]
+mode = "tmux"
+
+[keybindings]
+prefix = "Ctrl-b"
 ```
 
-### Session Management from Shell
+### Session Management
 
-Zellij sessions can be managed via Zsh aliases:
+Herdr sessions are managed via the `herdr` CLI:
 
 ```bash
-# List sessions
-zellij ls
+# List workspaces
+herdr workspace list
 
-# Attach to session (or create if doesn't exist)
-zellij attach my-project -c
+# List tabs in current workspace
+herdr tab list
 
-# Sessionizer (fuzzy finder for project directories)
-# Ctrl+o w in Zellij, or run: zellij-sessionizer
+# Split pane
+herdr pane split --horizontal
 ```
 
 > [!TIP]
@@ -476,7 +473,7 @@ run = 'layout floating'
 
 Neovim is managed separately via LazyVim in the `nvim/` directory.
 
-### Adding Plugins
+### Adding Neovim Plugins
 
 Edit `nvim/lua/plugins/` and create a new file:
 
@@ -628,11 +625,11 @@ The configuration includes pre-defined sections:
 - **mention:@me** - PRs where you're mentioned
 - **Team PRs** - All open PRs for configured repositories
 
-### Custom Keybindings
+### Custom gh-dash Keybindings
 
 - `m` - Quick merge (squash + auto-merge)
 - `x` - Request changes with interactive comment
-- `z` - Open PR in Zellij session
+- `n` - Open PR in herdr tab
 - `g` - Open repository in lazygit
 
 ### Repository Paths

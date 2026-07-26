@@ -31,8 +31,6 @@ in
       "Marked 2" = 890031187;
       Magnet = 441258766;
       Vimari = 1480933944;
-      #      Notability = 360593530; # unsure why homebrew kept installing this
-      #      Whatsapp = 310633997; # unsure why homebrew kept installing this
     };
 
   };
@@ -63,16 +61,4 @@ in
     fi
   '';
 
-  system.activationScripts.masApps.text = ''
-    echo "Running masApps workaround script..."
-
-    # Check if mas is available
-    if command -v mas &> /dev/null; then
-      echo "Installing MAS apps manually"
-      mas install 360593530  # Notability
-      mas install 310633997  # Whatsapp
-    else
-      echo "mas CLI not found"
-    fi
-  '';
 }

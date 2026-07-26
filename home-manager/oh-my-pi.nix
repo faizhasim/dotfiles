@@ -388,6 +388,9 @@ in
     # Rules activate on violation only — no permanent context tax.
     ".omp/agent/rules/guardrails.md".source = ./oh-my-pi/rules/guardrails.md;
     ".omp/agent/rules/pkg-mgr-auth.md".source = ./oh-my-pi/rules/pkg-mgr-auth.md;
+    ".omp/agent/rules/herdr.md".source = ./oh-my-pi/rules/herdr.md;
+    # Always-apply rules (active every session)
+    ".omp/agent/rules/research-protocol.md".source = ./oh-my-pi/rules/research-protocol.md;
 
     # ═══════════════════════════════════════════════════════════════════
     # ~/.omp/agent/mcp.json  (seed reference managed by Nix)

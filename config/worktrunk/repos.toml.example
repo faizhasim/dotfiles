@@ -3,42 +3,29 @@
 # This file defines your repository structure and organization.
 # It serves as a single source of truth for:
 #   - gh-dash config generation (automatic repo path mapping)
-#   - (future) automated git clone --bare for new machine setup
-#   - (future) worktrunk workflow automation tools
+#   - wt-ensure-repo.sh worktree creation
+#   - clone-worktrunk-repos.sh initial clone
 #
 # Location (after decryption): ~/.config/worktrunk/repos.toml
 # Encrypted source: secrets/worktrunk-repos.toml.age
 #
 # To edit: ./scripts/edit-worktrunk-repos.sh
 
-# Systems: Logical groupings of repositories within a worktrunk structure
-# Each system represents a coherent set of related repos
-#
-# Fields:
-#   name: System identifier (for documentation)
-#   org:  GitHub organization or user
-#   path: Relative path from ~/dev/ where repos live
-#   repos: List of repository names
-#
-# Example worktrunk structure:
-#   ~/dev/myorg/my-system/repo1/  (git worktree)
-#   ~/dev/myorg/my-system/repo2/  (git worktree)
+# Individual repos with their paths and display filters
+[[repo]]
+path = "~/dev/myorg/my-system/repo1"
+remote = "git@github.com:MyOrg/repo1.git"
+gh_dash_filter = true
 
-[[systems]]
-name = "my-system"
-org = "MyOrg"
-path = "myorg/my-system"
-repos = [
-  "repo-1",
-  "repo-2",
-  "repo-3",
-]
+[[repo]]
+path = "~/dev/myorg/my-system/repo2"
+remote = "git@github.com:MyOrg/repo2.git"
+gh_dash_filter = true
 
-[[systems]]
-name = "other-system"
-org = "MyOrg"
-path = "myorg/other-system"
-repos = ["service-a", "service-b"]
+[[repo]]
+path = "~/dev/myorg/other-system/service-a"
+remote = "git@github.com:MyOrg/service-a.git"
+gh_dash_filter = false
 
 # Wildcard patterns for catch-all repos
 # These match repos that don't fit into structured systems

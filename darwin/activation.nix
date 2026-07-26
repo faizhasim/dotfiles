@@ -28,24 +28,6 @@ let
     builtins.readFile ../home-manager/gh-dash/config.gomplate.yml
   );
 
-  # Zellij config generator script
-  generateZellijConfig = pkgs.writeShellScript "generate-zellij-config" ''
-    set -euo pipefail
-    export PATH="${
-      pkgs.lib.makeBinPath [
-        pkgs.gomplate
-        pkgs.yq-go
-        pkgs.jq
-        pkgs.coreutils
-      ]
-    }:$PATH"
-    ${builtins.readFile ../lib/nix-internal/generate-zellij-config.sh}
-  '';
-
-  # Zellij gomplate template
-  zellijGomplateTemplate = pkgs.writeText "zellij-config.gomplate.kdl" (
-    builtins.readFile ../home-manager/zellij/config.gomplate.kdl
-  );
 in
 {
   age = {
@@ -122,7 +104,5 @@ in
   system.activationScripts.postActivation.text = lib.mkAfter ''
     echo >&2 "Generating gh-dash config from gomplate template + decrypted repos.toml..."
     ${generateGhDashConfig} "${gomplateTemplate}" "/Users/${config.system.primaryUser}"
-    echo >&2 "Generating zellij config from gomplate template + decrypted repos.toml..."
-    ${generateZellijConfig} "${zellijGomplateTemplate}" "/Users/${config.system.primaryUser}"
   '';
 }

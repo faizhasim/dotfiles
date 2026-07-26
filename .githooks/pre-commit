@@ -1,22 +1,45 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# ── Nix (nixfmt + statix) ──────────────────────────────────────────────────
+
 # Collect staged .nix files (added, copied, modified, renamed)
-files=()
+nix_files=()
 while IFS= read -r -d '' file; do
-    files+=("$file")
+    nix_files+=("$file")
 done < <(git diff --cached --name-only -z --diff-filter=ACMR -- '*.nix')
 
-# Exit silently if no .nix files are staged
-[ ${#files[@]} -eq 0 ] && exit 0
+if [ ${#nix_files[@]} -gt 0 ]; then
+    # Format each staged .nix file and re-stage
+    for f in "${nix_files[@]}"; do
+        nixfmt "$f"
+        git add "$f"
+    done
 
-# Format each staged .nix file and re-stage
-for f in "${files[@]}"; do
-    nixfmt "$f"
-    git add "$f"
+    # Lint staged .nix files
+    for f in "${nix_files[@]}"; do
+        statix check "$f"
+    done
+fi
+
+# ── Shell scripts ──────────────────────────────────────────────────────────
+
+sh_files=()
+while IFS= read -r -d '' file; do
+    sh_files+=("$file")
+done < <(git diff --cached --name-only -z --diff-filter=ACMR -- 'scripts/**/*.sh')
+
+for f in "${sh_files[@]}"; do
+    shellcheck "$f"
 done
 
-# Lint staged .nix files
-for f in "${files[@]}"; do
-    statix check "$f"
+# ── Markdown ───────────────────────────────────────────────────────────────
+
+md_files=()
+while IFS= read -r -d '' file; do
+    md_files+=("$file")
+done < <(git diff --cached --name-only -z --diff-filter=ACMR -- '*.md')
+
+for f in "${md_files[@]}"; do
+    markdownlint "$f"
 done
