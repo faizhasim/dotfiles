@@ -22,7 +22,7 @@ This is a **declarative macOS system configuration** that uses Nix/Lix and nix-d
 - 🛠️ **Developer-Focused** - Modern CLI tools, LSPs, and AI assistance
 - 🤖 **AI-Assisted Development** - Context7-enabled prompts for smarter workflows
 - 📦 **Multi-Layer Package Management** - Nix, Homebrew, and mise working together
-- 🖥️ **Terminal Multiplexer** - Zellij with sessionizer for project-based workflows
+- 🖥️ **Terminal Multiplexer** - Herdr with worktrunk/floax plugin integration for project-based workflows
 - 🌐 **Local DNS Development** - dnsmasq with direnv for domain resolution
 - 🧪 **Integrated Testing** - neotest for running tests directly in Neovim
 
@@ -39,29 +39,33 @@ This configuration follows several core principles:
 ## Supported Machines
 
 Currently configured for:
+
 - **M3419** - Apple Silicon (aarch64-darwin)
 - **macmini01** - Apple Silicon (aarch64-darwin)
 
 ## What Gets Managed
 
 ### System Level (nix-darwin)
+
 - macOS system preferences (Dock, Finder, keyboard, etc.)
 - Fonts and display settings
 - Security and privacy settings
 - LaunchAgents for services
 
 ### User Level (home-manager)
+
 - Shell configuration (Zsh with plugins)
 - Git configuration and aliases
 - Terminal emulator (WezTerm)
-- Terminal multiplexer (Zellij with sessionizer)
+- Terminal multiplexer (Herdr with worktrunk/floax plugin integration)
 - Editor setup (Neovim/LazyVim with neotest)
 - Window manager (AeroSpace)
-- Menu bar management (ice-bar for hiding menu items)
+- Menu bar management (thaw for hiding menu items)
 - Development tools and CLI utilities (gh-dash, lazydocker, etc.)
 - Local DNS development (dnsmasq with direnv integration)
 
 ### Applications
+
 - **Nix packages** - CLI tools and some GUI apps
 - **Homebrew casks** - Mac-specific GUI applications
 - **App Store apps** - Via `mas` CLI
@@ -78,6 +82,7 @@ This documentation follows a learning-oriented approach:
 ## Contributing
 
 This is a personal dotfiles repository, but you're welcome to:
+
 - Fork it for your own use
 - Open issues for bugs or questions
 - Submit PRs for improvements

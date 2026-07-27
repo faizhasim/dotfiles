@@ -1,5 +1,7 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  // config:best-practices includes the github-actions manager, so Action version
+  // bumps (previously Dependabot PRs like actions/checkout v7) continue via Renovate.
   extends: ["config:best-practices"],
 
   // Run on Saturday mornings (Asia/Kuala_Lumpur timezone)

@@ -1,6 +1,7 @@
 # Dotfiles
 
 <!--toc:start-->
+<!-- markdownlint-disable MD051 -->
 
 - [Dotfiles](#dotfiles)
   - [📚 Documentation](#📚-documentation)
@@ -14,6 +15,7 @@
     - [Apply Nix-Darwin Configuration](#apply-nix-darwin-configuration)
   - [Manual Steps](#manual-steps) - [Karabiner-Elements](#karabiner-elements) - [saml2aws](#saml2aws) - [setup nvim](#setup-nvim)
 
+<!-- markdownlint-enable MD051 -->
 <!--toc:end-->
 
 Declarative macOS system configuration using Nix/Lix, nix-darwin, and home-manager.
@@ -108,6 +110,18 @@ sudo darwin-rebuild switch --flake .#M3419
 sudo darwin-rebuild switch --flake .#macmini01
 ```
 
+Or, using **nh** (lighter wrapper with closure diff):
+
+```shell
+nh darwin switch . --hostname "$(hostname)"  # build + activate (sudo)
+nh darwin build . --hostname "$(hostname)"   # build only, no activation
+nh clean all                                  # garbage-collect unused nix store paths
+```
+
+`nh darwin switch` is a drop-in for `darwin-rebuild switch` that adds a closure
+diff on every switch. It still needs sudo. The `.` tells nh which flake to use;
+once `NH_FLAKE` is set (done automatically after first rebuild), you can drop it.
+
 > [!NOTE]
 > Some Homebrew formulae require GitHub authentication to download (e.g. private taps).
 > If you see `Error: You must be authenticated to GitHub`, pass your token inline:
@@ -130,8 +144,23 @@ sudo darwin-rebuild switch --flake .#macmini01
 
 - Run [saml2aws-configure.sh](./scripts/saml2aws-configure.sh) to setup saml2aws.
 
-### setup nvim
+### Setup nvim
 
-- Run [setup-nvim.sh](./scripts/setup-nvim.sh) to:
+- Run [setup-post-nix.sh nvim](./scripts/setup-post-nix.sh) to:
   - stow nvim config
   - install copilot cli
+
+### Post-install
+<!-- markdownlint-disable MD013 -->
+
+- Run [setup-post-nix.sh all](./scripts/setup-post-nix.sh) to complete all
+  post-Nix setup:
+  - Oh My Pi (agent harness) binary + MCP tools
+  - Neovim config (Stow) + tools
+  - Private MCP config from 1Password
+  - OpenCode AI agent
+  - Herdr plugin install (worktrunk, floax)
+  - Agent skills
+  - GitHub self-hosted runner
+  - Miscellaneous setup items
+<!-- markdownlint-enable MD013 -->

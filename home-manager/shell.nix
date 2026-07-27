@@ -64,13 +64,22 @@
         "--height 50%"
         "--layout default"
       ];
-      changeDirWidgetCommand = "fd --type d --hidden --follow --exclude .git --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
-      changeDirWidgetOptions = [
-        "--preview 'lsd --tree {} | head -200'"
-      ];
-      fileWidgetOptions = [
-        "--preview 'bat --color always -n --line-range :500 {}'"
-      ];
+      # Renamed options (prev: changeDirWidgetCommand, changeDirWidgetOptions, fileWidgetOptions)
+      changeDirWidget = {
+        command = "fd --type d --hidden --follow --exclude .git --exclude .vim --exclude .cache --exclude vendor --exclude node_modules";
+        options = [
+          "--preview 'lsd --tree {} | head -200'"
+        ];
+      };
+      fileWidget = {
+        options = [
+          "--preview 'bat --color always -n --line-range :500 {}'"
+        ];
+      };
+      # Atuin owns Ctrl-R for shell history — disable fzf's nushell binding to avoid conflict
+      historyWidget = {
+        nushell.command = "";
+      };
     };
 
     # snippet manager

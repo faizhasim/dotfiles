@@ -19,14 +19,17 @@
       in
       common ++ machineSpecific;
     sessionPath = [
-      "$HOME/.local/share/pnpm" # pnpm v10 global bins (legacy)
       "$HOME/.local/share/pnpm/bin" # pnpm v11+ global bins
       "$HOME/.local/bin" # custom CLIs like `idea`
       "$HOME/.bun/bin" # bun global installs (opencode, openpencil, etc.)
-      # "$HOME/.proto/bin"
     ];
 
     stateVersion = "23.11";
+
+    sessionVariables = {
+      # NH_FLAKE: tell nh which flake to operate on (no path needed in nh commands)
+      NH_FLAKE = "${config.home.homeDirectory}/dev/faizhasim/dotfiles";
+    };
   };
 
   imports = [
@@ -58,12 +61,10 @@
     ./presenterm.nix
     ./qmd.nix
     ./shell.nix
-    ./sketchybar.nix
     ./starship.nix
     ./vscode.nix
     ./wezterm.nix
     ./worktrunk.nix
-    ./zellij.nix
     ./zsh.nix
   ];
 

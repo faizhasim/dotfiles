@@ -13,9 +13,12 @@
 #   setup-post-nix.sh nvim             # Neovim config (Stow) + tools + zsh extras
 #   setup-post-nix.sh mcp              # Private MCP config from 1Password
 #   setup-post-nix.sh opencode         # OpenCode AI coding agent (via bun global install)
-  #   setup-post-nix.sh herdr           # Install Herdr plugins (worktrunk, floax)
-  #   setup-post-nix.sh runner           # Install/verify GitHub self-hosted runner (macmini01 only)
+#   setup-post-nix.sh herdr            # Install Herdr plugins (worktrunk, floax)
+#   setup-post-nix.sh omp              # Oh My Pi agent rules
+#   setup-post-nix.sh skills           # Install agent skills
+#   setup-post-nix.sh runner           # Install/verify GitHub self-hosted runner (macmini01 only)
 #   setup-post-nix.sh runner --remove  # Unregister runner and clean up
+#   setup-post-nix.sh misc             # Miscellaneous setup
 #
 # ============================================================================
 
@@ -238,6 +241,7 @@ run_skills() {
   pnpm dlx skills add xixu-me/skills -s github-actions-docs -g -y $AGENTS
   pnpm dlx skills add github/awesome-copilot -s git-commit gh-cli documentation-writer -g -y $AGENTS
   pnpm dlx skills add https://github.com/max-sixty/worktrunk --skill worktrunk
+  pnpm dlx skills add ogulcancelik/herdr -s herdr -g -y $AGENTS
   # (api-documentation, security-best-practices from supercent-io/skills-template skipped — private repo)
 
   # ── Security ──
@@ -277,11 +281,10 @@ run_herdr() {
   # Ensure herdr is installed (idempotent — mise.nix manages the version)
   mise install 2>/dev/null || true
 
-  # Find the herdr binary (mise installs under $HOME/.local/share/mise)
   local herdr_bin
-  herdr_bin=$(ls -t "$HOME/.local/share/mise/installs/herdr/"*/herdr 2>/dev/null | head -1)
+  herdr_bin="$(mise which herdr 2>/dev/null || command -v herdr)"
 
-  if [ -z "$herdr_bin" ] || [ ! -x "$herdr_bin" ]; then
+  if [ -z "$herdr_bin" ] || [ ! -x "$(command -v "$herdr_bin")" ]; then
     warn "herdr binary not found — skipping plugin install"
     warn "Run: mise use -g herdr, then retry"
     return

@@ -11,6 +11,7 @@ This document contains important gotchas, limitations, and design decisions you 
 **Reason:** Nix's TOML generation has issues with formatting that doesn't work well with AeroSpace's parser.
 
 **Impact:**
+
 - Changes to AeroSpace config require editing the raw TOML file
 - Benefit: Direct control over configuration
 - Drawback: Not fully declarative like other configs
@@ -20,12 +21,14 @@ This document contains important gotchas, limitations, and design decisions you 
 **Why:** Zellij uses a hybrid approach with both raw KDL and Nix-generated configs.
 
 **Structure:**
+
 - `home-manager/zellij/config.kdl` - Raw KDL for keybindings and general settings
 - `home-manager/zellij.nix` - Nix-generated layouts with Stylix color integration
 
 **Reason:** KDL syntax is simpler for keybindings, but layouts benefit from Nix's Nord theme integration via Stylix.
 
 **Impact:**
+
 - Keybindings: Edit `config.kdl` directly
 - Status bar styling: Automatically themed via Nix
 - Plugins: Managed via Nix fetchurl for version control
@@ -37,6 +40,7 @@ This document contains important gotchas, limitations, and design decisions you 
 **Reason:** Home Manager's YAML generator wraps long lines at ~80 characters, breaking GitHub filter strings.
 
 **Example Problem:**
+
 ```yaml
 # What we want:
 filters: "is:open review-requested:@me repo:A repo:B repo:C"
@@ -47,6 +51,7 @@ filters: is:open review-requested:@me repo:A
 ```
 
 **Impact:**
+
 - Filter strings must remain on single lines
 - Manual YAML ensures correct formatting
 - Trade-off: Less type-safe but functionally correct
@@ -58,6 +63,7 @@ filters: is:open review-requested:@me repo:A
 **Reason:** The `nix-homebrew` flake input manages taps as flake inputs, making it difficult to handle private taps from private GitHub repositories without exposing authentication tokens.
 
 **Workaround:**
+
 1. Install Homebrew manually: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 2. Let nix-darwin manage packages via `homebrew.*` options
 3. nix-darwin will use the existing Homebrew installation
@@ -70,12 +76,14 @@ filters: is:open review-requested:@me repo:A
 **Why:** Neovim configuration is managed via GNU Stow and LazyVim instead of through Nix/home-manager.
 
 **Reasons:**
+
 1. **Direct configuration management** - Need to modify `~/.config/nvim` directly for productivity
 2. **Mason compatibility** - Mason package manager for LSPs and tools works with traditional config structure
 3. **Faster iteration** - No rebuild needed for plugin changes
 4. **LazyVim ecosystem** - Better integration with LazyVim's update mechanisms and community patterns
 
 **Impact:**
+
 - Neovim setup requires running `scripts/setup-nvim.sh` after initial system build
 - Plugin updates happen independently via `:Lazy sync`
 - Configuration is still version-controlled, just not Nix-managed
@@ -87,16 +95,19 @@ filters: is:open review-requested:@me repo:A
 **Why:** dnsmasq runs on port 53535 instead of standard port 53.
 
 **Reason:** 
+
 - macOS uses mDNSResponder on port 53
 - Port 5353 is reserved for multicast DNS
 - Port 53535 avoids conflicts while being high enough to not require root
 
 **Impact:**
+
 - Requires macOS resolver configuration in `/etc/resolver/`
 - Uses direnv `use dns` function for automatic setup
 - Works seamlessly with `scutil --dns` macOS DNS resolution
 
 **Configuration:**
+
 ```bash
 # /etc/resolver/dev.seek.com.au
 nameserver 127.0.0.1
@@ -110,11 +121,13 @@ port 53535
 **Cause:** Jest exits before neotest's JSON output file is fully written to disk.
 
 **Impact:**
+
 - Visual status indicators are incorrect
 - Test output is still available and accurate
 - Tests actually passed despite FAILED status
 
 **Workaround:**
+
 - Check terminal output instead of relying on status icons
 - neotest is still valuable for running tests from Neovim
 - See [neotest.md](./neotest.md) for details
@@ -126,17 +139,20 @@ port 53535
 **Current:** ice-bar is used for hiding menu bar items.
 
 **Why ice-bar:**
+
 - Nix package available
 - Simple, does the job
 - Declaratively configured
 
 **Alternatives:**
 Any menu bar hiding app works equally well:
+
 - **HiddenBar** - Free, open source, simpler
 - **Bartender** - Feature-rich, paid
 - **Vanilla** - Free, minimalist
 
 **Impact:**
+
 - ice-bar is not special; easy to swap out
 - Configuration is minimal (just enable the service)
 - Any alternative provides the same value
@@ -148,12 +164,13 @@ Any menu bar hiding app works equally well:
 **Reasons:**
 
 | Tool | Purpose | Why Not Nix? |
-|------|---------|--------------|
+| ------ | --------- | -------------- |
 | **Nix** | CLI tools, development utilities | Primary package manager |
 | **Homebrew** | GUI Mac apps | Better native integration, automatic updates |
 | **mise** | Runtime versions | Per-project version management, faster than Nix shells |
 
 **Impact:**
+
 - More complexity than pure Nix
 - Better compatibility with macOS ecosystem
 - Faster project switching with mise vs. Nix shells
@@ -170,6 +187,7 @@ Any menu bar hiding app works equally well:
 **Impact:** Any Homebrew packages installed manually (not declared in config) will be **removed** on the next rebuild.
 
 **Workaround:**
+
 - Declare all packages in `darwin/homebrew/*.nix`
 - Or temporarily change to `cleanup = "uninstall"` (less aggressive)
 - Or disable cleanup entirely (not recommended)
@@ -182,6 +200,7 @@ Any menu bar hiding app works equally well:
 **Limitation:** nix-darwin doesn't expose all macOS system preferences.
 
 **Examples of what requires manual steps:**
+
 - Some Mission Control settings
 - Detailed notification preferences
 - Certain accessibility options
@@ -205,10 +224,12 @@ system.activationScripts.postActivation.text = ''
 **Issue:** LaunchAgents sometimes fail to start or restart properly.
 
 **Symptoms:**
+
 - Services not running after rebuild
 - Need to manually start services
 
 **Workaround:**
+
 ```bash
 # List agents
 launchctl list | grep nix-darwin
@@ -227,6 +248,7 @@ launchctl kickstart -k gui/$(id -u)/org.nixos.aerospace
 **Issue:** The Nix store (`/nix/store/`) grows over time with multiple generations.
 
 **Mitigation:** Automatic garbage collection is configured:
+
 ```nix
 nix.gc = {
   automatic = true;
@@ -236,6 +258,7 @@ nix.gc = {
 ```
 
 **Manual cleanup:**
+
 ```bash
 # See what would be deleted
 nix-store --gc --print-dead
@@ -255,15 +278,18 @@ nix-collect-garbage --delete-older-than 30d
 **Issue:** Some packages have different availability or behavior on Intel vs. ARM Macs.
 
 **Current approach:**
+
 - System architecture is specified per machine in `flake.nix`
 - Both `M3419` and `macmini01` use `aarch64-darwin` (Apple Silicon)
 
 **Potential issues:**
+
 - Some Homebrew casks may not support both architectures
 - Nix binary cache availability varies
 - Some software may require Rosetta 2 on Apple Silicon
 
 **Check architecture:**
+
 ```bash
 nix eval --raw .#darwinConfigurations.M3419.system.system
 # Output: aarch64-darwin
@@ -274,11 +300,13 @@ nix eval --raw .#darwinConfigurations.M3419.system.system
 **Dependency:** Git commit signing is configured to use 1Password SSH agent.
 
 **Impact:**
+
 - Requires 1Password desktop app installed and running
 - Requires SSH key stored in 1Password
 - Commits will fail if 1Password is not unlocked
 
 **Configuration:**
+
 ```nix
 # home-manager/git.nix
 programs.git.extraConfig = {
@@ -290,6 +318,7 @@ programs.git.extraConfig = {
 ```
 
 **Workaround:** Disable signing if 1Password is unavailable:
+
 ```bash
 git config --global commit.gpgsign false
 ```
@@ -299,6 +328,7 @@ git config --global commit.gpgsign false
 **Issue:** The configuration contains user-specific information that should be changed when forking.
 
 **Examples:**
+
 - Git username and email
 - SSH keys
 - AWS profiles
@@ -309,6 +339,7 @@ git config --global commit.gpgsign false
 > If you fork this repository, search and replace personal information with your own before building.
 
 **Key files to update:**
+
 - `home-manager/git.nix` - Git identity and signing key
 - `home-manager/zsh.nix` - AWS profiles and shell aliases
 - `flake.nix` - Machine hostnames and usernames
@@ -321,11 +352,13 @@ git config --global commit.gpgsign false
 **Strategy:** Manual updates via `nix flake update`
 
 **Reasoning:**
+
 - Automatic updates can break things unexpectedly
 - Manual updates allow testing before committing
 - `flake.lock` ensures reproducibility
 
 **Recommended schedule:**
+
 ```bash
 # Monthly update cycle
 nix flake update
@@ -338,18 +371,20 @@ git commit -m "Update flake inputs"
 ### Pinned vs. Unstable
 
 **Current approach:**
+
 - Most inputs use `nixos-unstable` for latest packages
 - No pinning to specific versions (rolling release approach)
 
 **Alternative approaches:**
 
 | Strategy | Pros | Cons |
-|----------|------|------|
+| ---------- | ------ | ------ |
 | **Unstable** (current) | Latest packages, newest features | Occasional breakage |
 | **Stable** (23.11, etc.) | Very stable, tested | Outdated packages |
 | **Pinned commits** | Complete control | Manual update burden |
 
 **Change to stable:**
+
 ```nix
 # flake.nix
 inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
@@ -360,6 +395,7 @@ inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
 ### Type Checking
 
 Nix provides type checking for options:
+
 ```bash
 # Check configuration
 nix flake check
@@ -371,6 +407,7 @@ nix-darwin-option darwin.defaults.dock.tilesize
 ### Syntax Errors
 
 **Common mistakes:**
+
 ```nix
 # Wrong: Missing semicolon
 home.packages = with pkgs; [
@@ -405,11 +442,13 @@ home.packages = with pkgs; [
 > Never commit secrets (API keys, tokens, passwords) to the repository.
 
 **Safe patterns:**
+
 - Use 1Password CLI to inject secrets at runtime
 - Use environment variables from secure sources
 - Use `op://vault/item/field` references in shell config
 
 **Unsafe patterns:**
+
 ```nix
 # NEVER do this:
 environment.variables = {
@@ -428,6 +467,7 @@ export API_KEY="op://Private/API/key" # ✓ Safe
 **Impact:** Don't store secrets in Nix-managed files (they end up in `/nix/store/` which is readable by all users).
 
 **For sensitive configs:** Use home-manager's `home.file` with symlinks:
+
 ```nix
 home.file.".ssh/config".source = config.lib.file.mkOutOfStoreSymlink 
   "/Users/${username}/.config/ssh/config";
@@ -441,6 +481,7 @@ home.file.".ssh/config".source = config.lib.file.mkOutOfStoreSymlink
 **Subsequent builds:** 1-5 minutes (only changed derivations)
 
 **Speed up builds:**
+
 ```bash
 # Use binary cache (should be default)
 nix.settings.substituters = [
@@ -454,6 +495,7 @@ nix.settings.max-jobs = 8; # Adjust to your CPU cores
 ### Evaluation Performance
 
 **Slow evaluation:** If `darwin-rebuild` evaluation is slow:
+
 ```bash
 # Clear evaluation cache
 rm -rf ~/.cache/nix
@@ -467,13 +509,16 @@ nix-instantiate --eval --strict flake.nix
 ### macOS Versions
 
 **Tested on:**
+
 - macOS Sonoma (14.x)
 - macOS Ventura (13.x)
 
 **Likely compatible:**
+
 - macOS Sequoia (15.x)
 
 **May have issues:**
+
 - Older versions (Big Sur and earlier)
 
 ### Nix vs. Lix
@@ -481,11 +526,13 @@ nix-instantiate --eval --strict flake.nix
 **Current:** Uses Lix (Nix fork)
 
 **Lix differences:**
+
 - Better error messages
 - Improved performance
 - Community-driven development
 
 **Compatibility:** Nearly 100% compatible with Nix. Can switch back to Nix by reinstalling:
+
 ```bash
 # Uninstall Lix
 /nix/receipt.json # Check installer receipt for uninstall command
@@ -535,6 +582,7 @@ See [Getting Started](./getting-started.md).
 ### From Existing Dotfiles
 
 1. **Backup current dotfiles:**
+
    ```bash
    mv ~/.zshrc ~/.zshrc.backup
    mv ~/.gitconfig ~/.gitconfig.backup
@@ -545,6 +593,7 @@ See [Getting Started](./getting-started.md).
    - Copy useful aliases, functions, and settings
 
 3. **Build and test:**
+
    ```bash
    darwin-rebuild switch --flake .
    ```
@@ -558,6 +607,7 @@ See [Getting Started](./getting-started.md).
 If forking:
 
 1. **Update personal information:**
+
    ```bash
    # Search for hardcoded values
    rg "faizhasim" .
@@ -565,6 +615,7 @@ If forking:
    ```
 
 2. **Update machine names:**
+
    ```bash
    # Rename machines in flake.nix
    # Update darwin/homebrew/{hostname}.nix
@@ -577,6 +628,7 @@ If forking:
    - Configure op CLI
 
 4. **Test build:**
+
    ```bash
    darwin-rebuild switch --flake .#yourhostname
    ```

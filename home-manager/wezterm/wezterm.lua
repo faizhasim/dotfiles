@@ -60,7 +60,7 @@ config.max_fps = 120
 config.prefer_egl = true
 
 -- Enable kitty keyboard protocol for proper modifier key handling (Shift+Enter, etc.)
--- Zellij supports this protocol and passes it through to applications like OpenCode
+-- Herdr supports this protocol and passes it through to applications like OpenCode
 config.enable_kitty_keyboard = true
 config.enable_kitty_graphics = true
 

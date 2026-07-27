@@ -7,15 +7,17 @@ with pkgs;
   # ──────────────────────────────────────────────
   zsh
   wezterm # Terminal emulator
-  zellij # terminal multiplexer
   tmux # Terminal multiplexer
   direnv # Environment variable management per directory
   stow
+  nh # nix helper — nicer darwin-rebuild with closure diff
   ncurses # Terminal control library with terminfo database
 
   # ──────────────────────────────────────────────
   # ⚙️ Core CLI Utilities
   # ──────────────────────────────────────────────
+  shellcheck # Shell script linter (pre-commit)
+  markdownlint-cli # Markdown linter (pre-commit)
   coreutils-full # multiple tools
   diffutils
   findutils
