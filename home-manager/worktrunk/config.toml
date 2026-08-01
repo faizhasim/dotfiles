@@ -46,8 +46,6 @@ summary = true
 # Default columns (omit for worktrunk defaults)
 columns = ["branch", "status", "ci", "path", "summary"]
 
-# Dev server URL template for the url column
-url = "http://localhost:{{ branch | hash_port }}"
 
 # Don't show full details by default
 full = false
