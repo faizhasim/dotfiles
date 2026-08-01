@@ -193,7 +193,6 @@ with pkgs;
   betterdisplay
   dockutil # Manage icons in the dock
   loopwm # Tiling window manager, unfree
-  raycast
   keycastr
   mas
   sniffnet # monitor network traffic

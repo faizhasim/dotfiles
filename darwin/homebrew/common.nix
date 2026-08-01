@@ -64,6 +64,7 @@ _: {
     # ──────────────────────────────────────────────
     "sf-symbols" # patched font for sketchybar
     "thaw" # menu bar manager
+    "raycast" # productivity launcher
 
     # ──────────────────────────────────────────────
     # 💽 Utilities
@@ -95,14 +96,15 @@ _: {
     # Datadog pack (internal tooling)
     "datadog-labs/pack"
   ];
-  mas = [
+  mas = {
     # ──────────────────────────────────────────────
     # 🛍️ Mac App Store
     # ──────────────────────────────────────────────
-    1569813296 # 1Password for Safari — password autofill
-    1193539993 # Brother iPrint&Scan — scanner driver
-    441258766 # Magnet — window manager
-    890031187 # Marked 2 — markdown preview
-    1480933944 # Vimari — safari vim keys
-  ];
+    "1Password for Safari" = 1569813296; # password autofill
+    "Brother iPrint&Scan" = 1193539993; # scanner driver
+    "Email" = 1489591003; # Edison Mail — delisted from MAS, keep while installed
+    "Magnet" = 441258766; # window manager
+    "Marked 2" = 890031187; # markdown preview
+    "Vimari" = 1480933944; # safari vim keys
+  };
 }

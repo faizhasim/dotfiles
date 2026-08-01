@@ -8,12 +8,6 @@ in
   homebrew = {
     enable = true;
     global.autoUpdate = true;
-    # will not be uninstalled when removed
-    # masApps = {
-    #   Xcode = 497799835;
-    #   Transporter = 1450874784;
-    #   VN = 1494451650;
-    # };
     onActivation = {
       # "uninstall" removes brews/casks not in Brewfile; use "zap" to also remove config files
       cleanup = "none";
@@ -25,13 +19,7 @@ in
     brews = common.brews ++ machineSpecific.brews;
     casks = common.casks ++ machineSpecific.casks;
     taps = common.taps ++ machineSpecific.taps;
-    masApps = {
-      "1Password for Safari" = 1569813296;
-      "Brother iPrint&Scan" = 1193539993;
-      "Marked 2" = 890031187;
-      Magnet = 441258766;
-      Vimari = 1480933944;
-    };
+    masApps = common.mas // (machineSpecific.mas or { });
 
   };
 
@@ -50,7 +38,7 @@ in
       cd "/opt/homebrew" && \
       git rev-parse $(git describe --tags $(git rev-list --tags --max-count=1)) \
       > .git/refs/heads/stable 2>/dev/null || true
-      
+
       if [ $? -eq 0 ]; then
         echo >&2 "  ✓ Homebrew stable branch ref updated"
       else
