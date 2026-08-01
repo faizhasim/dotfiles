@@ -46,6 +46,10 @@
         home-manager.follows = "home-manager";
       };
     };
+    tuicr = {
+      url = "github:agavra/tuicr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

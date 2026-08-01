@@ -5,13 +5,19 @@
 # Ensures repo exists (bare clone) before switching to PR worktree
 #
 # Usage:
-#   wt-ensure-repo.sh <repo_name> <pr_number> [repo_path]
+#   wt-ensure-repo.sh <repo_name> <pr_number> [repo_path] [-- <action>...]
 #
 # Example:
 #   wt-ensure-repo.sh "seek-jobs/noti-mailer" "123" "seek-jobs/customer-notification-system/noti-mailer"
+#   wt-ensure-repo.sh "seek-jobs/noti-mailer" "123" "seek-jobs/customer-notification-system/noti-mailer" -- nvim .
 #
 # Returns:
 #   Prints the worktree path on success (for gh-dash to use)
+#
+# With action:
+#   If `-- <action>` is given, runs the action with the worktree as cwd and
+#   WORKTREE_PATH, REPO_NAME, PR_NUMBER exported. Reusable for any tool
+#   (tuicr, nvim, lazygit, herdr, etc.) instead of hardcoding a caller.
 
 set -euo pipefail
 
@@ -164,14 +170,31 @@ extract_worktree_path() {
 
 # Main logic
 main() {
-  if [[ $# -lt 2 ]]; then
-    log_error "Usage: $0 <repo_name> <pr_number> [repo_path]"
+  # Parse args: everything before `--` is the standard positional args,
+  # everything after is the action to run in the worktree.
+  local positional=()
+  local action=()
+  local seen_separator=false
+  local arg
+  for arg in "$@"; do
+    if [[ "$arg" == "--" ]]; then
+      seen_separator=true
+    elif [[ "$seen_separator" == true ]]; then
+      action+=("$arg")
+    else
+      positional+=("$arg")
+    fi
+  done
+
+  if [[ ${#positional[@]} -lt 2 ]]; then
+    log_error "Usage: $0 <repo_name> <pr_number> [repo_path] [-- <action>...]"
     exit 1
   fi
 
-  local repo_name="$1"
-  local pr_number="$2"
-
+  local repo_name="${positional[0]}"
+  local pr_number="${positional[1]}"
+  # repo_path (positional[2]) is accepted for compatibility but unused —
+  # repo location is resolved from repos.toml or fallback patterns.
   local org repo_short
   org=$(echo "$repo_name" | cut -d'/' -f1)
   repo_short=$(echo "$repo_name" | cut -d'/' -f2)
@@ -293,8 +316,20 @@ main() {
 
   log_success "Worktree ready: $new_path"
 
-  # Print the path for the caller to use
+  # Run the action in the worktree if one was given
+  if [[ ${#action[@]} -gt 0 ]]; then
+    cd "$new_path" || {
+      log_error "Failed to cd to $new_path"
+      exit 1
+    }
+    export WORKTREE_PATH="$new_path"
+    export REPO_NAME="$repo_name"
+    export PR_NUMBER="$pr_number"
+    log_info "Running action: ${action[*]}"
+    exec "${action[@]}"
+  fi
+
+  # No action: print the path for the caller to use
   echo "$new_path"
 }
-
 main "$@"

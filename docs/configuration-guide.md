@@ -627,6 +627,8 @@ The configuration includes pre-defined sections:
 
 ### Custom gh-dash Keybindings
 
+- `o` - Review PR in tuicr (`tuicr pr`); opens in a new herdr tab when inside Herdr
+- `O` - Open PR in GitHub (moved from default `o`)
 - `m` - Quick merge (squash + auto-merge)
 - `x` - Request changes with interactive comment
 - `n` - Open PR in herdr tab

@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, inputs }:
 
 with pkgs;
 [
@@ -105,6 +105,7 @@ with pkgs;
   github-copilot-cli # required by nvim sidekick
   delta # git diff viewer
   goreleaser # Go release automation
+  inputs.tuicr.packages.${pkgs.system}.default # Code review TUI with vim keybindings
 
   # ──────────────────────────────────────────────
   # ☸️ Kubernetes & Containers

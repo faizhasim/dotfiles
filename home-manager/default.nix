@@ -14,7 +14,7 @@
     enableNixpkgsReleaseCheck = false;
     packages =
       let
-        common = import ./packages/common.nix { inherit pkgs; };
+        common = import ./packages/common.nix { inherit pkgs inputs; };
         machineSpecific = import ./packages/${hostname}.nix { inherit pkgs; };
       in
       common ++ machineSpecific;
@@ -64,6 +64,7 @@
     ./starship.nix
     ./vscode.nix
     ./wezterm.nix
+    ./tuicr.nix
     ./worktrunk.nix
     ./zsh.nix
   ];
