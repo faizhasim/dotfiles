@@ -4,7 +4,10 @@ return {
     "3rd/image.nvim",
     build = false,
     opts = {
-      -- backend = "sixel", -- because herdr didn't support kitty protocol (and hacky-ish tmux too)
+      -- kitty backend is the image.nvim default; note herdr's experimental kitty
+      -- passthrough still garbles inline images, so markdown mermaid uses browser
+      -- preview (<leader>cp) instead
+      backend = "kitty",
       processor = "magick_cli",
     },
   },
@@ -81,6 +84,32 @@ return {
           path = "/Users/faizhasim/Library/Mobile Documents/iCloud~md~obsidian/Documents/SEEK",
         },
       },
+    },
+  },
+  -- treesitter parser for .mmd / .mermaid syntax highlighting
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      vim.list_extend(opts.ensure_installed, { "mermaid" })
+    end,
+  },
+  {
+    "kevalin/mermaid.nvim",
+    ft = "mermaid", -- .mmd / .mermaid files only; for markdown mermaid use <leader>cp browser preview
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      preview = {
+        -- nord palette matches nordfox; switch renderer to "mermaid.js" for full
+        -- spec support (beautiful-mermaid skips edge labels and Font Awesome icons)
+        renderer = "beautiful-mermaid",
+        theme = "nord",
+      },
+    },
+    keys = {
+      { "<leader>mp", "<cmd>MermaidPreview<cr>", ft = "mermaid", desc = "Mermaid preview" },
+      { "<leader>mf", "<cmd>MermaidFormat<cr>", ft = "mermaid", desc = "Mermaid format" },
+      { "<leader>mc", "<cmd>MermaidCopyURL<cr>", ft = "mermaid", desc = "Mermaid copy URL" },
+      { "<leader>mx", "<cmd>MermaidPreviewStop<cr>", ft = "mermaid", desc = "Mermaid stop preview" },
     },
   },
 }
