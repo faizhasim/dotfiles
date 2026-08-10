@@ -242,6 +242,7 @@ run_skills() {
   pnpm dlx skills add github/awesome-copilot -s git-commit gh-cli documentation-writer -g -y $AGENTS
   pnpm dlx skills add https://github.com/max-sixty/worktrunk --skill worktrunk
   pnpm dlx skills add ogulcancelik/herdr -s herdr -g -y $AGENTS
+  pnpm dlx skills add agavra/tuicr -s tuicr -g -y $AGENTS
   # (api-documentation, security-best-practices from supercent-io/skills-template skipped — private repo)
 
   # ── Security ──
