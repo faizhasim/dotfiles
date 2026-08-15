@@ -16,6 +16,7 @@
         bun = "latest";
         go = "1.25.3";
         uv = "latest"; # Fast Python package manager
+        "pipx:specify-cli" = "latest"; # spec-kit CLI for Spec-Driven Development
         "github:can1357/oh-my-pi" = "latest"; # OMP coding agent (replacing Pi)
         herdr = "latest";
         ruby = "latest";

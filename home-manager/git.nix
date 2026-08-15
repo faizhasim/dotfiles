@@ -100,8 +100,6 @@
       ".env"
       # my own
       "._*"
-      # pi coding agent
-      ".pi-lens"
     ];
   };
 

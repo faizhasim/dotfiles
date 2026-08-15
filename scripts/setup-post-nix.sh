@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# setup-post-nix.sh — Post-Nix-setup tasks: pi, nvim, tools, shell config
+# setup-post-nix.sh — Post-Nix-setup tasks: nvim, tools, shell config
 # ============================================================================
 #
 # Run this after `darwin-rebuild switch` to finish setup steps that can't or
@@ -8,8 +8,6 @@
 #
 # Usage:
 #   setup-post-nix.sh                  # Run all targets
-#   setup-post-nix.sh pi               # Pi binary + MCP tools (extensions via Nix settings → pi auto-installs)
-#   setup-post-nix.sh pi --upgrade     # Force upgrade pi & MCP tools to latest
 #   setup-post-nix.sh nvim             # Neovim config (Stow) + tools + zsh extras
 #   setup-post-nix.sh mcp              # Private MCP config from 1Password
 #   setup-post-nix.sh opencode         # OpenCode AI coding agent (via bun global install)
@@ -18,7 +16,6 @@
 #   setup-post-nix.sh skills           # Install agent skills
 #   setup-post-nix.sh runner           # Install/verify GitHub self-hosted runner (macmini01 only)
 #   setup-post-nix.sh runner --remove  # Unregister runner and clean up
-#   setup-post-nix.sh misc             # Miscellaneous setup
 #
 # ============================================================================
 
@@ -35,51 +32,6 @@ ok() { printf "\033[1;32m  ✓\033[0m %s\n" "$*"; }
 warn() { printf "\033[1;33m  ⚠\033[0m %s\n" "$*" >&2; }
 
 # ── Targets ─────────────────────────────────────────────────────────────────
-
-run_pi() {
-  local upgrade=false
-  for arg in "$@"; do
-    case "$arg" in
-    --upgrade) upgrade=true ;;
-    esac
-  done
-
-  if $upgrade; then
-    info "Pi.dev — upgrading pi and MCP tools to latest"
-    npm install -g \
-      "@earendil-works/pi-coding-agent@latest" \
-      "pi-mcp-adapter@latest" \
-      "context-mode@latest"
-  else
-    info "Pi.dev — binary install (extensions managed by Nix settings → pi auto-installs)"
-    npm install -g \
-      "@earendil-works/pi-coding-agent@latest" \
-      pi-mcp-adapter \
-      context-mode
-  fi
-
-  # Remove stale Nix symlink so pi can write auth tokens
-  if [ -L "$HOME/.pi/agent/auth.json" ]; then
-    rm -f "$HOME/.pi/agent/auth.json"
-    ok "Removed stale Nix symlink: ~/.pi/agent/auth.json"
-  fi
-
-  # Symlink pi into ~/.local/bin/ (always on PATH via hm-session-vars.sh)
-  # so it's available regardless of which mise-managed Node version is active.
-  # The lts symlink is maintained by mise and follows the current LTS release.
-  if [ -f "$HOME/.local/share/mise/installs/node/lts/bin/pi" ]; then
-    mkdir -p "$HOME/.local/bin"
-    ln -sf "$HOME/.local/share/mise/installs/node/lts/bin/pi" "$HOME/.local/bin/pi"
-    ok "Symlinked pi to ~/.local/bin/pi (stable, independent of active node version)"
-  fi
-
-  ok "Pi binary tools installed (extensions auto-installed by pi on next launch)"
-}
-
-# ── Pi extension packages (managed declaratively via Nix settings.json `packages` key) ──
-# pi-lens, pi-subagents, pi-plan, context-mode, pi-mcp-adapter,
-# @juicesharp/rpiv-todo, @juicesharp/rpiv-ask-user-question
-# See home-manager/pi.nix for the authoritative list.
 
 run_nvim() {
   info "Neovim — config + tools"
@@ -126,8 +78,20 @@ run_omp() {
   # Ensure omp is installed (idempotent — mise.nix manages the version)
   mise install 2>/dev/null || true
 
+  pnpm add -g @tobilu/qmd
+  ok "qmd installed"
+
+  # Remove stale manual context-mode MCP entry so the plugin can re-register
+  # the correct path. The plugin self-registers on first load; a leftover manual
+  # entry pointing at the old (now missing) binary would shadow it.
+  local MCP_JSON="$HOME/.omp/agent/mcp.json"
+  if [ -f "$MCP_JSON" ] && jq -e '.mcpServers["context-mode"]' "$MCP_JSON" >/dev/null 2>&1; then
+    jq 'del(.mcpServers["context-mode"])' "$MCP_JSON" >"$MCP_JSON.tmp" && mv "$MCP_JSON.tmp" "$MCP_JSON"
+    ok "Removed stale context-mode MCP entry (plugin will re-register)"
+  fi
+
   omp plugin install context-mode
-  ok "OMP context-mode plugin installed"
+  ok "context-mode plugin installed"
 
   omp plugin list
   ok "OMP plugins listed"
@@ -211,67 +175,89 @@ run_omp() {
 }
 
 run_skills() {
-  info "Skills — AI agent skills for Pi and OpenCode"
+  info "Skills — AI agent skills"
 
   # Workaround for vercel-labs/skills#1352: skills CLI includes PromptScript in
   # its universal-agent fanout, which fails on global installs. Passing explicit
-  # --agent bypasses that path and limits installation to the three agents in use.
-  local AGENTS="--agent opencode pi"
+  # --agent bypasses that path and limits installation to the agents in use.
+  # Array form required — "quoted string" passes as one arg, breaking the flag.
+  #
+  # Only opencode needed: installs to ~/.agents/skills/ which OMP reads natively
+  # via its "agents" provider (AGENT_DIR_CANDIDATES = [".agent", ".agents"]).
+  # --agent pi (~/.pi/agent/skills/) is redundant; "omp" is not a valid agent ID.
+  local -a AGENTS=(--agent opencode)
 
-  # ── Go + Testing ──
-  pnpm dlx skills add jeffallan/claude-skills -s golang-pro -g -y $AGENTS
-  pnpm dlx skills add antfu/skills -s vitest -g -y $AGENTS
-  pnpm dlx skills add wshobson/agents -s go-concurrency-patterns -g -y $AGENTS
-  pnpm dlx skills add anthropics/skills -s webapp-testing -g -y $AGENTS
-  pnpm dlx skills add wshobson/agents -s e2e-testing-patterns javascript-testing-patterns -g -y $AGENTS
+  # ── Document Skills ──
+  pnpm dlx skills add anthropics/skills -s pdf pptx -g -y "${AGENTS[@]}"
 
-  # ── Infra: Terraform, K8s, Docker, DevOps ──
-  pnpm dlx skills add wshobson/agents -s terraform-module-library -g -y $AGENTS
-  pnpm dlx skills add hashicorp/agent-skills -s terraform-test terraform-stacks terraform-search-import -g -y $AGENTS
-  pnpm dlx skills add jeffallan/claude-skills -s terraform-engineer kubernetes-specialist devops-engineer -g -y $AGENTS
-  pnpm dlx skills add sickn33/antigravity-awesome-skills -s docker-expert -g -y $AGENTS
-  pnpm dlx skills add github/awesome-copilot -s multi-stage-dockerfile -g -y $AGENTS
+  # ── Example Skills ──
+  pnpm dlx skills add anthropics/skills -s skill-creator webapp-testing -g -y "${AGENTS[@]}"
 
-  # ── Python + Rust ──
-  pnpm dlx skills add wshobson/agents -s python-performance-optimization python-testing-patterns python-design-patterns -g -y $AGENTS
-  pnpm dlx skills add wshobson/agents -s rust-async-patterns -g -y $AGENTS
-  pnpm dlx skills add apollographql/skills -s rust-best-practices -g -y $AGENTS
+  # ── Mattpocock Skills — Engineering ──
+  pnpm dlx skills add mattpocock/skills -s \
+    ask-matt code-review codebase-design diagnosing-bugs domain-modeling \
+    grill-with-docs implement improve-codebase-architecture prototype research \
+    resolving-merge-conflicts setup-matt-pocock-skills tdd to-spec to-tickets \
+    triage wayfinder wizard \
+    -g -y "${AGENTS[@]}"
 
-  # ── Git, GitHub & Documentation ──
-  pnpm dlx skills add xixu-me/skills -s github-actions-docs -g -y $AGENTS
-  pnpm dlx skills add github/awesome-copilot -s git-commit gh-cli documentation-writer -g -y $AGENTS
+  # ── Mattpocock Skills — Productivity ──
+  pnpm dlx skills add mattpocock/skills -s \
+    grill-me grilling handoff teach to-questionnaire wait-what writing-for-agents \
+    -g -y "${AGENTS[@]}"
+
+  # ── General: Languages — Go ──
+  pnpm dlx skills add jeffallan/claude-skills -s golang-pro -g -y "${AGENTS[@]}"
+  pnpm dlx skills add wshobson/agents -s go-concurrency-patterns -g -y "${AGENTS[@]}"
+
+  # ── General: Languages — Rust ──
+  pnpm dlx skills add wshobson/agents -s rust-async-patterns -g -y "${AGENTS[@]}"
+  pnpm dlx skills add apollographql/skills -s rust-best-practices -g -y "${AGENTS[@]}"
+
+  # ── General: Languages — Python ──
+  pnpm dlx skills add wshobson/agents -s python-design-patterns python-performance-optimization python-testing-patterns -g -y "${AGENTS[@]}"
+
+  # ── General: Languages — TypeScript / JavaScript ──
+  pnpm dlx skills add wshobson/agents -s typescript-advanced-types -g -y "${AGENTS[@]}"
+  pnpm dlx skills add antfu/skills -s pnpm vitest -g -y "${AGENTS[@]}"
+  pnpm dlx skills add wshobson/agents -s javascript-testing-patterns e2e-testing-patterns -g -y "${AGENTS[@]}"
+
+  # ── General: Infrastructure — Terraform ──
+  pnpm dlx skills add wshobson/agents -s terraform-module-library -g -y "${AGENTS[@]}"
+  pnpm dlx skills add hashicorp/agent-skills -s terraform-test terraform-stacks terraform-search-import -g -y "${AGENTS[@]}"
+
+  # ── General: Infrastructure — Containers & Cloud ──
+  pnpm dlx skills add jeffallan/claude-skills -s terraform-engineer kubernetes-specialist devops-engineer -g -y "${AGENTS[@]}"
+  pnpm dlx skills add sickn33/antigravity-awesome-skills -s docker-expert -g -y "${AGENTS[@]}"
+  pnpm dlx skills add github/awesome-copilot -s multi-stage-dockerfile -g -y "${AGENTS[@]}"
+  pnpm dlx skills add aws/agent-toolkit-for-aws -s aws-iam -g -y "${AGENTS[@]}"
+
+  # ── General: Git, GitHub & Tooling ──
+  pnpm dlx skills add github/awesome-copilot -s git-commit documentation-writer -g -y "${AGENTS[@]}"
+  pnpm dlx skills add xixu-me/skills -s github-actions-docs -g -y "${AGENTS[@]}"
   pnpm dlx skills add https://github.com/max-sixty/worktrunk --skill worktrunk
-  pnpm dlx skills add ogulcancelik/herdr -s herdr -g -y $AGENTS
-  pnpm dlx skills add agavra/tuicr -s tuicr -g -y $AGENTS
-  # (api-documentation, security-best-practices from supercent-io/skills-template skipped — private repo)
+  pnpm dlx skills add ogulcancelik/herdr -s herdr -g -y "${AGENTS[@]}"
+  pnpm dlx skills add agavra/tuicr -s tuicr -g -y "${AGENTS[@]}"
 
-  # ── Security ──
-  pnpm dlx skills add wshobson/agents -s security-requirement-extraction -g -y $AGENTS
+  # ── General: AI & LLMs ──
+  pnpm dlx skills add huggingface/skills -s huggingface-llm-trainer -g -y "${AGENTS[@]}"
 
-  # ── AWS & AI/LLM ──
-  pnpm dlx skills add aws/agent-toolkit-for-aws -s aws-iam -g -y $AGENTS
-  pnpm dlx skills add refoundai/lenny-skills -s building-with-llms -g -y $AGENTS
-  pnpm dlx skills add huggingface/skills -s huggingface-llm-trainer -g -y $AGENTS
+  # ── General: Agent Tools & DX ──
+  pnpm dlx skills add vercel-labs/agent-browser -g -y "${AGENTS[@]}"
+  pnpm dlx skills add vercel-labs/skills -s find-skills -g -y "${AGENTS[@]}"
+  pnpm dlx skills add obra/superpowers -s dispatching-parallel-agents -g -y "${AGENTS[@]}"
+  pnpm dlx skills add softaworks/agent-toolkit -s agent-md-refactor -g -y "${AGENTS[@]}"
+  pnpm dlx skills add tobi/qmd -g -y "${AGENTS[@]}"
 
-  # ── Document & Media Processing ──
-  pnpm dlx skills add tobi/qmd -g -y $AGENTS
-  pnpm dlx skills add anthropics/skills -s pdf pptx -g -y $AGENTS
-  pnpm dlx skills add softaworks/agent-toolkit -s mermaid-diagrams -g -y $AGENTS
+  # ── General: Docs & Media ──
+  pnpm dlx skills add softaworks/agent-toolkit -s mermaid-diagrams -g -y "${AGENTS[@]}"
 
-  # ── Agent Tools & DX ──
-  pnpm dlx skills add vercel-labs/agent-browser -g -y $AGENTS
-  pnpm dlx skills add vercel-labs/skills -s find-skills -g -y $AGENTS
-  pnpm dlx skills add anthropics/skills -s skill-creator -g -y $AGENTS
-  pnpm dlx skills add obra/superpowers -s dispatching-parallel-agents -g -y $AGENTS
-  pnpm dlx skills add antfu/skills -s pnpm -g -y $AGENTS
-  pnpm dlx skills add softaworks/agent-toolkit -s agent-md-refactor -g -y $AGENTS
-  pnpm dlx skills add daymade/claude-code-skills -s markdown-tools -g -y $AGENTS ||
-    warn "markdown-tools not found in daymade/claude-code-skills (repo restructured)"
+  # ── General: Security ──
+  pnpm dlx skills add wshobson/agents -s security-requirement-extraction -g -y "${AGENTS[@]}"
 
-  # ── General Development ──
-  pnpm dlx skills add wshobson/agents -s typescript-advanced-types architecture-patterns code-review-excellence debugging-strategies architecture-decision-records -g -y $AGENTS
-  pnpm dlx skills add mattpocock/skills -s grill-with-docs grill-me -g -y $AGENTS
-  pnpm dlx skills add softaworks/agent-toolkit -s meme-factory difficult-workplace-conversations -g -y $AGENTS
+  # ── General: Architecture & Development ──
+  pnpm dlx skills add wshobson/agents -s architecture-decision-records architecture-patterns code-review-excellence debugging-strategies -g -y "${AGENTS[@]}"
+  pnpm dlx skills add softaworks/agent-toolkit -s meme-factory difficult-workplace-conversations -g -y "${AGENTS[@]}"
 
   ok "Skills installed for Pi and OpenCode agents"
 }
@@ -316,14 +302,6 @@ run_herdr() {
   ok "Herdr plugins listed"
 }
 
-run_misc() {
-  info "Misc — global pnpm tools"
-
-  pnpm add -g \
-    @tobilu/qmd
-  ok "Misc global pnpm tools installed"
-}
-
 run_runner() {
   local hostname
   hostname="$(hostname -s)"
@@ -359,6 +337,7 @@ run_runner() {
     if pgrep -f "actions.runner" >/dev/null 2>&1; then
       ok "Runner already configured and running"
       exit 0
+    else
       warn "Runner configured but not running — starting service"
       cd "$HOME/actions-runner"
       ./svc.sh start
@@ -424,8 +403,6 @@ run_all() {
   echo ""
   run_omp
   echo ""
-  run_misc
-  echo ""
   run_skills
   echo ""
   run_herdr
@@ -440,7 +417,6 @@ target="${1:-all}"
 shift 2>/dev/null || true
 case "$target" in
 all) run_all "$@" ;;
-pi) run_pi "$@" ;;
 nvim) run_nvim "$@" ;;
 mcp) run_mcp "$@" ;;
 opencode) run_opencode "$@" ;;
@@ -448,9 +424,8 @@ herdr) run_herdr "$@" ;;
 omp) run_omp "$@" ;;
 skills) run_skills "$@" ;;
 runner) run_runner "$@" ;;
-misc) run_misc "$@" ;;
 *)
-  echo "Usage: $0 [pi|nvim|mcp|opencode|herdr|omp|skills|runner|misc|all] [--upgrade] [--force] [--remove]"
+  echo "Usage: $0 [nvim|mcp|opencode|herdr|omp|skills|runner|all] [--force] [--remove]"
   exit 1
   ;;
 esac
