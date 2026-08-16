@@ -78,6 +78,18 @@ in
             budgetTokens = 16000;
           };
         };
+        "claude-sonnet-5".options = {
+          thinking = {
+            type = "enabled";
+            budgetTokens = 16000;
+          };
+        };
+        "claude-opus-5".options = {
+          thinking = {
+            type = "enabled";
+            budgetTokens = 24000;
+          };
+        };
         "gemini-3.1-pro".options = {
           thinking = {
             type = "enabled";

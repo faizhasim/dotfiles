@@ -73,10 +73,11 @@
       };
 
       # AI harness model profile: "github-premium" | "opencode-go" | "github-standard"
-      # - github-premium: GitHub Copilot premium for reasoning/vision, OpenCode Go DeepSeek for daily tasks
-      # - opencode-go: Pure OpenCode Go provider. DeepSeek V4 Flash daily driver, Kimi K2.6 for vision/design
+      # - github-premium: Full GitHub Copilot access, cost-tiered — Sonnet 5 for default/plan/task,
+      #   Opus 5 for slow, Haiku 4.5 for smol/fast/commit, Gemini 3.1 Pro for vision/design
+      # - opencode-go: DeepSeek V4 Flash daily driver, Kimi K2.7 Code for plan/slow/vision/design
       # - github-standard: Emergency fallback to GitHub free tier (GPT-5 mini only)
-      aiHarnessModelProfile = "opencode-go";
+      aiHarnessModelProfile = "github-premium";
 
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"

@@ -12,53 +12,68 @@
 
 let
   profiles = {
-    # Full premium access — GitHub Copilot for all roles.
-    # Sonnet 4.6 for primary/slow/plan/task; Haiku 4.5 for fast/commit;
-    # Gemini 3.1 Pro for vision/design.
+    # Full premium access — GitHub Copilot for all roles, cost-tiered by
+    # token-metered billing (GH moved off flat premium-request multipliers
+    # June 2026). Sonnet 5 for default/plan/task (cheaper AND newer than
+    # 4.6: $2/$10 vs $3/$15 per 1M in/out); Opus 5 reserved for `slow` only
+    # ($5/$25 — the escalation tier, not a workhorse); Haiku 4.5 for
+    # smol/fast/commit (background/frequent calls, $1/$5); Gemini 3.1 Pro
+    # preview for vision/design (unchanged).
+    # Org has NOT enabled: Moonshot Kimi, xAI Grok, Microsoft MAI-Code.
     github-premium = {
       omp = {
-        default = "github-copilot/claude-sonnet-4.6";
+        default = "github-copilot/claude-sonnet-5";
         fast = "github-copilot/claude-haiku-4.5";
-        plan = "github-copilot/claude-sonnet-4.6";
-        slow = "github-copilot/claude-sonnet-4.6";
-        smol = "github-copilot/claude-sonnet-4.6";
-        task = "github-copilot/claude-sonnet-4.6";
+        plan = "github-copilot/claude-sonnet-5";
+        slow = "github-copilot/claude-opus-5";
+        smol = "github-copilot/claude-haiku-4.5";
+        task = "github-copilot/claude-sonnet-5";
         commit = "github-copilot/claude-haiku-4.5";
         vision = "github-copilot/gemini-3.1-pro-preview";
         designer = "github-copilot/gemini-3.1-pro-preview";
       };
       opencode = {
-        primary = "github-copilot/claude-sonnet-4.6";
+        primary = "github-copilot/claude-sonnet-5";
         fast = "github-copilot/claude-haiku-4.5";
-        largeContext = "github-copilot/claude-sonnet-4.6";
-        plan = "github-copilot/claude-sonnet-4.6";
+        largeContext = "github-copilot/claude-sonnet-5";
+        plan = "github-copilot/claude-sonnet-5";
       };
     };
 
-    # Pure OpenCode Go provider.
-    # DeepSeek V4 Flash daily driver, Kimi K2.6 for vision/design.
+    # Pure OpenCode Go provider (opencode.ai/zen/go). DeepSeek V4 Flash for
+    # high-frequency roles ($0.14/$0.28 per 1M — proven "good enough" daily
+    # driver in practice, beats its benchmark class on cost-per-task). Kimi
+    # K2.7 Code for plan/slow/vision/designer — same price as K2.6
+    # ($0.95/$4.00) but +10% agentic / +11-32% coding benchmarks, still
+    # multimodal (MoonViT vision encoder) so vision/design stay covered.
     # Replaces both old opencode-go and opencode-go-deepseek profiles.
     opencode-go = {
       omp = {
         default = "opencode-go/deepseek-v4-flash";
         fast = "opencode-go/deepseek-v4-flash";
-        plan = "opencode-go/deepseek-v4-flash";
-        slow = "opencode-go/deepseek-v4-flash";
+        plan = "opencode-go/kimi-k2.7-code";
+        slow = "opencode-go/kimi-k2.7-code";
         smol = "opencode-go/deepseek-v4-flash";
         task = "opencode-go/deepseek-v4-flash";
         commit = "opencode-go/deepseek-v4-flash";
-        vision = "opencode-go/kimi-k2.6";
-        designer = "opencode-go/kimi-k2.6";
+        vision = "opencode-go/kimi-k2.7-code";
+        designer = "opencode-go/kimi-k2.7-code";
       };
       opencode = {
         primary = "opencode-go/deepseek-v4-flash";
         fast = "opencode-go/deepseek-v4-flash";
         largeContext = "opencode-go/deepseek-v4-flash";
-        plan = "opencode-go/deepseek-v4-flash";
+        plan = "opencode-go/kimi-k2.7-code";
       };
     };
 
-    # Emergency fallback to GitHub's free tier (GPT-5 mini only).
+    # Emergency fallback, cheapest reliable tier — NOT free. GH Copilot's
+    # premium-request multipliers (where base models were 0x) were replaced
+    # by token-metered AI Credits on 2026-06-01: every chat/agent call now
+    # draws from the credit pool, including GPT-5 mini ($0.25/$2.00 per 1M).
+    # Kept on GPT-5 mini over the marginally cheaper GPT-5.6 Luna
+    # ($0.20/$1.20) — this profile is a reliability safety net, not a
+    # cost-min target, and mini is the more established tool-calling model.
     # GPT-4.1 deprecated June 2026 — not included.
     github-standard = {
       omp = {
