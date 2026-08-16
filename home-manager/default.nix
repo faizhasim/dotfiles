@@ -49,7 +49,6 @@
     ./hindsight.nix
     ./git.nix
     ./idea.nix
-    ./jankyborders.nix
     ./karabiner-elements.nix
     ./krewfile.nix
     ./lazydocker.nix

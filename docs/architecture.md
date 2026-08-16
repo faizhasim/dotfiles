@@ -263,7 +263,6 @@ launchd.user.agents.aerospace = {
 ### System Services
 
 - **AeroSpace** - Window tiling manager
-- **borders** - Window border highlighting (via Homebrew)
 - **thaw** - Menu bar item hiding
 - **dnsmasq** - Local DNS server for development (port 53535)
 

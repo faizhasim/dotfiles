@@ -5,11 +5,6 @@ _: {
     # ──────────────────────────────────────────────
     "markdownlint-cli2"
     "datadog-labs/pack/pup"
-
-    # ──────────────────────────────────────────────
-    # 💻 macOS Enhancement
-    # ──────────────────────────────────────────────
-    "felixkratz/formulae/borders" # borders
   ];
   casks = [
     # ──────────────────────────────────────────────
@@ -91,8 +86,6 @@ _: {
     "snyk/tap"
     # Jira CLI
     "ankitpokhrel/jira-cli"
-    # Borders (macOS window borders)
-    "FelixKratz/formulae"
     # Datadog pack (internal tooling)
     "datadog-labs/pack"
   ];
