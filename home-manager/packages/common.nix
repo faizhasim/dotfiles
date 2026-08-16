@@ -66,7 +66,6 @@ with pkgs;
   lua
   rustup # rust
   mise
-  corepack # node wrappers
   (python3.withPackages (
     ps: with ps; [
       pdfplumber

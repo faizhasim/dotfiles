@@ -11,21 +11,23 @@
     package = pkgs.mise;
     globalConfig = {
       tools = {
-        node = "lts";
-        python = [ "3.11" ];
         bun = "latest";
-        go = "1.25.3";
-        uv = "latest"; # Fast Python package manager
-        "pipx:specify-cli" = "latest"; # spec-kit CLI for Spec-Driven Development
         "github:can1357/oh-my-pi" = "latest"; # OMP coding agent (replacing Pi)
+        go = "1.25.3";
         herdr = "latest";
+        node = "lts";
+        "pipx:specify-cli" = "latest"; # spec-kit CLI for Spec-Driven Development
+        pnpm = "latest"; # aqua:pnpm/pnpm — decoupled from node/corepack (corepack dropped in Node 25+)
+        python = [ "3.11" ];
         ruby = "latest";
+        uv = "latest"; # Fast Python package manager
       };
       settings = {
         idiomatic_version_file_enable_tools = [
-          "node"
-          "java"
           "go"
+          "java"
+          "node"
+          "pnpm" # reads packageManager/devEngines.packageManager from package.json
           "python"
           "ruby"
           "terraform"

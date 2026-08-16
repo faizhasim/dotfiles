@@ -211,23 +211,6 @@ in
       # global installs in the same place as the old ones.
       export PNPM_HOME="$HOME/.local/share/pnpm"
 
-      # Enable Corepack for pnpm (Corepack ships with Node.js, managed by mise)
-      # This creates a shim that auto-resolves pnpm from package.json's packageManager field.
-      # Marker-based to avoid re-running every shell start.
-      local corepack_marker="$HOME/.cache/corepack/.pnpm-enabled"
-      if [[ ! -f "$corepack_marker" ]]; then
-        mkdir -p "$(dirname "$corepack_marker")"
-        corepack enable pnpm 2>/dev/null && touch "$corepack_marker"
-      fi
-
-      # Pre-cache a default pnpm version for use outside project directories
-      # (where no package.json/packageManager field exists)
-      local global_pnpm_marker="$HOME/.cache/corepack/.global-pnpm-ready"
-      if [[ ! -f "$global_pnpm_marker" ]]; then
-        mkdir -p "$(dirname "$global_pnpm_marker")"
-        corepack install --global pnpm@latest 2>/dev/null && touch "$global_pnpm_marker"
-      fi
-
       # IMPORTANT: Add paths AFTER mise activation — mise resets PATH
       # pnpm v10 bins are in PNPM_HOME directly, v11+ uses PNPM_HOME/bin
       export PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"
