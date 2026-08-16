@@ -71,3 +71,17 @@ Managed with **agenix**:
 
 - **nh** — Nicer `darwin-rebuild` wrapper with closure diff. `NH_FLAKE` env var configured in `home-manager/default.nix`.
 - **mise** — Runtime version manager (node, go, python, rust, herdr).
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues via the `gh` CLI (github.com:faizhasim/dotfiles). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five canonical labels, used as-is. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` + `docs/adr/` at repo root. See `docs/agents/domain.md`.
