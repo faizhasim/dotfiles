@@ -13,6 +13,7 @@
     - [Install Lix](#install-lix)
   - [Apply](#apply)
     - [Apply Nix-Darwin Configuration](#apply-nix-darwin-configuration)
+    - [Apply Home-Manager Only (No Sudo)](#apply-home-manager-only-no-sudo)
   - [Manual Steps](#manual-steps) - [Karabiner-Elements](#karabiner-elements) - [saml2aws](#saml2aws) - [setup nvim](#setup-nvim)
 
 <!-- markdownlint-enable MD051 -->
@@ -121,6 +122,23 @@ nh clean all                                  # garbage-collect unused nix store
 `nh darwin switch` is a drop-in for `darwin-rebuild switch` that adds a closure
 diff on every switch. It still needs sudo. The `.` tells nh which flake to use;
 once `NH_FLAKE` is set (done automatically after first rebuild), you can drop it.
+
+### Apply Home-Manager Only (No Sudo)
+
+```shell
+nh home switch .  # activates homeConfigurations."faizhasim@<hostname>" — no sudo
+```
+
+Activates the standalone `homeConfigurations` (same modules as the darwin-embedded
+home-manager in `home-manager/`), skipping darwin and homebrew activation. The
+config name is inferred from `<user>@<hostname>`; override with `nh home switch -c <name> .`.
+
+To run Homebrew alone (no sudo):
+
+```shell
+nix eval --raw .#darwinConfigurations.M3419.config.homebrew.brewfile > /tmp/Brewfile
+brew bundle install --file /tmp/Brewfile
+```
 
 > [!NOTE]
 > Some Homebrew formulae require GitHub authentication to download (e.g. private taps).

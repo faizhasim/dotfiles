@@ -49,6 +49,8 @@ setupVersion: 1
 defaultThinkingLevel: high
 hideThinkingBlock: false
 repeatToolDescriptions: false
+contextPromotion:
+  enabled: true
 
 # ── advisor ─────────────────────────────────────────────────
 advisor:

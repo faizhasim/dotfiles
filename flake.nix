@@ -72,12 +72,17 @@
         age = "age1qry8eztm55zgxek5npyu22v4j7akzdfapn249gmfhpg5gkwcasasqhdygq";
       };
 
-      # AI harness model profile: "github-premium" | "opencode-go" | "github-standard"
+      # AI harness model profile: "github-premium" | "opencode-go" | "deepseek" | "github-standard"
       # - github-premium: Full GitHub Copilot access, cost-tiered — Sonnet 5 for default/plan/task,
       #   Opus 5 for slow, Haiku 4.5 for smol/fast/commit, Gemini 3.1 Pro for vision/design
       # - opencode-go: DeepSeek V4 Flash daily driver, Kimi K2.7 Code for plan/slow/vision/design
+      # - deepseek: DeepSeek V4 Flash for everything except vision (Kimi K2.7 Code)
       # - github-standard: Emergency fallback to GitHub free tier (GPT-5 mini only)
-      aiHarnessModelProfile = "github-premium";
+      aiHarnessModelProfile = "deepseek";
+
+      overlays = import ./overlays {
+        inherit inputs;
+      };
 
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"
@@ -88,11 +93,6 @@
 
       createDarwin =
         hostname: username: system:
-        let
-          overlays = import ./overlays {
-            inherit inputs;
-          };
-        in
         darwin.lib.darwinSystem {
           inherit system;
           # makes all inputs availble in imported files
@@ -199,12 +199,70 @@
           ];
         };
 
+      # Standalone home-manager configuration, mirroring the home-manager
+      # module embedded in createDarwin (same modules, same pkgs overlays).
+      # Enables `nh home switch` (no sudo) for home-manager-only activation.
+      createHome =
+        hostname: username: system:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            inherit overlays;
+          };
+          extraSpecialArgs = {
+            inherit
+              inputs
+              hostname
+              username
+              nord-dircolors
+              aiHarnessModelProfile
+              ;
+          };
+          modules = [
+            # Stylix is injected into home-manager by stylix.darwinModules.stylix
+            # in the darwin setup; standalone home-manager needs it explicitly.
+            stylix.homeModules.stylix
+            (import ./darwin/stylix.nix)
+            {
+              home = {
+                inherit username;
+                homeDirectory = "/Users/${username}";
+              };
+            }
+            (
+              {
+                pkgs,
+                config,
+                lib,
+                ...
+              }:
+              import ./home-manager {
+                inherit
+                  config
+                  pkgs
+                  lib
+                  inputs
+                  hostname
+                  username
+                  nord-dircolors
+                  aiHarnessModelProfile
+                  ;
+              }
+            )
+          ];
+        };
+
     in
     {
       formatter = forAllSystems (system: nixpkgs.legacyPackages."${system}".nixfmt);
       darwinConfigurations = {
         M3419 = createDarwin "M3419" "faizhasim" "aarch64-darwin";
         macmini01 = createDarwin "macmini01" "faizhasim" "aarch64-darwin";
+      };
+      homeConfigurations = {
+        "faizhasim@M3419" = createHome "M3419" "faizhasim" "aarch64-darwin";
+        "faizhasim@macmini01" = createHome "macmini01" "faizhasim" "aarch64-darwin";
       };
     };
 

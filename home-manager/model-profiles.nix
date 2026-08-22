@@ -67,6 +67,32 @@ let
       };
     };
 
+    # DeepSeek direct provider. V4 Flash for every role — text-only, so
+    # vision (image input) falls back to Kimi K2.7 Code, the only multimodal
+    # model in this profile. Cheapest reliable daily driver.
+    # NOTE: model ids must match what api.deepseek.com currently serves — the
+    # old pinned snapshot "deepseek-v4-flash-0731" was dropped from /models
+    # and silently broke omp commit's smol resolution (fell back to Copilot).
+    deepseek = {
+      omp = {
+        default = "deepseek/deepseek-v4-flash";
+        fast = "deepseek/deepseek-v4-flash";
+        plan = "deepseek/deepseek-v4-flash";
+        slow = "deepseek/deepseek-v4-flash";
+        smol = "deepseek/deepseek-v4-flash";
+        task = "deepseek/deepseek-v4-flash";
+        commit = "deepseek/deepseek-v4-flash";
+        vision = "opencode-go/kimi-k2.7-code";
+        designer = "deepseek/deepseek-v4-flash";
+      };
+      opencode = {
+        primary = "deepseek/deepseek-v4-flash";
+        fast = "deepseek/deepseek-v4-flash";
+        largeContext = "deepseek/deepseek-v4-flash";
+        plan = "deepseek/deepseek-v4-flash";
+      };
+    };
+
     # Emergency fallback, cheapest reliable tier — NOT free. GH Copilot's
     # premium-request multipliers (where base models were 0x) were replaced
     # by token-metered AI Credits on 2026-06-01: every chat/agent call now

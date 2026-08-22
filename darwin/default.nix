@@ -7,6 +7,16 @@
     ./activation.nix
   ];
 
+  nix = {
+    # Dedupe identical store paths on every build
+    settings.auto-optimise-store = true;
+    # Periodic nix store optimise (3:45 AM)
+    optimise = {
+      automatic = true;
+      dates = [ "03:45" ];
+    };
+  };
+
   environment = {
     variables = {
       EDITOR = "nvim";

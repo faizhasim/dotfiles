@@ -6,6 +6,8 @@ This is a **Nix/nix-darwin configuration repository** for declarative macOS syst
 
 - **Initial build**: `sudo nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .#M3419` (or `#macmini01`)
 - **After initial setup**: `sudo HOMEBREW_GITHUB_API_TOKEN="$(op read op://personal/Github/token)" darwin-rebuild switch --flake .#M3419`
+- **Home-manager only (no sudo)**: `nh home switch .` — activates `homeConfigurations."<user>@<hostname>"` (e.g. `faizhasim@M3419`); skips darwin + homebrew activation
+- **Homebrew only (no sudo)**: `nix eval --raw .#darwinConfigurations.M3419.config.homebrew.brewfile > /tmp/Brewfile && brew bundle install --file /tmp/Brewfile`
 - **Check flake**: `nix flake check`
 - **Update inputs**: `nix flake update`
 - **Format Nix files**: `nix fmt`
