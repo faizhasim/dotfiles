@@ -6,7 +6,8 @@ pager:
 
 smartFilteringAtLaunch: true
 
-repoPaths: {{ (datasource "data").repoPaths | data.ToJSONPretty "  " }}
+repoPaths: >-
+  {{ (datasource "data").repoPaths | data.ToJSONPretty "  " }}
 
 keybindings:
   universal:
@@ -54,8 +55,11 @@ prSections:
   - title: "󰳐 author:@me"
     filters: "author:@me is:open archived:false sort:created-desc"
 
-  - title: "󰳐 all requested reviews"
+  - title: "󰳐 requested reviews selective"
     filters: 'is:open sort:created-desc review-requested:@me{{ if (datasource "data").reposFilter }} {{ (datasource "data").reposFilter }}{{ end }}'
+
+  - title: "󰳐 requested review all"
+    filters: "org:SEEK-Jobs is:open review-requested:@me"
 
   - title: "󰳐 mention:@me"
     filters: "is:open mentions:@me sort:created-desc"
