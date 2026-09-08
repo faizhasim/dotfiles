@@ -243,7 +243,6 @@ run_skills() {
   pnpm dlx skills add huggingface/skills -s huggingface-llm-trainer -g -y "${AGENTS[@]}"
 
   # ── General: Agent Tools & DX ──
-  pnpm dlx skills add vercel-labs/agent-browser -g -y "${AGENTS[@]}"
   pnpm dlx skills add vercel-labs/skills -s find-skills -g -y "${AGENTS[@]}"
   pnpm dlx skills add obra/superpowers -s dispatching-parallel-agents -g -y "${AGENTS[@]}"
   pnpm dlx skills add softaworks/agent-toolkit -s agent-md-refactor -g -y "${AGENTS[@]}"
