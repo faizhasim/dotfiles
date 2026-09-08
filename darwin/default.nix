@@ -10,10 +10,15 @@
   nix = {
     # Dedupe identical store paths on every build
     settings.auto-optimise-store = true;
-    # Periodic nix store optimise (3:45 AM)
+    # Periodic nix store optimise (daily at 03:45)
     optimise = {
       automatic = true;
-      dates = [ "03:45" ];
+      interval = [
+        {
+          Hour = 3;
+          Minute = 45;
+        }
+      ];
     };
   };
 
