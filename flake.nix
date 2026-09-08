@@ -78,7 +78,7 @@
       # - opencode-go: DeepSeek V4 Flash daily driver, Kimi K2.7 Code for plan/slow/vision/design
       # - deepseek: DeepSeek V4 Flash for everything except vision (Kimi K2.7 Code)
       # - github-standard: Emergency fallback to GitHub free tier (GPT-5 mini only)
-      aiHarnessModelProfile = "deepseek";
+      aiHarnessModelProfile = "github-premium";
 
       overlays = import ./overlays {
         inherit inputs;
