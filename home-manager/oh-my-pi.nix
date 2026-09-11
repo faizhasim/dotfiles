@@ -14,6 +14,12 @@ let
   # Change aiHarnessModelProfile in flake.nix → all harnesses update.
   models = import ./model-profiles.nix { profileName = aiHarnessModelProfile; };
 
+  # Copilot vscode-chat provider config (generated YAML, nix-managed).
+  # Explicit provider identity for environments where the built-in client
+  # identity is unavailable. Auth is `!gh auth token` (keyring-backed; gh
+  # owns refresh) — no helper, no secrets in nix, no opencode dependency.
+  copilotVscodeconfigYaml = import ./oh-my-pi/models-gen.nix { inherit pkgs; };
+
   # OMP model-role fragment — computed from models.omp (model-profiles.nix),
   # patched into the live ~/.omp/agent/config.yml on every activation (see
   # ompConfigBootstrap below) so it always reflects the current
@@ -144,7 +150,14 @@ in
     # STT toggle moved off Alt+H (taken by AeroSpace for focus left).
     # Alt+S is unused by both AeroSpace and OMP defaults.
     # NOTE: Uses JSON format (not YAML) — OMP 15.7.2 binary only reads keybindings.json.
-    # Lives in-repo (home-manager/oh-my-pi/keybindings.json) via an
+
+    # ── Copilot via vscode-chat mechanism (org-banned CLI workaround) ───
+    # Custom provider using vscode-chat integrator headers + `gh auth token`
+    # (keyring-backed; gh owns refresh). Nix-managed; reapplied on switch.
+    ".omp/agent/models.yml" = {
+      source = copilotVscodeconfigYaml;
+      force = true;
+    };
     # out-of-store symlink — edits are live immediately, no rebuild needed.
     ".omp/agent/keybindings.json" = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/faizhasim/dotfiles/home-manager/oh-my-pi/keybindings.json";

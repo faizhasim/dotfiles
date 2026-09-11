@@ -90,6 +90,43 @@ filters: is:open review-requested:@me repo:A
 
 **Trade-off:** Direct file access and Mason support vs. complete Nix-managed approach.
 
+### Copilot via gh-Authenticated Alternate Provider
+
+**Why:** OMP's built-in `github-copilot` provider uses a fixed authentication
+path (Copilot CLI OAuth app and integrator headers) that is incompatible
+with some environments: every model returns HTTP 403 there, and re-running
+`/login` mints tokens that fail the same way (so `omp token --list` reads
+empty). This explicit provider uses the vscode-chat integration instead.
+
+**Structure:** `gh auth token` supplies the Bearer credential; `copilot-vscode`
+is only the provider/integrator identity and routing profile, not a separate
+model service. (The VS Code label comes from the required integrator
+headers the endpoint gates on.)
+
+- `home-manager/oh-my-pi/models-gen.nix` generates `~/.omp/agent/models.yml`
+  (`force`, nix-owned) with a `copilot-vscode` provider carrying VS Code Chat
+  integrator headers, `X-GitHub-Api-Version: 2026-08-01` (long-context tier),
+  and `apiKey: "!gh auth token"` (keyring-backed, gh owns refresh).
+- Role defaults live in `home-manager/model-profiles.nix` (`github-premium.omp`).
+- Model list (24) is curated from live `GET api.githubcopilot.com/models`
+  with per-model chat/responses routing; dynamic discovery can't replace it
+  (generic mapper misreads Copilot caps/context).
+
+**Reason:** A custom provider id may present the VS Code Chat integrator
+identity, which is already permitted alongside editors on this seat (same
+account works in IntelliJ, VS Code-based clients, and opencode). A raw
+`gh auth token` works fine as a Bearer token — no token exchange, no helper
+scripts, no secrets in nix. Custom-provider headers apply as configured;
+the built-in provider enforces its own header set
+(`mergeCopilotApiHeaders`).
+
+**Impact:**
+
+- Select `copilot-vscode/*` models for Copilot inference.
+- When inference 401s, re-run `gh auth login`; no config change needed.
+- New Copilot models: query live `/models`, append to `models-gen.nix`,
+  `nh home switch .`, probe with `omp -p`.
+
 ### dnsmasq Port Configuration
 
 **Why:** dnsmasq runs on port 53535 instead of standard port 53.

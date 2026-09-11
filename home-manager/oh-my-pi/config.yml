@@ -47,7 +47,7 @@ setupVersion: 1
 
 # ── model ───────────────────────────────────────────────────
 defaultThinkingLevel: high
-hideThinkingBlock: false
+hideThinkingBlock: true
 repeatToolDescriptions: false
 contextPromotion:
   enabled: true
@@ -101,8 +101,6 @@ recipe:
   enabled: true
 renderMermaid:
   enabled: true
-inspect_image:
-  mode: "on"
 github:
   enabled: true
 web_search:
@@ -146,7 +144,6 @@ secrets:
 # ── session ─────────────────────────────────────────────────
 compaction:
   enabled: true
-  strategy: context-full
   reserveTokens: 16384
   keepRecentTokens: 20000
   autoContinue: true
@@ -178,9 +175,9 @@ todo:
 # ── tasks ───────────────────────────────────────────────────
 task:
   isolation:
-    mode: auto
     merge: patch
     commits: ai
+    enabled: true
   eager: always
 
 # ── providers ───────────────────────────────────────────────

@@ -3,7 +3,7 @@
 # Usage: import ./model-profiles.nix { profileName = aiHarnessModelProfile; }
 # Returns: { omp: { default, fast, plan, slow, smol, task, commit, vision, designer },
 #            opencode: { primary, fast, largeContext, plan } }
-#          Model IDs include provider/ prefix (e.g. "github-copilot/claude-sonnet-4.6")
+#          Model IDs include provider/ prefix (e.g. "copilot-vscode/claude-sonnet-5")
 #
 # Note: There is NO fallback. An invalid profileName causes a predictable eval error.
 {
@@ -12,25 +12,25 @@
 
 let
   profiles = {
-    # Full premium access — GitHub Copilot for all roles, cost-tiered by
-    # token-metered billing (GH moved off flat premium-request multipliers
-    # June 2026). Sonnet 5 for default/plan/task (cheaper AND newer than
-    # 4.6: $2/$10 vs $3/$15 per 1M in/out); Opus 5 reserved for `slow` only
-    # ($5/$25 — the escalation tier, not a workhorse); Haiku 4.5 for
-    # smol/fast/commit (background/frequent calls, $1/$5); Gemini 3.1 Pro
-    # preview for vision/design (unchanged).
-    # Org has NOT enabled: Moonshot Kimi, xAI Grok, Microsoft MAI-Code.
+    # Full premium access — Copilot via the copilot-vscode custom provider
+    # (VS Code Chat integrator identity), roles split by evidence/price/context
+    # (Sept 2026 review): Luna ($0.20/$1.20, 328k live
+    # ctx, 84.7% Terminal-Bench 2.0) carries all high-frequency + long-loop
+    # roles; Sonnet 5 (85.2% SWE-bench Verified) keeps plan judgment; Terra
+    # ($2/$12, 400k live ctx, 87.4% TB2.0) is the escalation tier; Gemini 3.8
+    # Flash does vision/design (10 images, promo $0.75/$3.75 thru Dec 31).
+    # Haiku 4.5 infers but is outside the allowlisted set — dropped.
     github-premium = {
       omp = {
-        default = "github-copilot/claude-sonnet-5";
-        fast = "github-copilot/claude-haiku-4.5";
-        plan = "github-copilot/claude-sonnet-5";
-        slow = "github-copilot/claude-opus-5";
-        smol = "github-copilot/claude-haiku-4.5";
-        task = "github-copilot/claude-sonnet-5";
-        commit = "github-copilot/claude-haiku-4.5";
-        vision = "github-copilot/gemini-3.1-pro-preview";
-        designer = "github-copilot/gemini-3.1-pro-preview";
+        default = "copilot-vscode/gpt-5.6-luna";
+        fast = "copilot-vscode/gpt-5.6-luna";
+        plan = "copilot-vscode/claude-sonnet-5";
+        slow = "copilot-vscode/gpt-5.6-terra";
+        smol = "copilot-vscode/gpt-5.6-luna";
+        task = "copilot-vscode/gpt-5.6-luna";
+        commit = "copilot-vscode/gpt-5.6-luna";
+        vision = "copilot-vscode/gemini-3.8-flash";
+        designer = "copilot-vscode/gemini-3.8-flash";
       };
       opencode = {
         primary = "github-copilot/claude-sonnet-5";
@@ -103,15 +103,15 @@ let
     # GPT-4.1 deprecated June 2026 — not included.
     github-standard = {
       omp = {
-        default = "github-copilot/gpt-5-mini";
-        fast = "github-copilot/gpt-5-mini";
-        plan = "github-copilot/gpt-5-mini";
-        slow = "github-copilot/gpt-5-mini";
-        smol = "github-copilot/gpt-5-mini";
-        task = "github-copilot/gpt-5-mini";
-        commit = "github-copilot/gpt-5-mini";
-        vision = "github-copilot/gpt-5-mini";
-        designer = "github-copilot/gpt-5-mini";
+        default = "copilot-vscode/gpt-5-mini";
+        fast = "copilot-vscode/gpt-5-mini";
+        plan = "copilot-vscode/gpt-5-mini";
+        slow = "copilot-vscode/gpt-5-mini";
+        smol = "copilot-vscode/gpt-5-mini";
+        task = "copilot-vscode/gpt-5-mini";
+        commit = "copilot-vscode/gpt-5-mini";
+        vision = "copilot-vscode/gpt-5-mini";
+        designer = "copilot-vscode/gpt-5-mini";
       };
       opencode = {
         primary = "github-copilot/gpt-5-mini";
